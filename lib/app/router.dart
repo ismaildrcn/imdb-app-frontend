@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:imdb_app/data/model/most_popular_movies_model.dart';
+import 'package:imdb_app/features/home/most_popular_page.dart';
+import 'package:imdb_app/features/home/movie_page.dart';
 import 'package:imdb_app/screens/browser.dart';
 import 'package:imdb_app/screens/discover.dart';
-import 'package:imdb_app/screens/home.dart';
+import 'package:imdb_app/features/home/home.dart';
 import 'package:imdb_app/screens/profile.dart';
 
 class AppRoutes {
   AppRoutes._();
   static const String home = '/';
+  static const String mostPopularMovies = "/most_popular_movies";
+  static const String movie = "/movie/:id";
   static const String browser = '/browser';
   static const String discover = '/discover';
   static const String profile = '/profile';
@@ -32,6 +37,23 @@ final appRoutes = GoRouter(
           path: AppRoutes.home,
           pageBuilder: (context, state) {
             return const MaterialPage(child: HomePage());
+          },
+        ),
+        GoRoute(
+          name: "most-popular-movies",
+          path: AppRoutes.mostPopularMovies,
+          pageBuilder: (context, state) {
+            final List<MostPopularMoviesModel> allMovies =
+                state.extra as List<MostPopularMoviesModel>;
+            return MaterialPage(child: MostPopularPage(allMovies: allMovies));
+          },
+        ),
+        GoRoute(
+          name: "movie",
+          path: AppRoutes.movie,
+          pageBuilder: (context, state) {
+            final movieId = state.pathParameters['id']!;
+            return MaterialPage(child: MoviePage(movieId: movieId));
           },
         ),
         GoRoute(

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:imdb_app/app/router.dart';
 import 'package:imdb_app/data/datasources/local.dart';
 import 'package:imdb_app/data/model/most_popular_movies_model.dart';
 import 'package:imdb_app/data/repository/movie_repository.dart';
@@ -24,20 +26,24 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late final MostPopuplarMoviesRepository _repository;
-  List<MostPopularMoviesModel> _movieList = [];
+  List<MostPopularMoviesModel> _allMovies = [];
+  List<MostPopularMoviesModel> _displayMovies = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _repository = MostPopuplarMoviesRepository(MostPopularMoviesLocalDataSource());
+    _repository = MostPopuplarMoviesRepository(
+      MostPopularMoviesLocalDataSource(),
+    );
     loadData();
   }
 
   Future<void> loadData() async {
     final movies = await _repository.fetchMovies();
     setState(() {
-      _movieList = movies.sublist(0, 10);
+      _allMovies = movies;
+      _displayMovies = movies.sublist(0, 10);
     });
   }
 
@@ -50,7 +56,8 @@ class _HomePageState extends State<HomePage> {
             MovieCarousel(),
             SizedBox(height: 12),
             HorizontalMoviesCardList(
-              movies: _movieList,
+              allMovies: _allMovies,
+              displayMovies: _displayMovies,
               title: "Top 10 Movies for you",
             ),
             SizedBox(height: 16),
@@ -174,12 +181,14 @@ class MovieCarousel extends StatelessWidget {
 }
 
 class HorizontalMoviesCardList extends StatelessWidget {
-  final List<MostPopularMoviesModel> movies;
+  final List<MostPopularMoviesModel> allMovies;
+  final List<MostPopularMoviesModel> displayMovies;
   final String title;
   const HorizontalMoviesCardList({
     super.key,
-    required this.movies,
     required this.title,
+    required this.allMovies,
+    required this.displayMovies,
   });
 
   @override
@@ -195,7 +204,12 @@ class HorizontalMoviesCardList extends StatelessWidget {
                 title,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
-              TextButton(onPressed: () {}, child: Text("See More")),
+              TextButton(
+                onPressed: () {
+                  context.push(AppRoutes.mostPopularMovies, extra: allMovies);
+                },
+                child: Text("See More"),
+              ),
             ],
           ),
         ),
@@ -204,50 +218,72 @@ class HorizontalMoviesCardList extends StatelessWidget {
           child: SizedBox(
             height: 193,
             child: ListView.builder(
-              itemCount: movies.length,
+              itemCount: displayMovies.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    Container(
-                      width: 130,
-                      height: 160,
-                      margin: EdgeInsets.only(
-                        right: movies.length - 1 != index ? 16 : 0,
-                      ),
-                      decoration: BoxDecoration(
-                        color:
-                            Colors.primaries[index % Colors.primaries.length],
-                        borderRadius: BorderRadius.circular(8),
-                        image: DecorationImage(
-                          image: (movies[index].primaryImage != null)
-                              ? NetworkImage(movies[index].primaryImage!)
-                              : AssetImage("assets/img/no-image.jpg"),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    SizedBox(
-                      width: 130,
-                      child: Text(
-                        movies[index].originalTitle!,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
+                return MovieCard(
+                  movie: displayMovies[index],
+                  index: index,
+                  isApplyMargin: displayMovies.length - 1 != index
+                      ? true
+                      : false,
                 );
               },
             ),
           ),
         ),
       ],
+    );
+  }
+}
+
+class MovieCard extends StatelessWidget {
+  final MostPopularMoviesModel movie;
+  final int index;
+  final bool isApplyMargin;
+  const MovieCard({
+    super.key,
+    required this.movie,
+    required this.index,
+    required this.isApplyMargin,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        context.push("/movie/${movie.id}");
+      },
+      child: Column(
+        children: [
+          Container(
+            width: 130,
+            height: 160,
+            margin: isApplyMargin ? EdgeInsets.only(right: 16) : null,
+            decoration: BoxDecoration(
+              color: Colors.primaries[index % Colors.primaries.length],
+              borderRadius: BorderRadius.circular(8),
+              image: DecorationImage(
+                image: (movie.primaryImage != null)
+                    ? NetworkImage(movie.primaryImage!)
+                    : AssetImage("assets/img/no-image.jpg"),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          SizedBox(height: 8),
+          SizedBox(
+            width: 130,
+            child: Text(
+              movie.originalTitle!,
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
