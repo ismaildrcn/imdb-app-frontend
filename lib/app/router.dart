@@ -26,9 +26,8 @@ final appRoutes = GoRouter(
       builder: (context, state, child) {
         return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.surface,
-          appBar: _topNavBar(context),
           bottomNavigationBar: _bottomNavBar(context, state),
-          body: SafeArea(child: child),
+          body: child,
         );
       },
       routes: [
@@ -139,10 +138,15 @@ BottomNavigationBar _bottomNavBar(BuildContext context, GoRouterState state) {
   );
 }
 
-AppBar _topNavBar(BuildContext context) {
+AppBar topNavBar(BuildContext context, String? title) {
   return AppBar(
     toolbarHeight: 60,
-    title: Text(""),
+    title: Text(title ?? ""),
+    titleTextStyle: TextStyle(
+      color: Theme.of(context).colorScheme.secondary.withAlpha(220),
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+    ),
     centerTitle: true,
     leading: Container(
       margin: EdgeInsets.only(left: 10),
