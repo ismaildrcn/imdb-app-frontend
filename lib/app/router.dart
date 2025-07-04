@@ -1,0 +1,141 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:imdb_app/screens/browser.dart';
+import 'package:imdb_app/screens/discover.dart';
+import 'package:imdb_app/screens/home.dart';
+import 'package:imdb_app/screens/profile.dart';
+
+class AppRoutes {
+  AppRoutes._();
+  static const String home = '/';
+  static const String browser = '/browser';
+  static const String discover = '/discover';
+  static const String profile = '/profile';
+}
+
+final appRoutes = GoRouter(
+  initialLocation:
+      '/', //Uygulama başlatıldığında varsayılan başlangıç konumunu temsil eder.
+  routes: [
+    ShellRoute(
+      builder: (context, state, child) {
+        return Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          appBar: _topNavBar(context),
+          bottomNavigationBar: _bottomNavBar(context, state),
+          body: SafeArea(child: child),
+        );
+      },
+      routes: [
+        GoRoute(
+          name: "home",
+          path: AppRoutes.home,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: HomePage());
+          },
+        ),
+        GoRoute(
+          name: "browser",
+          path: AppRoutes.browser,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: BrowserPage());
+          },
+        ),
+        GoRoute(
+          name: "discover",
+          path: AppRoutes.discover,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: DiscoverPage());
+          },
+        ),
+        GoRoute(
+          name: "profile",
+          path: AppRoutes.profile,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: ProfilePage());
+          },
+        ),
+      ],
+    ),
+  ],
+);
+
+BottomNavigationBar _bottomNavBar(BuildContext context, GoRouterState state) {
+  final String location = state.uri.toString();
+  int currentIndex = 0;
+  if (location == '/browser') {
+    currentIndex = 1;
+  } else if (location == '/discover') {
+    currentIndex = 2;
+  } else if (location == '/profile') {
+    currentIndex = 3;
+  }
+
+  return BottomNavigationBar(
+    type: BottomNavigationBarType.fixed, // Bunu ekleyin
+    currentIndex: currentIndex,
+    onTap: (index) {
+      switch (index) {
+        case 0:
+          GoRouter.of(context).go('/');
+          break;
+        case 1:
+          GoRouter.of(context).go('/browser');
+          break;
+        case 2:
+          GoRouter.of(context).go('/discover');
+          break;
+        case 3:
+          GoRouter.of(context).go('/profile');
+          break;
+      }
+    },
+    unselectedItemColor: Theme.of(context).colorScheme.surface,
+    selectedItemColor: Theme.of(context).colorScheme.primary,
+    items: const <BottomNavigationBarItem>[
+      BottomNavigationBarItem(
+        icon: Icon(Icons.home_outlined),
+        activeIcon: Icon(Icons.home),
+        label: 'Home',
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.analytics_outlined),
+        activeIcon: Icon(Icons.analytics_rounded),
+        label: 'Browser',
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.play_arrow_outlined),
+        activeIcon: Icon(Icons.play_arrow_rounded),
+        label: 'Discover',
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.search),
+        activeIcon: Icon(Icons.search_rounded),
+        label: 'Profile',
+      ),
+    ],
+  );
+}
+
+AppBar _topNavBar(BuildContext context) {
+  return AppBar(
+    toolbarHeight: 60,
+    title: Text(""),
+    centerTitle: true,
+    leading: Container(
+      margin: EdgeInsets.only(left: 10),
+      child: Image.asset("assets/img/imdb-logo.png"),
+    ),
+    actions: [
+      Container(
+        margin: EdgeInsets.only(right: 10),
+        child: Icon(
+          Icons.notifications,
+          size: 24,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+      ),
+    ],
+    backgroundColor: Theme.of(context).colorScheme.primary,
+  );
+}
