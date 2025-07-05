@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
-import 'package:imdb_app/data/model/most_popular_movies_model.dart';
+import 'package:imdb_app/data/model/movie_model.dart';
 
 class MostPopularPage extends StatelessWidget {
-  final List<MostPopularMoviesModel> allMovies;
+  final List<MovieModel> allMovies;
   const MostPopularPage({super.key, required this.allMovies});
 
   @override

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:imdb_app/data/model/most_popular_movies_model.dart';
+import 'package:imdb_app/data/model/movie_model.dart';
 import 'package:imdb_app/features/home/most_popular_page.dart';
 import 'package:imdb_app/features/home/movie_page.dart';
 import 'package:imdb_app/screens/browser.dart';
@@ -42,8 +42,8 @@ final appRoutes = GoRouter(
           name: "most-popular-movies",
           path: AppRoutes.mostPopularMovies,
           pageBuilder: (context, state) {
-            final List<MostPopularMoviesModel> allMovies =
-                state.extra as List<MostPopularMoviesModel>;
+            final List<MovieModel> allMovies =
+                state.extra as List<MovieModel>;
             return MaterialPage(child: MostPopularPage(allMovies: allMovies));
           },
         ),

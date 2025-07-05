@@ -1,12 +1,12 @@
 import 'package:imdb_app/data/datasources/local.dart';
-import 'package:imdb_app/data/model/most_popular_movies_model.dart';
+import 'package:imdb_app/data/model/movie_model.dart';
 
-class MostPopuplarMoviesRepository {
-  final MostPopularMoviesLocalDataSource localDataSource;
+class MovieRepository {
+  final MovieLocalDataSource localDataSource;
 
-  MostPopuplarMoviesRepository(this.localDataSource);
+  MovieRepository(this.localDataSource);
 
-  Future<List<MostPopularMoviesModel>> fetchMovies() {
+  Future<List<MovieModel>> fetchMovies() {
     return localDataSource.getMovies();
   }
 }
