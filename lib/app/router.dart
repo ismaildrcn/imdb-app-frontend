@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
+import 'package:imdb_app/features/home/auth/create_account_page.dart';
 import 'package:imdb_app/features/home/auth/sign_in_page.dart';
 import 'package:imdb_app/features/home/cast_page.dart';
 import 'package:imdb_app/features/home/most_popular_page.dart';
@@ -19,6 +20,8 @@ class AppRoutes {
   static const String browser = '/browser';
   static const String discover = '/discover';
   static const String profile = '/profile';
+  static const String login = '/login';
+  static const String createAccount = '/create-account';
 }
 
 final appRoutes = GoRouter(
@@ -83,7 +86,21 @@ final appRoutes = GoRouter(
           name: "profile",
           path: AppRoutes.profile,
           pageBuilder: (context, state) {
+            return const MaterialPage(child: CreateAccountPage());
+          },
+        ),
+        GoRoute(
+          name: "login",
+          path: AppRoutes.login,
+          pageBuilder: (context, state) {
             return const MaterialPage(child: SignInPage());
+          },
+        ),
+        GoRoute(
+          name: "crate-account",
+          path: AppRoutes.createAccount,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: CreateAccountPage());
           },
         ),
       ],

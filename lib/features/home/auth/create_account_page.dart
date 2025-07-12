@@ -3,19 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
 
-class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+class CreateAccountPage extends StatefulWidget {
+  const CreateAccountPage({super.key});
 
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  State<CreateAccountPage> createState() => _CreateAccountPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _CreateAccountPageState extends State<CreateAccountPage> {
+  TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
   bool isValidEmail = false;
   bool isEmailTouched = false;
   bool isPasswordVisible = false;
+  bool isConfirmPasswordVisible = false;
   bool isRememberMeChecked = false;
 
   @override
@@ -49,12 +52,32 @@ class _SignInPageState extends State<SignInPage> {
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
+            spacing: 16,
             children: [
               Text(
-                "Sign in",
+                "Sign up",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 20),
+              TextFormField(
+                controller: usernameController,
+                decoration: InputDecoration(
+                  labelText: "Username",
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    borderSide: BorderSide(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSecondary.withAlpha(75),
+                    ),
+                  ),
+                ),
+              ),
               TextFormField(
                 keyboardType: TextInputType.emailAddress,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -92,7 +115,6 @@ class _SignInPageState extends State<SignInPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 16),
               TextFormField(
                 obscureText: !isPasswordVisible,
                 keyboardType: TextInputType.visiblePassword,
@@ -128,29 +150,57 @@ class _SignInPageState extends State<SignInPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: isRememberMeChecked,
-                        checkColor: Theme.of(context).colorScheme.surface,
-                        activeColor: Theme.of(context).colorScheme.primary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        onChanged: (value) {
-                          setState(() {
-                            isRememberMeChecked = value ?? false;
-                          });
-                        },
-                      ),
-                      Text("Remember me"),
-                    ],
+              TextFormField(
+                obscureText: !isConfirmPasswordVisible,
+                keyboardType: TextInputType.visiblePassword,
+                controller: confirmPasswordController,
+                decoration: InputDecoration(
+                  suffixIcon: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isConfirmPasswordVisible = !isConfirmPasswordVisible;
+                      });
+                    },
+                    child: Icon(
+                      isConfirmPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                   ),
-                  TextButton(onPressed: () {}, child: Text("Forgot password?")),
+                  labelText: "Confirm Password",
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    borderSide: BorderSide(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSecondary.withAlpha(75),
+                    ),
+                  ),
+                ),
+              ),
+              Row(
+                children: [
+                  Checkbox(
+                    value: isRememberMeChecked,
+                    checkColor: Theme.of(context).colorScheme.surface,
+                    activeColor: Theme.of(context).colorScheme.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        isRememberMeChecked = value ?? false;
+                      });
+                    },
+                  ),
+                  Text("Remember me"),
                 ],
               ),
               ElevatedButton(
@@ -165,9 +215,46 @@ class _SignInPageState extends State<SignInPage> {
                   ),
                   minimumSize: Size(double.infinity, 40),
                 ),
-                child: Text("Login"),
+                child: Text("Create Account"),
               ),
-              SizedBox(height: 16),
+              Row(
+                spacing: 16,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: TextButton.styleFrom(
+                        backgroundColor: Theme.of(
+                          context,
+                        ).colorScheme.secondary,
+                        foregroundColor: Theme.of(context).colorScheme.surface,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        minimumSize: Size(50, 40),
+                      ),
+                      child: Text("Sign up with Google"),
+                    ),
+                  ),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: TextButton.styleFrom(
+                        backgroundColor: Theme.of(
+                          context,
+                        ).colorScheme.secondary,
+                        foregroundColor: Theme.of(context).colorScheme.surface,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        minimumSize: Size(50, 40),
+                      ),
+                      child: Text("Sign up with Facebook"),
+                    ),
+                  ),
+                ],
+              ),
               Row(
                 children: [
                   Expanded(
@@ -181,7 +268,7 @@ class _SignInPageState extends State<SignInPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Text(
-                      "New to IMDb?",
+                      "Already have an account?",
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         color: Theme.of(context).colorScheme.onSecondary,
@@ -198,10 +285,9 @@ class _SignInPageState extends State<SignInPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                  context.push(AppRoutes.createAccount);
+                  context.push(AppRoutes.login);
                 },
                 style: TextButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -211,9 +297,8 @@ class _SignInPageState extends State<SignInPage> {
                   ),
                   minimumSize: Size(double.infinity, 40),
                 ),
-                child: Text("Create Account"),
+                child: Text("Login"),
               ),
-              SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
