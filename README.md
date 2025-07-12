@@ -1,16 +1,11 @@
-# imdb_app
+# IMDb App
 
-A new Flutter project.
+IMDb App is an open-source movie and TV show information application built with Flutter.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [x] List popular movies and TV shows
+- [x] Detailed pages with cast, directors, writers, and movie information
+- [ ] Search and discover features
+- [ ] Modern and user-friendly interface
+- [ ] Email verification and user authentication
