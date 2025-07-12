@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
 import 'package:imdb_app/features/home/auth/create_account_page.dart';
 import 'package:imdb_app/features/home/auth/sign_in_page.dart';
+import 'package:imdb_app/features/home/auth/verify_email.dart';
 import 'package:imdb_app/features/home/cast_page.dart';
 import 'package:imdb_app/features/home/most_popular_page.dart';
 import 'package:imdb_app/features/home/movie_page.dart';
@@ -22,6 +23,7 @@ class AppRoutes {
   static const String profile = '/profile';
   static const String login = '/login';
   static const String createAccount = '/create-account';
+  static const String verifyEmail = '/verify-email';
 }
 
 final appRoutes = GoRouter(
@@ -86,7 +88,7 @@ final appRoutes = GoRouter(
           name: "profile",
           path: AppRoutes.profile,
           pageBuilder: (context, state) {
-            return const MaterialPage(child: CreateAccountPage());
+            return const MaterialPage(child: VerifyEmailPage());
           },
         ),
         GoRoute(
@@ -101,6 +103,13 @@ final appRoutes = GoRouter(
           path: AppRoutes.createAccount,
           pageBuilder: (context, state) {
             return const MaterialPage(child: CreateAccountPage());
+          },
+        ),
+        GoRoute(
+          name: "verify-email",
+          path: AppRoutes.verifyEmail,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: VerifyEmailPage());
           },
         ),
       ],

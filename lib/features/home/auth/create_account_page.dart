@@ -2,6 +2,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
+import 'package:imdb_app/features/home/widgets/auth_common_footer.dart';
 
 class CreateAccountPage extends StatefulWidget {
   const CreateAccountPage({super.key});
@@ -299,29 +300,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 ),
                 child: Text("Login"),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    onPressed: () {},
-                    style: TextButton.styleFrom(
-                      foregroundColor: Theme.of(
-                        context,
-                      ).colorScheme.onSecondary.withAlpha(75),
-                    ),
-                    child: Text("Conditions of Use"),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    style: TextButton.styleFrom(
-                      foregroundColor: Theme.of(
-                        context,
-                      ).colorScheme.onSecondary.withAlpha(75),
-                    ),
-                    child: Text("Privacy Notice"),
-                  ),
-                ],
-              ),
+              CommonFooterLinks(),
             ],
           ),
         ),
