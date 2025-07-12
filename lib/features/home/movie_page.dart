@@ -1,3 +1,5 @@
+import 'package:go_router/go_router.dart';
+import 'package:imdb_app/app/router.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:imdb_app/data/datasources/local.dart';
@@ -41,10 +43,10 @@ class _MoviePageState extends State<MoviePage> {
               spacing: 18,
               children: [
                 MovieCarousel(isMoviePage: true, movie: _movie!),
+                _movieNavigationButtons(context),
                 _movieReview(context),
                 _movieActions(context),
                 _movieDetails(context),
-                _movieNavigationButtons(context),
               ],
             ),
     );
@@ -179,7 +181,7 @@ class _MoviePageState extends State<MoviePage> {
 
   Padding _movieReview(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.symmetric(horizontal: 18),
       child: Column(
         children: [
           Row(
@@ -291,13 +293,17 @@ class _MoviePageState extends State<MoviePage> {
         ),
         ListTile(
           title: Text("Creators:"),
-          subtitle: Text(_movie!.directors!.map((e) => e.fullName).join(", ")),
+          subtitle: Text(_movie!.directors!.map((e) => e.fullName).join(",  ")),
         ),
         ListTile(
           title: Text("Stars:"),
-          subtitle: Text(_movie!.cast!.map((e) => e.fullName).join(", ")),
+          subtitle: Text(
+            _movie!.cast!.sublist(0, 3).map((e) => e.fullName).join(",  "),
+          ),
           trailing: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              context.push(AppRoutes.cast, extra: _movie!.cast);
+            },
             icon: Icon(
               Icons.keyboard_arrow_right,
               color: Theme.of(context).colorScheme.secondary,

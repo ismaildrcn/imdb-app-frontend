@@ -184,7 +184,7 @@ class MovieCard extends StatelessWidget {
             height: 160,
             margin: isApplyMargin ? EdgeInsets.only(right: 16) : null,
             decoration: BoxDecoration(
-              color: Colors.primaries[index % Colors.primaries.length],
+              color: Theme.of(context).colorScheme.onSecondary.withAlpha(25),
               borderRadius: BorderRadius.circular(8),
               image: DecorationImage(
                 image: (movie.primaryImage != null)

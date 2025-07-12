@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
+import 'package:imdb_app/features/home/cast_page.dart';
 import 'package:imdb_app/features/home/most_popular_page.dart';
 import 'package:imdb_app/features/home/movie_page.dart';
 import 'package:imdb_app/screens/browser.dart';
@@ -13,6 +14,7 @@ class AppRoutes {
   static const String home = '/';
   static const String mostPopularMovies = "/most_popular_movies";
   static const String movie = "/movie/:id";
+  static const String cast = "/cast";
   static const String browser = '/browser';
   static const String discover = '/discover';
   static const String profile = '/profile';
@@ -42,8 +44,7 @@ final appRoutes = GoRouter(
           name: "most-popular-movies",
           path: AppRoutes.mostPopularMovies,
           pageBuilder: (context, state) {
-            final List<MovieModel> allMovies =
-                state.extra as List<MovieModel>;
+            final List<MovieModel> allMovies = state.extra as List<MovieModel>;
             return MaterialPage(child: MostPopularPage(allMovies: allMovies));
           },
         ),
@@ -53,6 +54,14 @@ final appRoutes = GoRouter(
           pageBuilder: (context, state) {
             final movieId = state.pathParameters['id']!;
             return MaterialPage(child: MoviePage(movieId: movieId));
+          },
+        ),
+        GoRoute(
+          name: "cast",
+          path: AppRoutes.cast,
+          pageBuilder: (context, state) {
+            final List<Actor> cast = state.extra as List<Actor>;
+            return MaterialPage(child: CastPage(cast: cast));
           },
         ),
         GoRoute(
@@ -140,6 +149,7 @@ BottomNavigationBar _bottomNavBar(BuildContext context, GoRouterState state) {
 
 AppBar topNavBar(BuildContext context, String? title) {
   return AppBar(
+    automaticallyImplyLeading: true, // Geri butonunu gerektiğinde gösterir
     toolbarHeight: 60,
     title: Text(title ?? ""),
     titleTextStyle: TextStyle(
@@ -148,10 +158,9 @@ AppBar topNavBar(BuildContext context, String? title) {
       fontWeight: FontWeight.bold,
     ),
     centerTitle: true,
-    leading: Container(
-      margin: EdgeInsets.only(left: 10),
-      child: Image.asset("assets/img/imdb-logo.png"),
-    ),
+    leading: (Navigator.of(context).canPop())
+        ? BackButton(color: Theme.of(context).colorScheme.secondary)
+        : Image.asset("assets/img/imdb-logo.png"),
     actions: [
       Container(
         margin: EdgeInsets.only(right: 10),
