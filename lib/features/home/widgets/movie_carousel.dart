@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:imdb_app/data/model/movie_model.dart';
 
 class MovieCarousel extends StatelessWidget {
+  final MovieModel movie;
   final bool isMoviePage;
-  const MovieCarousel({super.key, required this.isMoviePage});
+  const MovieCarousel({
+    super.key,
+    required this.isMoviePage,
+    required this.movie,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +20,7 @@ class MovieCarousel extends StatelessWidget {
           child: Stack(
             children: [
               Positioned.fill(
-                child: Image.asset(
-                  "assets/img/rectangle.png",
-                  fit: BoxFit.cover,
-                ),
+                child: Image.network(movie.primaryImage!, fit: BoxFit.cover),
               ),
 
               // Gradient Overlay
@@ -47,7 +50,7 @@ class MovieCarousel extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        "House of the Dragon",
+                        movie.primaryTitle,
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
@@ -64,7 +67,7 @@ class MovieCarousel extends StatelessWidget {
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
                                 Text(
-                                  "169 minutes",
+                                  "${movie.runtimeMinutes} minutes",
                                   style: TextStyle(
                                     color: Theme.of(
                                       context,
@@ -77,7 +80,7 @@ class MovieCarousel extends StatelessWidget {
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
                                 Text(
-                                  "7.2 (IMDb)",
+                                  "${movie.averageRating} (IMDb)",
                                   style: TextStyle(
                                     color: Theme.of(
                                       context,
@@ -89,7 +92,7 @@ class MovieCarousel extends StatelessWidget {
                           : null,
                       SizedBox(height: 8),
                       Text(
-                        "An internal succession war within House Targaryen at the height of its power, 172 years before the birth of Daenerys Targaryen.",
+                        movie.description!,
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.surface,
                           fontSize: 14,

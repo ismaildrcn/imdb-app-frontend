@@ -119,16 +119,16 @@ class MovieModel {
       directors: json['directors'] == null
           ? []
           : List<Directory>.from(
-              json["directors"]!.map((x) => Directory.fromJson(json)),
+              json["directors"]!.map((x) => Directory.fromJson(x)),
             ),
       writers: json['writers'] == null
           ? []
           : List<Writer>.from(
-              json["writers"]!.map((x) => Writer.fromJson(json)),
+              json["writers"]!.map((x) => Writer.fromJson(x)),
             ),
       cast: json['cast'] == null
           ? []
-          : List<Actor>.from(json["cast"]!.map((x) => Actor.fromJson(json))),
+          : List<Actor>.from(json["cast"]!.map((x) => Actor.fromJson(x))),
     );
   }
 }
@@ -158,7 +158,7 @@ class Thumbnail {
 class Directory {
   final String id;
   final String url;
-  final String fullName;
+  final String? fullName;
 
   Directory({required this.id, required this.url, required this.fullName});
 
@@ -166,7 +166,7 @@ class Directory {
     return Directory(
       id: json['id'],
       url: json['url'],
-      fullName: json['fullName'],
+      fullName: json['fullName'] ?? '', // Handle null case
     );
   }
 
@@ -176,7 +176,7 @@ class Directory {
 class Writer {
   final String id;
   final String url;
-  final String fullName;
+  final String? fullName;
 
   Writer({required this.id, required this.url, required this.fullName});
 
@@ -190,11 +190,11 @@ class Writer {
 class Actor {
   final String id;
   final String url;
-  final String fullName;
-  final String primaryImage;
+  final String? fullName;
+  final String? primaryImage;
   final List<Thumbnail> thumbnails;
-  final String job;
-  final List<dynamic> characters;
+  final String? job;
+  final List<dynamic>? characters;
 
   Actor({
     required this.id,
@@ -212,7 +212,11 @@ class Actor {
       url: json['url'],
       fullName: json['fullName'],
       primaryImage: json['primaryImage'],
-      thumbnails: json['thumbnails'],
+      thumbnails: json['thumbnails'] == null
+          ? []
+          : List<Thumbnail>.from(
+              json['thumbnails'].map((x) => Thumbnail.fromJson(x)),
+            ),
       job: json['job'],
       characters: json['characters'],
     );

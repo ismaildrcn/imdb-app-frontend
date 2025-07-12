@@ -26,7 +26,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late final MovieRepository _repository;
+  late final MostPopularMoviesRepository _repository;
   List<MovieModel> _allMovies = [];
   List<MovieModel> _displayMovies = [];
 
@@ -34,8 +34,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _repository = MovieRepository(
-      MovieLocalDataSource(),
+    _repository = MostPopularMoviesRepository(
+      MostPopularMoviesLocalDataSource(),
     );
     loadData();
   }
@@ -53,43 +53,51 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: topNavBar(context, null),
       body: SafeArea(
-        child: ListView(
-          children: [
-            MovieCarousel(isMoviePage: false),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.minimize,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                Icon(
-                  Icons.minimize,
-                  color: Theme.of(context).colorScheme.secondary.withAlpha(75),
-                ),
-                Icon(
-                  Icons.minimize,
-                  color: Theme.of(context).colorScheme.secondary.withAlpha(75),
-                ),
-                Icon(
-                  Icons.minimize,
-                  color: Theme.of(context).colorScheme.secondary.withAlpha(75),
-                ),
-              ],
-            ),
-            SizedBox(height: 12),
-            HorizontalMoviesCardList(
-              allMovies: _allMovies,
-              displayMovies: _displayMovies,
-              title: "Top 10 Movies for you",
-            ),
-            SizedBox(height: 16),
-            // HorizontalMoviesCardList(
-            //   movies: HomePage.top10movies,
-            //   title: "Upcoming Movies",
-            // ),
-          ],
-        ),
+        child: _allMovies.isEmpty
+            ? const Center(child: CircularProgressIndicator())
+            : ListView(
+                children: [
+                  MovieCarousel(isMoviePage: false, movie: _allMovies[0]),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.minimize,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      Icon(
+                        Icons.minimize,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.secondary.withAlpha(75),
+                      ),
+                      Icon(
+                        Icons.minimize,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.secondary.withAlpha(75),
+                      ),
+                      Icon(
+                        Icons.minimize,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.secondary.withAlpha(75),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12),
+                  HorizontalMoviesCardList(
+                    allMovies: _allMovies,
+                    displayMovies: _displayMovies,
+                    title: "Top 10 Movies for you",
+                  ),
+                  SizedBox(height: 16),
+                  // HorizontalMoviesCardList(
+                  //   movies: HomePage.top10movies,
+                  //   title: "Upcoming Movies",
+                  // ),
+                ],
+              ),
       ),
     );
   }
