@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
+import 'package:imdb_app/features/home/auth/sign_in_page.dart';
 import 'package:imdb_app/features/home/cast_page.dart';
 import 'package:imdb_app/features/home/most_popular_page.dart';
 import 'package:imdb_app/features/home/movie_page.dart';
@@ -82,7 +83,7 @@ final appRoutes = GoRouter(
           name: "profile",
           path: AppRoutes.profile,
           pageBuilder: (context, state) {
-            return const MaterialPage(child: ProfilePage());
+            return const MaterialPage(child: SignInPage());
           },
         ),
       ],
