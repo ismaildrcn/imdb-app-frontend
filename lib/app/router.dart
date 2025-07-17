@@ -6,7 +6,7 @@ import 'package:imdb_app/features/home/auth/forgot_password_page.dart';
 import 'package:imdb_app/features/home/auth/reset_password_page.dart';
 import 'package:imdb_app/features/home/auth/sign_in_page.dart';
 import 'package:imdb_app/features/home/auth/verify_email.dart';
-import 'package:imdb_app/features/home/cast_page.dart';
+// import 'package:imdb_app/features/home/cast_page.dart';
 import 'package:imdb_app/features/home/most_popular_page.dart';
 import 'package:imdb_app/features/home/movie_page.dart';
 import 'package:imdb_app/screens/browser.dart';
@@ -63,17 +63,17 @@ final appRoutes = GoRouter(
           path: AppRoutes.movie,
           pageBuilder: (context, state) {
             final movieId = state.pathParameters['id']!;
-            return MaterialPage(child: MoviePage(movieId: movieId));
+            return MaterialPage(child: MoviePage(movieId: int.parse(movieId)));
           },
         ),
-        GoRoute(
-          name: "cast",
-          path: AppRoutes.cast,
-          pageBuilder: (context, state) {
-            final List<Actor> cast = state.extra as List<Actor>;
-            return MaterialPage(child: CastPage(cast: cast));
-          },
-        ),
+        // GoRoute(
+        //   name: "cast",
+        //   path: AppRoutes.cast,
+        //   pageBuilder: (context, state) {
+        //     final List<Actor> cast = state.extra as List<Actor>;
+        //     return MaterialPage(child: CastPage(cast: cast));
+        //   },
+        // ),
         GoRoute(
           name: "browser",
           path: AppRoutes.browser,

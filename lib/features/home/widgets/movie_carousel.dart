@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
+import 'package:imdb_app/data/services/constant/api_constants.dart';
 
 class MovieCarousel extends StatelessWidget {
   final MovieModel movie;
@@ -20,7 +21,10 @@ class MovieCarousel extends StatelessWidget {
           child: Stack(
             children: [
               Positioned.fill(
-                child: Image.network(movie.primaryImage!, fit: BoxFit.cover),
+                child: Image.network(
+                  "${ApiConstants.imageBaseUrl}/${ApiConstants.defaultPosterSize}/${movie.posterPath}",
+                  fit: BoxFit.cover,
+                ),
               ),
 
               // Gradient Overlay
@@ -50,7 +54,7 @@ class MovieCarousel extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        movie.primaryTitle,
+                        movie.originalTitle!,
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
@@ -67,7 +71,7 @@ class MovieCarousel extends StatelessWidget {
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
                                 Text(
-                                  "${movie.runtimeMinutes} minutes",
+                                  "${movie.runtime} minutes",
                                   style: TextStyle(
                                     color: Theme.of(
                                       context,
@@ -80,7 +84,7 @@ class MovieCarousel extends StatelessWidget {
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
                                 Text(
-                                  "${movie.averageRating} (IMDb)",
+                                  "${movie.voteAverage} (IMDb)",
                                   style: TextStyle(
                                     color: Theme.of(
                                       context,
@@ -92,7 +96,7 @@ class MovieCarousel extends StatelessWidget {
                           : null,
                       SizedBox(height: 8),
                       Text(
-                        movie.description!,
+                        movie.overview!,
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.surface,
                           fontSize: 14,

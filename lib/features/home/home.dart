@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
-import 'package:imdb_app/data/datasources/local.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
-import 'package:imdb_app/data/repository/movie_repository.dart';
+import 'package:imdb_app/data/services/movie_service.dart';
+import 'package:imdb_app/features/home/utils/image_utils.dart';
 import 'package:imdb_app/features/home/widgets/movie_carousel.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,7 +26,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late final MostPopularMoviesRepository _repository;
+  late final MovieService _movieService;
   List<MovieModel> _allMovies = [];
   List<MovieModel> _displayMovies = [];
 
@@ -34,14 +34,12 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _repository = MostPopularMoviesRepository(
-      MostPopularMoviesLocalDataSource(),
-    );
+    _movieService = MovieService();
     loadData();
   }
 
   Future<void> loadData() async {
-    final movies = await _repository.fetchMovies();
+    final movies = await _movieService.fetchMovies();
     setState(() {
       _allMovies = movies;
       _displayMovies = movies.sublist(0, 10);
@@ -187,9 +185,7 @@ class MovieCard extends StatelessWidget {
               color: Theme.of(context).colorScheme.onSecondary.withAlpha(25),
               borderRadius: BorderRadius.circular(8),
               image: DecorationImage(
-                image: (movie.primaryImage != null)
-                    ? NetworkImage(movie.primaryImage!)
-                    : AssetImage("assets/img/no-image.jpg"),
+                image: ImageHelper.getImage(movie.posterPath),
                 fit: BoxFit.cover,
               ),
             ),

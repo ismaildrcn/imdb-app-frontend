@@ -1,14 +1,14 @@
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
+import 'package:imdb_app/data/services/movie_service.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:imdb_app/data/datasources/local.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
 import 'package:imdb_app/data/repository/movie_repository.dart';
 import 'package:imdb_app/features/home/widgets/movie_carousel.dart';
 
 class MoviePage extends StatefulWidget {
-  final String movieId;
+  final int movieId;
   const MoviePage({super.key, required this.movieId});
 
   @override
@@ -16,19 +16,19 @@ class MoviePage extends StatefulWidget {
 }
 
 class _MoviePageState extends State<MoviePage> {
-  late final MovieRepository _repository;
+  late final MovieService _movieService;
   MovieModel? _movie;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _repository = MovieRepository(MovieLocalDataSource());
+    _movieService = MovieService();
     loadData();
   }
 
   Future<void> loadData() async {
-    final movie = await _repository.fetchMovie();
+    final movie = await _movieService.fetchMovie(widget.movieId);
     setState(() {
       _movie = movie;
     });
@@ -46,7 +46,7 @@ class _MoviePageState extends State<MoviePage> {
                 _movieNavigationButtons(context),
                 _movieReview(context),
                 _movieActions(context),
-                _movieDetails(context),
+                // _movieDetails(context),
               ],
             ),
     );
@@ -280,38 +280,38 @@ class _MoviePageState extends State<MoviePage> {
     );
   }
 
-  Column _movieDetails(BuildContext context) {
-    return Column(
-      children: [
-        ListTile(
-          title: Text("Release date"),
-          subtitle: Text(
-            _movie!.releaseDate != null
-                ? DateFormat('dd MMM yyyy').format(_movie!.releaseDate!)
-                : "Unknown",
-          ),
-        ),
-        ListTile(
-          title: Text("Creators:"),
-          subtitle: Text(_movie!.directors!.map((e) => e.fullName).join(",  ")),
-        ),
-        ListTile(
-          title: Text("Stars:"),
-          subtitle: Text(
-            _movie!.cast!.sublist(0, 3).map((e) => e.fullName).join(",  "),
-          ),
-          trailing: IconButton(
-            onPressed: () {
-              context.push(AppRoutes.cast, extra: _movie!.cast);
-            },
-            icon: Icon(
-              Icons.keyboard_arrow_right,
-              color: Theme.of(context).colorScheme.secondary,
-              size: 24,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  // Column _movieDetails(BuildContext context) {
+  //   return Column(
+  //     children: [
+  //       ListTile(
+  //         title: Text("Release date"),
+  //         subtitle: Text(
+  //           _movie!.releaseDate != null
+  //               ? DateFormat('dd MMM yyyy').format(_movie!.releaseDate!)
+  //               : "Unknown",
+  //         ),
+  //       ),
+  //       ListTile(
+  //         title: Text("Creators:"),
+  //         subtitle: Text(_movie!.directors!.map((e) => e.fullName).join(",  ")),
+  //       ),
+  //       ListTile(
+  //         title: Text("Stars:"),
+  //         subtitle: Text(
+  //           _movie!.cast!.sublist(0, 3).map((e) => e.fullName).join(",  "),
+  //         ),
+  //         trailing: IconButton(
+  //           onPressed: () {
+  //             context.push(AppRoutes.cast, extra: _movie!.cast);
+  //           },
+  //           icon: Icon(
+  //             Icons.keyboard_arrow_right,
+  //             color: Theme.of(context).colorScheme.secondary,
+  //             size: 24,
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 }

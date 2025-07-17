@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
+import 'package:imdb_app/features/home/utils/image_utils.dart';
 
 class MostPopularPage extends StatelessWidget {
   final List<MovieModel> allMovies;
@@ -36,10 +37,7 @@ class MostPopularPage extends StatelessWidget {
                     ).colorScheme.onSecondary.withAlpha(25),
                     borderRadius: BorderRadius.circular(8),
                     image: DecorationImage(
-                      image: (allMovies[index].primaryImage != null)
-                          ? NetworkImage(allMovies[index].primaryImage!)
-                          : AssetImage("assets/img/no-image.jpg")
-                                as ImageProvider,
+                      image: ImageHelper.getImage(allMovies[index].posterPath),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -50,7 +48,7 @@ class MostPopularPage extends StatelessWidget {
                   child: Text(
                     allMovies[index].originalTitle ?? '',
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                    maxLines: 2, // Satır sayısını artırabilirsiniz
+                    maxLines: 1, // Satır sayısını artırabilirsiniz
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                   ),

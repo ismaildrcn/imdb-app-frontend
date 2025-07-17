@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:imdb_app/app/router.dart';
 import 'package:imdb_app/app/theme.dart';
 
-void main() => runApp(const MyApp());
+Future<void> main() async {
+  await dotenv.load(fileName: "assets/.env");
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
