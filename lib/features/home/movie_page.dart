@@ -165,13 +165,16 @@ class _MoviePageState extends State<MoviePage> {
                       Row(
                         spacing: 10,
                         children: [
+                          Icon(Icons.calendar_month_outlined, size: 18),
                           Text(
                             _movie!.releaseDate!,
                             style: TextStyle(fontSize: 16),
                           ),
                           const Text("•"),
+                          Icon(Icons.location_on_outlined, size: 18),
                           Text(_movie!.originCountry!.first),
                           const Text("•"),
+                          Icon(Icons.access_time, size: 18),
                           Text(
                             "${_movie!.runtime!.toString()} minutes",
                             style: TextStyle(fontSize: 16),
@@ -188,7 +191,6 @@ class _MoviePageState extends State<MoviePage> {
                           itemCount: _movie!.genres!.length,
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
-                          physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
                             return Container(
                               padding: const EdgeInsets.symmetric(
