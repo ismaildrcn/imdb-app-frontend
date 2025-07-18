@@ -55,7 +55,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             spacing: 16,
             children: [
-              Text(
+              const Text(
                 "Sign up",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
@@ -201,7 +201,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                       });
                     },
                   ),
-                  Text("Remember me"),
+                  const Text("Remember me"),
                 ],
               ),
               ElevatedButton(
@@ -216,7 +216,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   ),
                   minimumSize: Size(double.infinity, 40),
                 ),
-                child: Text("Create Account"),
+                child: const Text("Create Account"),
               ),
               Row(
                 spacing: 16,
@@ -235,7 +235,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                         ),
                         minimumSize: Size(50, 40),
                       ),
-                      child: Text("Sign up with Google"),
+                      child: const Text("Sign up with Google"),
                     ),
                   ),
                   Expanded(
@@ -251,7 +251,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                         ),
                         minimumSize: Size(50, 40),
                       ),
-                      child: Text("Sign up with Facebook"),
+                      child: const Text("Sign up with Facebook"),
                     ),
                   ),
                 ],
@@ -298,7 +298,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   ),
                   minimumSize: Size(double.infinity, 40),
                 ),
-                child: Text("Login"),
+                child: const Text("Login"),
               ),
               CommonFooterLinks(),
             ],

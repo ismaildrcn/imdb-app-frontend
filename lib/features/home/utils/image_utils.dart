@@ -5,7 +5,7 @@ class ImageHelper {
   static ImageProvider getImage(String? posterPath) {
     if (posterPath != null && posterPath.isNotEmpty) {
       return NetworkImage(
-        '${ApiConstants.imageBaseUrl}/${ApiConstants.defaultPosterSize}$posterPath',
+        '${ApiConstants.imageBaseUrl}/${ApiConstants.posterSize.m}$posterPath',
       );
     } else {
       return const AssetImage('assets/img/no-image.jpg');

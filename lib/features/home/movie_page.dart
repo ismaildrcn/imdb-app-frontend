@@ -1,10 +1,6 @@
-import 'package:go_router/go_router.dart';
-import 'package:imdb_app/app/router.dart';
 import 'package:imdb_app/data/services/movie_service.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
-import 'package:imdb_app/data/repository/movie_repository.dart';
 import 'package:imdb_app/features/home/widgets/movie_carousel.dart';
 
 class MoviePage extends StatefulWidget {
@@ -71,7 +67,7 @@ class _MoviePageState extends State<MoviePage> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: Text("Rating"),
+              child: const Text("Rating"),
             ),
           ),
           SizedBox(
@@ -87,7 +83,7 @@ class _MoviePageState extends State<MoviePage> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: Text("Guide"),
+              child: const Text("Guide"),
             ),
           ),
           SizedBox(
@@ -103,7 +99,7 @@ class _MoviePageState extends State<MoviePage> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: Text("Awards"),
+              child: const Text("Awards"),
             ),
           ),
           SizedBox(
@@ -119,7 +115,7 @@ class _MoviePageState extends State<MoviePage> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: Text("Cast"),
+              child: const Text("Cast"),
             ),
           ),
         ],
@@ -146,14 +142,14 @@ class _MoviePageState extends State<MoviePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.add),
-                  SizedBox(width: 12),
-                  Text("Watch List"),
+                  const Icon(Icons.add),
+                  const SizedBox(width: 12),
+                  const Text("Watch List"),
                 ],
               ),
             ),
           ),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           Expanded(
             child: FilledButton(
               onPressed: () {},
@@ -167,9 +163,9 @@ class _MoviePageState extends State<MoviePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.alarm_add),
-                  SizedBox(width: 12),
-                  Text("Set Reminder"),
+                  const Icon(Icons.alarm_add),
+                  const SizedBox(width: 12),
+                  const Text("Set Reminder"),
                 ],
               ),
             ),
@@ -187,7 +183,7 @@ class _MoviePageState extends State<MoviePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Rating & Review", style: TextStyle(fontSize: 16)),
+              const Text("Rating & Review", style: TextStyle(fontSize: 16)),
               IconButton(
                 onPressed: () {},
                 icon: Icon(
@@ -220,15 +216,15 @@ class _MoviePageState extends State<MoviePage> {
                         Row(
                           spacing: 10,
                           children: [
-                            CircleAvatar(child: Text("J")),
-                            Text("Jane Alexendre"),
+                            const CircleAvatar(child: Text("J")),
+                            const Text("Jane Alexendre"),
                           ],
                         ),
-                        Text(
+                        const Text(
                           "Promising",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        Text(
+                        const Text(
                           "Carrying the nostalgia of Game of thrones into this and comparing everything with the original...i would say this looks pretty awesome and you get the feel of watching original game of thrones... its the same but different characters...",
                           maxLines: 6,
                           overflow: TextOverflow.ellipsis,
@@ -255,15 +251,15 @@ class _MoviePageState extends State<MoviePage> {
                         Row(
                           spacing: 10,
                           children: [
-                            CircleAvatar(child: Text("A")),
-                            Text("Jane Alexendre"),
+                            const CircleAvatar(child: Text("A")),
+                            const Text("Jane Alexendre"),
                           ],
                         ),
-                        Text(
+                        const Text(
                           "Promising",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        Text(
+                        const Text(
                           "Carrying the nostalgia of Game of thrones into this and comparing everything with the original...i would say this looks pretty awesome and you get the feel of watching original game of thrones... its the same but different characters...",
                           maxLines: 6,
                           overflow: TextOverflow.ellipsis,

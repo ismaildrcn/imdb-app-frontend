@@ -22,7 +22,7 @@ class MovieCarousel extends StatelessWidget {
             children: [
               Positioned.fill(
                 child: Image.network(
-                  "${ApiConstants.imageBaseUrl}/${ApiConstants.defaultPosterSize}/${movie.posterPath}",
+                  "${ApiConstants.imageBaseUrl}/${ApiConstants.posterSize.original}/${movie.backdropPath}",
                   fit: BoxFit.cover,
                 ),
               ),
