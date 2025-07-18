@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
+import 'package:imdb_app/data/services/constant/api_constants.dart';
 import 'package:imdb_app/data/services/movie_service.dart';
 import 'package:imdb_app/features/home/utils/image_utils.dart';
 import 'package:imdb_app/features/home/widgets/movie_carousel.dart';
@@ -32,7 +33,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _movieService = MovieService();
     loadData();
@@ -89,11 +89,6 @@ class _HomePageState extends State<HomePage> {
                     displayMovies: _displayMovies,
                     title: "Top 10 Movies for you",
                   ),
-                  SizedBox(height: 16),
-                  // HorizontalMoviesCardList(
-                  //   movies: HomePage.top10movies,
-                  //   title: "Upcoming Movies",
-                  // ),
                 ],
               ),
       ),
@@ -123,21 +118,24 @@ class HorizontalMoviesCardList extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
               TextButton(
                 onPressed: () {
                   context.push(AppRoutes.mostPopularMovies, extra: allMovies);
                 },
-                child: Text("See More"),
+                child: const Text("See More"),
               ),
             ],
           ),
         ),
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 20),
+          margin: const EdgeInsets.symmetric(horizontal: 20),
           child: SizedBox(
-            height: 193,
+            height: 260,
             child: ListView.builder(
               itemCount: displayMovies.length,
               scrollDirection: Axis.horizontal,
@@ -178,24 +176,27 @@ class MovieCard extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: 130,
-            height: 160,
-            margin: isApplyMargin ? EdgeInsets.only(right: 16) : null,
+            width: 175,
+            height: 230,
+            margin: isApplyMargin ? const EdgeInsets.only(right: 20) : null,
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.onSecondary.withAlpha(25),
               borderRadius: BorderRadius.circular(8),
               image: DecorationImage(
-                image: ImageHelper.getImage(movie.posterPath),
+                image: ImageHelper.getImage(
+                  movie.posterPath,
+                  ApiConstants.posterSize.m,
+                ),
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 10),
           SizedBox(
-            width: 130,
+            width: 175,
             child: Text(
               movie.originalTitle!,
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,

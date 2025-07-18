@@ -149,6 +149,8 @@ BottomNavigationBar _bottomNavBar(BuildContext context, GoRouterState state) {
   return BottomNavigationBar(
     type: BottomNavigationBarType.fixed, // Bunu ekleyin
     currentIndex: currentIndex,
+    showSelectedLabels: true,
+    showUnselectedLabels: false,
     onTap: (index) {
       switch (index) {
         case 0:
@@ -203,12 +205,16 @@ AppBar topNavBar(BuildContext context, String? title) {
       fontWeight: FontWeight.bold,
     ),
     centerTitle: true,
-    leading: (Navigator.of(context).canPop())
-        ? BackButton(color: Theme.of(context).colorScheme.secondary)
-        : Image.asset("assets/img/imdb-logo.png"),
+    leadingWidth: 70,
+    leading: Padding(
+      padding: const EdgeInsets.only(left: 20),
+      child: (Navigator.of(context).canPop())
+          ? BackButton(color: Theme.of(context).colorScheme.secondary)
+          : Image.asset("assets/img/imdb-logo.png"),
+    ),
     actions: [
       Container(
-        margin: EdgeInsets.only(right: 10),
+        margin: const EdgeInsets.only(right: 10),
         child: Icon(
           Icons.notifications,
           size: 24,

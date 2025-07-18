@@ -262,7 +262,6 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                       pin5Controller.text +
                       pin6Controller.text;
                   // Implement OTP verification logic here
-                  print("OTP entered: $otp");
                   // context.push(AppRoutes.home);
                 },
                 style: TextButton.styleFrom(

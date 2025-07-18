@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
+import 'package:imdb_app/data/services/constant/api_constants.dart';
 import 'package:imdb_app/features/home/utils/image_utils.dart';
 
 class MostPopularPage extends StatelessWidget {
@@ -37,7 +38,10 @@ class MostPopularPage extends StatelessWidget {
                     ).colorScheme.onSecondary.withAlpha(25),
                     borderRadius: BorderRadius.circular(8),
                     image: DecorationImage(
-                      image: ImageHelper.getImage(allMovies[index].posterPath),
+                      image: ImageHelper.getImage(
+                        allMovies[index].posterPath,
+                        ApiConstants.posterSize.m,
+                      ),
                       fit: BoxFit.cover,
                     ),
                   ),

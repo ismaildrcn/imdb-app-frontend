@@ -16,7 +16,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     emailController.addListener(() {
       setState(() {
