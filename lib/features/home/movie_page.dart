@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:imdb_app/data/services/constant/api_constants.dart';
 import 'package:imdb_app/data/services/movie_service.dart';
 import 'package:flutter/material.dart';
@@ -73,6 +74,59 @@ class _MoviePageState extends State<MoviePage> {
                                 Colors.transparent, // Üst kısım
                               ],
                             ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                            left: 18,
+                            right: 18,
+                            top: 55,
+                          ),
+                          alignment: Alignment.topCenter,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () => context.pop(),
+                                child: Container(
+                                  padding: EdgeInsets.all(7),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.surface.withAlpha(64),
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                  child: Icon(
+                                    Icons.close,
+                                    size: 30,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.surface,
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                  padding: const EdgeInsets.all(7),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.surface.withAlpha(64),
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                  child: Icon(
+                                    Icons.bookmark_border,
+                                    size: 30,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.surface,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
