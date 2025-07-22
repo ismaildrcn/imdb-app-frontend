@@ -1,4 +1,6 @@
 import 'package:go_router/go_router.dart';
+import 'package:imdb_app/data/model/cast_model.dart';
+import 'package:imdb_app/data/services/cast_service.dart';
 import 'package:imdb_app/data/services/constant/api_constants.dart';
 import 'package:imdb_app/data/services/movie_service.dart';
 import 'package:flutter/material.dart';
@@ -15,19 +17,24 @@ class MoviePage extends StatefulWidget {
 
 class _MoviePageState extends State<MoviePage> {
   late final MovieService _movieService;
+  late final CastService _castService;
   MovieModel? _movie;
+  List<CastModel>? _cast;
 
   @override
   void initState() {
     super.initState();
     _movieService = MovieService();
+    _castService = CastService();
     loadData();
   }
 
   Future<void> loadData() async {
     final movie = await _movieService.fetchMovie(widget.movieId);
+    final cast = await _castService.fetchCast(widget.movieId);
     setState(() {
       _movie = movie;
+      _cast = cast;
     });
   }
 
@@ -77,6 +84,8 @@ class _MoviePageState extends State<MoviePage> {
                           ),
                         ),
                       ),
+
+                      // Top Action Button
                       Positioned(
                         child: Container(
                           padding: const EdgeInsets.only(
@@ -99,7 +108,7 @@ class _MoviePageState extends State<MoviePage> {
                                     borderRadius: BorderRadius.circular(25),
                                   ),
                                   child: Icon(
-                                    Icons.close,
+                                    Icons.arrow_back_ios_new_rounded,
                                     size: 30,
                                     color: Theme.of(
                                       context,
@@ -275,6 +284,68 @@ class _MoviePageState extends State<MoviePage> {
                       ),
                       const SizedBox(height: 20),
                       Text(_movie!.overview!, style: TextStyle(fontSize: 16)),
+                      const SizedBox(height: 20),
+
+                      // Cast
+                      Text(
+                        "Top Cast",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 130,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.only(right: 20),
+                              width: 100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: 80,
+                                    height: 80,
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: ImageHelper.getImage(
+                                          _cast![index].profilePath,
+                                          ApiConstants.posterSize.m,
+                                        ),
+                                        fit: BoxFit.cover,
+                                      ),
+                                      borderRadius: BorderRadius.circular(40),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    _cast![index].character,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                  Text(
+                                    _cast![index].originalName,
+                                    style: TextStyle(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSecondary.withAlpha(128),
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          itemCount: 5,
+                        ),
+                      ),
                     ],
                   ),
                 ),
