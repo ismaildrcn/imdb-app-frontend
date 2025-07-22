@@ -6,6 +6,7 @@ import 'package:imdb_app/data/services/movie_service.dart';
 import 'package:flutter/material.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
 import 'package:imdb_app/features/home/utils/image_utils.dart';
+import 'package:lorem_ipsum/lorem_ipsum.dart';
 
 class MoviePage extends StatefulWidget {
   final int movieId;
@@ -341,11 +342,83 @@ class _MoviePageState extends State<MoviePage> {
                           itemCount: 5,
                         ),
                       ),
+                      SizedBox(height: 18),
+                      _reviewsContainer(),
                     ],
                   ),
                 ),
               ],
             ),
+    );
+  }
+
+  Widget _reviewsContainer() {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Text(
+              "Reviews",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(width: 5),
+            Text("(${_movie!.voteCount.toString()})"),
+            Spacer(),
+            TextButton(
+              onPressed: () {},
+              style: TextButton.styleFrom(foregroundColor: Colors.transparent),
+              child: Text(
+                "See all",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.primary,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 18),
+        _reviewCard(),
+        _reviewCard(),
+        _reviewCard(),
+      ],
+    );
+  }
+
+  Widget _reviewCard() {
+    return Container(
+      width: double.infinity,
+      constraints: BoxConstraints(minHeight: 65),
+      margin: EdgeInsets.only(bottom: 18),
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.onSurface,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Theme.of(
+              context,
+            ).colorScheme.secondary.withAlpha(32), // Gölge rengi ve opaklık
+            blurRadius: 5, // Gölge yumuşaklığı
+            spreadRadius: 1, // Gölge yayılması
+            offset: Offset(0, 0), // Gölge pozisyonu (x, y)
+          ),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CircleAvatar(child: Text("A")),
+          SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              loremIpsum(words: 30),
+              maxLines: 3,
+              overflow: TextOverflow.fade,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

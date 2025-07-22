@@ -9,7 +9,7 @@ class AppTheme {
     colorScheme: const ColorScheme.light(
       primary: Color(0xFFF2C94C),
       surface: Color(0xFFFFFFFF),
-      onSurface: Color(0xFFFFF8E3),
+      onSurface: Color(0xFFEEEEEE),
       secondary: Color(0xFF000000),
       onSecondary: Color(0xFF333333),
     ),
