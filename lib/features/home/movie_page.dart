@@ -110,9 +110,6 @@ class _MoviePageState extends State<MoviePage> {
                                   child: Icon(
                                     Icons.arrow_back_ios_new_rounded,
                                     size: 30,
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.surface,
                                   ),
                                 ),
                               ),
@@ -126,13 +123,7 @@ class _MoviePageState extends State<MoviePage> {
                                     ).colorScheme.surface.withAlpha(64),
                                     borderRadius: BorderRadius.circular(25),
                                   ),
-                                  child: Icon(
-                                    Icons.bookmark_border,
-                                    size: 30,
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.surface,
-                                  ),
+                                  child: Icon(Icons.bookmark_border, size: 30),
                                 ),
                               ),
                             ],
@@ -150,9 +141,10 @@ class _MoviePageState extends State<MoviePage> {
                                   horizontal: 12,
                                   vertical: 6,
                                 ),
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: 30,
-                                  vertical: 20,
+                                margin: EdgeInsets.only(
+                                  left: 18,
+                                  right: 18,
+                                  bottom: 10,
                                 ),
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).colorScheme.primary,
@@ -167,7 +159,7 @@ class _MoviePageState extends State<MoviePage> {
                                             .colorScheme
                                             .onSecondary
                                             .withAlpha(192),
-                                        fontSize: 20,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -179,20 +171,23 @@ class _MoviePageState extends State<MoviePage> {
                                             .colorScheme
                                             .onSecondary
                                             .withAlpha(192),
-                                        fontSize: 20,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                              Text(
-                                "(${_movie!.voteCount.toString()} Reviews)",
-                                style: TextStyle(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSecondary.withAlpha(192),
-                                  fontSize: 18,
+                              Container(
+                                margin: EdgeInsets.only(bottom: 10),
+                                child: Text(
+                                  "(${_movie!.voteCount.toString()} Reviews)",
+                                  style: TextStyle(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSecondary.withAlpha(192),
+                                    fontSize: 18,
+                                  ),
                                 ),
                               ),
                             ],

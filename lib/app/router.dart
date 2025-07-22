@@ -12,7 +12,7 @@ import 'package:imdb_app/features/home/movie_page.dart';
 import 'package:imdb_app/screens/browser.dart';
 import 'package:imdb_app/screens/discover.dart';
 import 'package:imdb_app/features/home/home.dart';
-import 'package:imdb_app/screens/profile.dart';
+import 'package:imdb_app/features/profile/profile.dart';
 
 class AppRoutes {
   AppRoutes._();
@@ -92,7 +92,7 @@ final appRoutes = GoRouter(
           name: "profile",
           path: AppRoutes.profile,
           pageBuilder: (context, state) {
-            return const MaterialPage(child: ResetPasswordPage());
+            return const MaterialPage(child: ProfilePage());
           },
         ),
         GoRoute(
@@ -167,7 +167,6 @@ BottomNavigationBar _bottomNavBar(BuildContext context, GoRouterState state) {
           break;
       }
     },
-    unselectedItemColor: Theme.of(context).colorScheme.surface,
     selectedItemColor: Theme.of(context).colorScheme.primary,
     items: const <BottomNavigationBarItem>[
       BottomNavigationBarItem(
@@ -200,7 +199,7 @@ AppBar topNavBar(BuildContext context, String? title) {
     toolbarHeight: 60,
     title: Text(title ?? ""),
     titleTextStyle: TextStyle(
-      color: Theme.of(context).colorScheme.secondary.withAlpha(220),
+      color: Colors.grey[900],
       fontSize: 18,
       fontWeight: FontWeight.bold,
     ),
@@ -209,17 +208,13 @@ AppBar topNavBar(BuildContext context, String? title) {
     leading: Padding(
       padding: const EdgeInsets.only(left: 20),
       child: (Navigator.of(context).canPop())
-          ? BackButton(color: Theme.of(context).colorScheme.secondary)
+          ? BackButton(color: Colors.grey[900])
           : Image.asset("assets/img/imdb-logo.png"),
     ),
     actions: [
       Container(
         margin: const EdgeInsets.only(right: 10),
-        child: Icon(
-          Icons.notifications,
-          size: 24,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
+        child: Icon(Icons.notifications, size: 24, color: Colors.grey[900]),
       ),
     ],
     backgroundColor: Theme.of(context).colorScheme.primary,
