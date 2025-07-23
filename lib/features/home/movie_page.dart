@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
+import 'package:imdb_app/app/router.dart';
 import 'package:imdb_app/data/model/cast_model.dart';
-import 'package:imdb_app/data/services/cast_service.dart';
+import 'package:imdb_app/data/services/credits_service.dart';
 import 'package:imdb_app/data/services/constant/api_constants.dart';
 import 'package:imdb_app/data/services/movie_service.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class MoviePage extends StatefulWidget {
 
 class _MoviePageState extends State<MoviePage> {
   late final MovieService _movieService;
-  late final CastService _castService;
+  late final CreditsService _creditsService;
   MovieModel? _movie;
   List<CastModel>? _cast;
 
@@ -26,16 +27,16 @@ class _MoviePageState extends State<MoviePage> {
   void initState() {
     super.initState();
     _movieService = MovieService();
-    _castService = CastService();
+    _creditsService = CreditsService();
     loadData();
   }
 
   Future<void> loadData() async {
     final movie = await _movieService.fetchMovie(widget.movieId);
-    final cast = await _castService.fetchCast(widget.movieId);
+    final credits = await _creditsService.fetchCredits(widget.movieId);
     setState(() {
       _movie = movie;
-      _cast = cast;
+      _cast = credits.cast;
     });
   }
 
@@ -283,12 +284,32 @@ class _MoviePageState extends State<MoviePage> {
                       const SizedBox(height: 20),
 
                       // Cast
-                      Text(
-                        "Top Cast",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            "Cast and Crew",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Spacer(),
+                          TextButton(
+                            onPressed: () {
+                              context.push(AppRoutes.cast, extra: _cast);
+                            },
+                            style: TextButton.styleFrom(
+                              foregroundColor: Colors.transparent,
+                            ),
+                            child: Text(
+                              "See all",
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 10),
                       SizedBox(
