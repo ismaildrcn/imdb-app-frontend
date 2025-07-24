@@ -7,7 +7,7 @@ class AppTheme {
   static ThemeData get lightTheme => ThemeData(
     useMaterial3: false,
     colorScheme: const ColorScheme.light(
-      primary: Color(0xFFF2C94C),
+      primary: Color(0xFF12CDD9),
       surface: Color(0xFFFFFFFF),
       onSurface: Color(0xFFEEEEEE),
       secondary: Color(0xFF000000),
@@ -34,7 +34,7 @@ class AppTheme {
   static ThemeData get darkTheme => ThemeData(
     useMaterial3: false,
     colorScheme: const ColorScheme.dark(
-      primary: Color(0xFFD4B445), // Orijinal primary renginin daha koyu tonu
+      primary: Color(0xFF12CDD9), // Orijinal primary renginin daha koyu tonu
       surface: Color(0xFF121212), // Dark theme için standart surface rengi
       onSurface: Color(0xFF1E1E1E), // Daha açık bir arkaplan
       secondary: Color(0xFFBDBDBD), // Light gri, siyah yerine

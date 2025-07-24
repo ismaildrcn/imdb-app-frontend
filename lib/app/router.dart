@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:imdb_app/data/model/cast_model.dart';
+import 'package:imdb_app/data/model/credits_model.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
 import 'package:imdb_app/features/home/auth/create_account_page.dart';
 import 'package:imdb_app/features/home/auth/forgot_password_page.dart';
 import 'package:imdb_app/features/home/auth/reset_password_page.dart';
 import 'package:imdb_app/features/home/auth/sign_in_page.dart';
 import 'package:imdb_app/features/home/auth/verify_email.dart';
-import 'package:imdb_app/features/home/cast_page.dart';
-// import 'package:imdb_app/features/home/cast_page.dart';
+import 'package:imdb_app/features/home/credits_page.dart';
 import 'package:imdb_app/features/home/most_popular_page.dart';
 import 'package:imdb_app/features/home/movie_page.dart';
 import 'package:imdb_app/screens/browser.dart';
@@ -21,7 +20,7 @@ class AppRoutes {
   static const String home = '/';
   static const String mostPopularMovies = "/most_popular_movies";
   static const String movie = "/movie/:id";
-  static const String cast = "/cast";
+  static const String credits = "/credits";
   static const String browser = '/browser';
   static const String discover = '/discover';
   static const String profile = '/profile';
@@ -69,11 +68,11 @@ final appRoutes = GoRouter(
           },
         ),
         GoRoute(
-          name: "cast",
-          path: AppRoutes.cast,
+          name: "credits",
+          path: AppRoutes.credits,
           pageBuilder: (context, state) {
-            final List<CastModel> cast = state.extra as List<CastModel>;
-            return MaterialPage(child: CastPage(cast: cast));
+            final Credits credits = state.extra as Credits;
+            return MaterialPage(child: CreditsPage(credits: credits));
           },
         ),
         GoRoute(

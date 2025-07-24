@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
-import 'package:imdb_app/data/model/cast_model.dart';
+import 'package:imdb_app/data/model/credits_model.dart';
 import 'package:imdb_app/data/services/credits_service.dart';
 import 'package:imdb_app/data/services/constant/api_constants.dart';
 import 'package:imdb_app/data/services/movie_service.dart';
@@ -21,7 +21,7 @@ class _MoviePageState extends State<MoviePage> {
   late final MovieService _movieService;
   late final CreditsService _creditsService;
   MovieModel? _movie;
-  List<CastModel>? _cast;
+  Credits? _credits;
 
   @override
   void initState() {
@@ -36,7 +36,7 @@ class _MoviePageState extends State<MoviePage> {
     final credits = await _creditsService.fetchCredits(widget.movieId);
     setState(() {
       _movie = movie;
-      _cast = credits.cast;
+      _credits = credits;
     });
   }
 
@@ -296,7 +296,7 @@ class _MoviePageState extends State<MoviePage> {
                           Spacer(),
                           TextButton(
                             onPressed: () {
-                              context.push(AppRoutes.cast, extra: _cast);
+                              context.push(AppRoutes.credits, extra: _credits);
                             },
                             style: TextButton.styleFrom(
                               foregroundColor: Colors.transparent,
@@ -332,7 +332,7 @@ class _MoviePageState extends State<MoviePage> {
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
                                         image: ImageHelper.getImage(
-                                          _cast![index].profilePath,
+                                          _credits!.cast[index].profilePath,
                                           ApiConstants.posterSize.m,
                                         ),
                                         fit: BoxFit.cover,
@@ -342,12 +342,12 @@ class _MoviePageState extends State<MoviePage> {
                                   ),
                                   const SizedBox(height: 5),
                                   Text(
-                                    _cast![index].character,
+                                    _credits!.cast[index].character,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                   ),
                                   Text(
-                                    _cast![index].originalName,
+                                    _credits!.cast[index].originalName,
                                     style: TextStyle(
                                       color: Theme.of(
                                         context,
