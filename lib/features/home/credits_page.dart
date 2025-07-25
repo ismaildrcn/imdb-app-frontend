@@ -18,7 +18,6 @@ class CreditsPage extends StatefulWidget {
 
 class _CreditsPageState extends State<CreditsPage> {
   int stackIndex = 0;
-  PersonService _personService = PersonService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +36,6 @@ class _CreditsPageState extends State<CreditsPage> {
                 inactiveBgColor: Colors.grey[500],
                 labels: ['Cast', 'Crew'],
                 onToggle: (index) {
-                  print('switched to: $index');
                   setState(() {
                     stackIndex = index!;
                   });

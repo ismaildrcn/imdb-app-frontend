@@ -10,6 +10,7 @@ import 'package:imdb_app/features/home/auth/verify_email.dart';
 import 'package:imdb_app/features/home/credits_page.dart';
 import 'package:imdb_app/features/home/most_popular_page.dart';
 import 'package:imdb_app/features/home/movie_page.dart';
+import 'package:imdb_app/features/profile/markdown_viewer.dart';
 import 'package:imdb_app/screens/browser.dart';
 import 'package:imdb_app/screens/discover.dart';
 import 'package:imdb_app/features/home/home.dart';
@@ -29,6 +30,7 @@ class AppRoutes {
   static const String verifyEmail = '/verify-email';
   static const String forgotPassword = '/forgot-password';
   static const String resetPassword = '/reset-password';
+  static const String markdownViewer = '/markdown-viewer';
 }
 
 final appRoutes = GoRouter(
@@ -129,6 +131,16 @@ final appRoutes = GoRouter(
           path: AppRoutes.resetPassword,
           pageBuilder: (context, state) {
             return const MaterialPage(child: ResetPasswordPage());
+          },
+        ),
+        GoRoute(
+          name: "markdown-viewer",
+          path: AppRoutes.markdownViewer,
+          pageBuilder: (context, state) {
+            final String markdownAssetPath = state.extra as String;
+            return MaterialPage(
+              child: MarkdownViewer(markdownAssetPath: markdownAssetPath),
+            );
           },
         ),
       ],

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:imdb_app/app/router.dart';
 
 class CommonFooterLinks extends StatelessWidget {
   const CommonFooterLinks({super.key});
@@ -9,7 +11,10 @@ class CommonFooterLinks extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         TextButton(
-          onPressed: () {},
+          onPressed: () => context.push(
+            AppRoutes.markdownViewer,
+            extra: 'assets/markdown/legal/conditions_of_use.md',
+          ),
           style: TextButton.styleFrom(
             foregroundColor: Theme.of(
               context,
@@ -18,7 +23,10 @@ class CommonFooterLinks extends StatelessWidget {
           child: const Text("Conditions of Use"),
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () => context.push(
+            AppRoutes.markdownViewer,
+            extra: 'assets/markdown/legal/privacy_notes.md',
+          ),
           style: TextButton.styleFrom(
             foregroundColor: Theme.of(
               context,

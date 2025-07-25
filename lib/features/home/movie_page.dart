@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
 import 'package:imdb_app/data/services/reviews_service.dart';
 import 'package:imdb_app/features/home/utils/image_utils.dart';
-import 'package:lorem_ipsum/lorem_ipsum.dart';
 
 class MoviePage extends StatefulWidget {
   final int movieId;
@@ -461,7 +460,7 @@ class _MoviePageState extends State<MoviePage> {
               Column(
                 children: [
                   Text(
-                    review!.authorDetails!.name == ""
+                    review.authorDetails!.name == ""
                         ? "Anonymous"
                         : review.authorDetails!.name.toString(),
                     style: TextStyle(fontWeight: FontWeight.bold),
