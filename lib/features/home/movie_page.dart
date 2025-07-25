@@ -1,11 +1,13 @@
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
 import 'package:imdb_app/data/model/credits_model.dart';
+import 'package:imdb_app/data/model/review_model.dart';
 import 'package:imdb_app/data/services/credits_service.dart';
 import 'package:imdb_app/data/services/constant/api_constants.dart';
 import 'package:imdb_app/data/services/movie_service.dart';
 import 'package:flutter/material.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
+import 'package:imdb_app/data/services/reviews_service.dart';
 import 'package:imdb_app/features/home/utils/image_utils.dart';
 import 'package:lorem_ipsum/lorem_ipsum.dart';
 
@@ -20,23 +22,28 @@ class MoviePage extends StatefulWidget {
 class _MoviePageState extends State<MoviePage> {
   late final MovieService _movieService;
   late final CreditsService _creditsService;
+  late final ReviewsService _reviewsService;
   MovieModel? _movie;
   Credits? _credits;
+  ReviewsModel? _reviews;
 
   @override
   void initState() {
     super.initState();
     _movieService = MovieService();
     _creditsService = CreditsService();
+    _reviewsService = ReviewsService();
     loadData();
   }
 
   Future<void> loadData() async {
     final movie = await _movieService.fetchMovie(widget.movieId);
     final credits = await _creditsService.fetchCredits(widget.movieId);
+    final reviews = await _reviewsService.fetchReviews(widget.movieId);
     setState(() {
       _movie = movie;
       _credits = credits;
+      _reviews = reviews;
     });
   }
 
@@ -379,11 +386,9 @@ class _MoviePageState extends State<MoviePage> {
         Row(
           children: [
             Text(
-              "Reviews",
+              "Comments",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(width: 5),
-            Text("(${_movie!.voteCount.toString()})"),
             Spacer(),
             TextButton(
               onPressed: () {},
@@ -399,22 +404,32 @@ class _MoviePageState extends State<MoviePage> {
           ],
         ),
         SizedBox(height: 18),
-        _reviewCard(),
-        _reviewCard(),
-        _reviewCard(),
+        SizedBox(
+          height: 150,
+          child: ListView.builder(
+            itemCount: _reviews?.reviews.sublist(0, 3).length,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              return _reviewCard(
+                hasLastComment: index == 2,
+                review: _reviews!.reviews[index],
+              );
+            },
+          ),
+        ),
       ],
     );
   }
 
-  Widget _reviewCard() {
+  Widget _reviewCard({bool hasLastComment = false, Review? review}) {
     return Container(
-      width: double.infinity,
-      constraints: BoxConstraints(minHeight: 65),
-      margin: EdgeInsets.only(bottom: 18),
-      padding: EdgeInsets.all(10),
+      width: 300,
+      constraints: BoxConstraints(minHeight: 100),
+      margin: hasLastComment ? null : EdgeInsets.only(right: 20),
+      padding: EdgeInsets.all(18),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.onSurface,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
             color: Theme.of(
@@ -426,17 +441,52 @@ class _MoviePageState extends State<MoviePage> {
           ),
         ],
       ),
-      child: Row(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleAvatar(child: Text("A")),
-          SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              loremIpsum(words: 30),
-              maxLines: 3,
-              overflow: TextOverflow.fade,
-            ),
+          Row(
+            children: [
+              CircleAvatar(
+                backgroundImage: review!.authorDetails!.avatarPath != null
+                    ? ImageHelper.getImage(
+                        review.authorDetails!.avatarPath,
+                        ApiConstants.posterSize.m,
+                      )
+                    : null,
+                child: review.authorDetails!.avatarPath == null
+                    ? Icon(Icons.person_rounded)
+                    : null,
+              ),
+              SizedBox(width: 10),
+              Column(
+                children: [
+                  Text(
+                    review!.authorDetails!.name == ""
+                        ? "Anonymous"
+                        : review.authorDetails!.name.toString(),
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "June 12, 2023",
+                    style: TextStyle(color: Colors.grey[500]),
+                  ),
+                ],
+              ),
+              Spacer(),
+              Row(
+                children: [
+                  Text(review.authorDetails!.rating.toString()),
+                  Icon(Icons.star_rate_rounded, color: Colors.amber),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 10),
+          Text(
+            review.content.toString(),
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontSize: 16),
           ),
         ],
       ),

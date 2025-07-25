@@ -19,16 +19,6 @@ class CreditsPage extends StatefulWidget {
 class _CreditsPageState extends State<CreditsPage> {
   int stackIndex = 0;
   PersonService _personService = PersonService();
-  bool _showResult = false;
-  bool _loading = false;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _personService = PersonService();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -234,7 +224,7 @@ class PersonDetailDialog extends StatelessWidget {
                                 color: Theme.of(context).colorScheme.primary,
                               ),
                               Text(
-                                "${person.popularity!.toStringAsFixed(1)}/10",
+                                "${person.popularity!.toStringAsFixed(1)}/10.0",
                               ),
                             ],
                           ),
