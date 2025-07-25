@@ -6,6 +6,7 @@ class AppTheme {
 
   static ThemeData get lightTheme => ThemeData(
     useMaterial3: false,
+    fontFamily: 'Montserrat',
     colorScheme: const ColorScheme.light(
       primary: Color(0xFF12CDD9),
       surface: Color(0xFFFFFFFF),
@@ -33,6 +34,7 @@ class AppTheme {
 
   static ThemeData get darkTheme => ThemeData(
     useMaterial3: false,
+    fontFamily: 'Montserrat',
     colorScheme: const ColorScheme.dark(
       primary: Color(0xFF12CDD9), // Orijinal primary renginin daha koyu tonu
       surface: Color(0xFF121212), // Dark theme için standart surface rengi
