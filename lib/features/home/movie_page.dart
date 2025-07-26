@@ -452,7 +452,7 @@ class _MoviePageState extends State<MoviePage> {
             ),
             Spacer(),
             TextButton(
-              onPressed: () {},
+              onPressed: () => context.push("/reviews/${widget.movieId}"),
               style: TextButton.styleFrom(foregroundColor: Colors.transparent),
               child: Text(
                 "See all",
@@ -468,7 +468,9 @@ class _MoviePageState extends State<MoviePage> {
         SizedBox(
           height: 150,
           child: ListView.builder(
-            itemCount: _reviews?.reviews.sublist(0, 3).length,
+            itemCount: _reviews!.reviews.length >= 3
+                ? _reviews?.reviews.sublist(0, 3).length
+                : _reviews?.reviews.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return _reviewCard(

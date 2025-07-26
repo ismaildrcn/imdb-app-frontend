@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:imdb_app/app/router.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   final GoRouterState state;
@@ -16,7 +17,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
     final String location = widget.state.uri.toString();
     return SizedBox(
       width: double.infinity,
-      height: 70,
+      height: 60,
       child: Row(
         spacing: 10,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -26,32 +27,32 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             icon: Icons.home_outlined,
             activeIcon: Icons.home,
             label: "Home",
-            isActive: location == '/',
-            onTap: () => GoRouter.of(context).go('/'),
+            isActive: location == AppRoutes.home,
+            onTap: () => GoRouter.of(context).go(AppRoutes.home),
           ),
           navigationItem(
             context,
             icon: Icons.analytics_outlined,
             activeIcon: Icons.analytics_rounded,
             label: "Browser",
-            isActive: location == '/browser',
-            onTap: () => GoRouter.of(context).go('/browser'),
+            isActive: location == AppRoutes.browser,
+            onTap: () => GoRouter.of(context).go(AppRoutes.browser),
           ),
           navigationItem(
             context,
             icon: Icons.play_arrow_outlined,
             activeIcon: Icons.play_arrow_rounded,
             label: "Discover",
-            isActive: location == '/discover',
-            onTap: () => GoRouter.of(context).go('/discover'),
+            isActive: location == AppRoutes.discover,
+            onTap: () => GoRouter.of(context).go(AppRoutes.discover),
           ),
           navigationItem(
             context,
             icon: Icons.search,
             activeIcon: Icons.search_rounded,
             label: "Profile",
-            isActive: location == '/profile',
-            onTap: () => GoRouter.of(context).go('/profile'),
+            isActive: location == AppRoutes.profile,
+            onTap: () => GoRouter.of(context).go(AppRoutes.profile),
           ),
         ],
       ),

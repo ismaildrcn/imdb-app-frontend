@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/data/model/credits_model.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
+import 'package:imdb_app/features/home/review_page.dart';
 import 'package:imdb_app/features/home/widgets/bottom_navigation_bar.dart';
 import 'package:imdb_app/features/profile/auth/create_account_page.dart';
 import 'package:imdb_app/features/profile/auth/forgot_password_page.dart';
@@ -32,6 +33,7 @@ class AppRoutes {
   static const String forgotPassword = '/forgot-password';
   static const String resetPassword = '/reset-password';
   static const String markdownViewer = '/markdown-viewer';
+  static const String reviews = '/reviews/:id';
 }
 
 final appRoutes = GoRouter(
@@ -147,6 +149,14 @@ final appRoutes = GoRouter(
             return MaterialPage(
               child: MarkdownViewer(markdownAssetPath: markdownAssetPath),
             );
+          },
+        ),
+        GoRoute(
+          name: "reviews",
+          path: AppRoutes.reviews,
+          pageBuilder: (context, state) {
+            final movieId = state.pathParameters['id']!;
+            return MaterialPage(child: ReviewPage(id: int.parse(movieId)));
           },
         ),
       ],

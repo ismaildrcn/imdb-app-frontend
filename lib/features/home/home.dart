@@ -60,34 +60,7 @@ class _HomePageState extends State<HomePage> {
             ? const Center(child: CircularProgressIndicator())
             : ListView(
                 children: [
-                  MovieCarousel(isMoviePage: false, movie: _allMovies[0]),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.minimize,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      Icon(
-                        Icons.minimize,
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.secondary.withAlpha(75),
-                      ),
-                      Icon(
-                        Icons.minimize,
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.secondary.withAlpha(75),
-                      ),
-                      Icon(
-                        Icons.minimize,
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.secondary.withAlpha(75),
-                      ),
-                    ],
-                  ),
+                  MovieCarousel(movies: _allMovies.sublist(0, 3)),
                   SizedBox(height: 12),
                   HorizontalMoviesCardList(
                     allMovies: _allMovies,
