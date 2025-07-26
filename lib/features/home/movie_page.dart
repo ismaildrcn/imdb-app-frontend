@@ -26,6 +26,7 @@ class _MoviePageState extends State<MoviePage> {
   MovieModel? _movie;
   Credits? _credits;
   ReviewsModel? _reviews;
+  double? voteAverage;
 
   @override
   void initState() {
@@ -44,6 +45,8 @@ class _MoviePageState extends State<MoviePage> {
       _movie = movie;
       _credits = credits;
       _reviews = reviews;
+
+      voteAverage = _movie!.voteAverage! / 2;
     });
   }
 
@@ -84,10 +87,16 @@ class _MoviePageState extends State<MoviePage> {
                               begin: Alignment.bottomCenter,
                               end: Alignment.topCenter,
                               colors: [
-                                Theme.of(context).colorScheme.surface.withAlpha(
-                                  255,
-                                ), // Alt kısım
-                                Colors.transparent, // Üst kısım
+                                Theme.of(
+                                  context,
+                                ).colorScheme.surface.withAlpha(255),
+                                // Colors.transparent, // Üst kısım
+                                Theme.of(
+                                  context,
+                                ).colorScheme.surface.withAlpha(150),
+                                Theme.of(
+                                  context,
+                                ).colorScheme.surface.withAlpha(255),
                               ],
                             ),
                           ),
@@ -104,6 +113,7 @@ class _MoviePageState extends State<MoviePage> {
                           ),
                           alignment: Alignment.topCenter,
                           child: Row(
+                            spacing: 10,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               GestureDetector(
@@ -120,6 +130,17 @@ class _MoviePageState extends State<MoviePage> {
                                     Icons.arrow_back_ios_new_rounded,
                                     size: 30,
                                   ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  _movie!.originalTitle!,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
                               GestureDetector(
@@ -141,63 +162,126 @@ class _MoviePageState extends State<MoviePage> {
                       ),
 
                       Positioned(
+                        top: 108,
+                        bottom: 80,
+                        left: 85,
+                        right: 85,
+                        child: Container(
+                          width: 205,
+                          height: 287,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            image: DecorationImage(
+                              image: ImageHelper.getImage(
+                                _movie!.posterPath,
+                                ApiConstants.posterSize.original,
+                              ),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      Positioned(
+                        bottom: 5,
+                        left: 20,
+                        right: 20,
                         child: Container(
                           alignment: Alignment.bottomCenter,
-                          child: Row(
+                          child: Column(
                             children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 6,
-                                ),
-                                margin: EdgeInsets.only(
-                                  left: 18,
-                                  right: 18,
-                                  bottom: 10,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      "IMDB",
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSecondary
-                                            .withAlpha(192),
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      _movie!.voteAverage!.toStringAsFixed(1),
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSecondary
-                                            .withAlpha(192),
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(bottom: 10),
-                                child: Text(
-                                  "(${_movie!.voteCount.toString()} Reviews)",
-                                  style: TextStyle(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onSecondary.withAlpha(192),
-                                    fontSize: 18,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.calendar_month_rounded,
+                                    color: Colors.grey[500],
+                                    size: 24,
                                   ),
-                                ),
+                                  SizedBox(width: 4),
+                                  Text(
+                                    DateFormat(
+                                      "yyyy",
+                                    ).format(_movie!.releaseDate!),
+                                    style: TextStyle(
+                                      color: Colors.grey[500],
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(width: 10),
+                                  Container(
+                                    height: 15,
+                                    decoration: BoxDecoration(
+                                      border: BoxBorder.fromBorderSide(
+                                        BorderSide(
+                                          color: Colors.grey,
+                                          width: 0.3,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 10),
+                                  Icon(
+                                    Icons.access_time_filled,
+                                    color: Colors.grey[500],
+                                    size: 24,
+                                  ),
+                                  SizedBox(width: 4),
+                                  Text(
+                                    "${_movie!.runtime!.toString()} Minutes",
+                                    style: TextStyle(
+                                      color: Colors.grey[500],
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(width: 10),
+                                  Container(
+                                    height: 15,
+                                    decoration: BoxDecoration(
+                                      border: BoxBorder.fromBorderSide(
+                                        BorderSide(
+                                          color: Colors.grey,
+                                          width: 0.3,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 10),
+                                  Icon(
+                                    Icons.movie_creation_outlined,
+                                    color: Colors.grey[500],
+                                    size: 24,
+                                  ),
+                                  SizedBox(width: 4),
+                                  Text(
+                                    _movie!.genres![0].name,
+                                    style: TextStyle(
+                                      color: Colors.grey[500],
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 8),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.star_rate_rounded,
+                                    color: Colors.amber,
+                                    size: 24,
+                                  ),
+                                  SizedBox(width: 4),
+                                  Text(
+                                    voteAverage!.toStringAsFixed(1),
+                                    style: TextStyle(
+                                      color: Colors.amber,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -212,46 +296,6 @@ class _MoviePageState extends State<MoviePage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Movie Title Area
-                      ListTile(
-                        contentPadding: const EdgeInsets.all(0),
-                        title: Text(
-                          _movie!.originalTitle!,
-                          style: const TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        subtitle: Text(
-                          _movie!.tagline!,
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-
-                      const SizedBox(height: 10),
-                      Row(
-                        spacing: 10,
-                        children: [
-                          Icon(Icons.calendar_month_outlined, size: 18),
-                          Text(
-                            DateFormat(
-                              'dd/MM/yyyy',
-                            ).format(_movie!.releaseDate!),
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          const Text("•"),
-                          Icon(Icons.location_on_outlined, size: 18),
-                          Text(_movie!.originCountry!.first),
-                          const Text("•"),
-                          Icon(Icons.access_time, size: 18),
-                          Text(
-                            "${_movie!.runtime!.toString()} minutes",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-
                       // Movie Genres
                       SizedBox(
                         width: double.infinity,
@@ -289,6 +333,14 @@ class _MoviePageState extends State<MoviePage> {
                         ),
                       ),
                       const SizedBox(height: 20),
+                      Text(
+                        "Story Line",
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 18),
                       Text(_movie!.overview!, style: TextStyle(fontSize: 16)),
                       const SizedBox(height: 20),
 
