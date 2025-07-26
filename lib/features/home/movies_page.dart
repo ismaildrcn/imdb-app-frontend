@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
 import 'package:imdb_app/data/services/movie_service.dart';
@@ -72,7 +73,10 @@ class _MoviesPageState extends State<MoviesPage> {
                 child: ListView.builder(
                   itemCount: movies.length,
                   itemBuilder: (context, index) {
-                    return MovieListCard(movie: movies[index]);
+                    return GestureDetector(
+                      onTap: () => context.push("/movie/${movies[index].id}"),
+                      child: MovieListCard(movie: movies[index]),
+                    );
                   },
                 ),
               ),
