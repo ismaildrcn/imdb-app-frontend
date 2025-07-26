@@ -27,6 +27,7 @@ class _MoviePageState extends State<MoviePage> {
   Credits? _credits;
   ReviewsModel? _reviews;
   double? voteAverage;
+  Future<void>? _loadDataFuture; // Nullable Future tanımla
 
   @override
   void initState() {
@@ -34,7 +35,13 @@ class _MoviePageState extends State<MoviePage> {
     _movieService = MovieService();
     _creditsService = CreditsService();
     _reviewsService = ReviewsService();
-    loadData();
+    _loadDataFuture = loadData();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _loadDataFuture?.ignore();
   }
 
   Future<void> loadData() async {

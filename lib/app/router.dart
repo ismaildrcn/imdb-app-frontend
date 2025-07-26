@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/data/model/credits_model.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
+import 'package:imdb_app/features/home/widgets/bottom_navigation_bar.dart';
 import 'package:imdb_app/features/profile/auth/create_account_page.dart';
 import 'package:imdb_app/features/profile/auth/forgot_password_page.dart';
 import 'package:imdb_app/features/profile/auth/reset_password_page.dart';
@@ -41,7 +42,7 @@ final appRoutes = GoRouter(
       builder: (context, state, child) {
         return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.surface,
-          bottomNavigationBar: _bottomNavBar(context, state),
+          bottomNavigationBar: CustomBottomNavigationBar(state: state),
           body: child,
         );
       },
@@ -152,64 +153,6 @@ final appRoutes = GoRouter(
     ),
   ],
 );
-
-BottomNavigationBar _bottomNavBar(BuildContext context, GoRouterState state) {
-  final String location = state.uri.toString();
-  int currentIndex = 0;
-  if (location == '/browser') {
-    currentIndex = 1;
-  } else if (location == '/discover') {
-    currentIndex = 2;
-  } else if (location == '/profile') {
-    currentIndex = 3;
-  }
-
-  return BottomNavigationBar(
-    type: BottomNavigationBarType.fixed, // Bunu ekleyin
-    currentIndex: currentIndex,
-    showSelectedLabels: true,
-    showUnselectedLabels: false,
-    onTap: (index) {
-      switch (index) {
-        case 0:
-          GoRouter.of(context).go('/');
-          break;
-        case 1:
-          GoRouter.of(context).go('/browser');
-          break;
-        case 2:
-          GoRouter.of(context).go('/discover');
-          break;
-        case 3:
-          GoRouter.of(context).go('/profile');
-          break;
-      }
-    },
-    selectedItemColor: Theme.of(context).colorScheme.primary,
-    items: const <BottomNavigationBarItem>[
-      BottomNavigationBarItem(
-        icon: Icon(Icons.home_outlined),
-        activeIcon: Icon(Icons.home),
-        label: 'Home',
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.analytics_outlined),
-        activeIcon: Icon(Icons.analytics_rounded),
-        label: 'Browser',
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.play_arrow_outlined),
-        activeIcon: Icon(Icons.play_arrow_rounded),
-        label: 'Discover',
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.search),
-        activeIcon: Icon(Icons.search_rounded),
-        label: 'Profile',
-      ),
-    ],
-  );
-}
 
 AppBar topNavBar(BuildContext context, String? title) {
   return AppBar(

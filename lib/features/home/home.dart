@@ -43,10 +43,12 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> loadData() async {
     final movies = await _movieService.fetchMovies();
-    setState(() {
-      _allMovies = movies;
-      _displayMovies = movies.sublist(0, 10);
-    });
+    if (mounted) {
+      setState(() {
+        _allMovies = movies;
+        _displayMovies = movies.sublist(0, 10);
+      });
+    }
   }
 
   @override
