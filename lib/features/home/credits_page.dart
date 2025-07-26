@@ -117,16 +117,15 @@ class _CreditsPageState extends State<CreditsPage> {
 
 class PersonDetailDialog extends StatelessWidget {
   final int personId;
-  final _personService = PersonService();
-
-  PersonDetailDialog({required this.personId});
+  const PersonDetailDialog({super.key, required this.personId});
 
   @override
   Widget build(BuildContext context) {
+    final personService = PersonService();
     return Dialog(
       backgroundColor: Theme.of(context).colorScheme.onSurface,
       child: FutureBuilder<PersonModel>(
-        future: _personService.fetchPerson(personId: personId),
+        future: personService.fetchPerson(personId: personId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return SizedBox(

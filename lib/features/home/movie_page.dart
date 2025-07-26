@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
 import 'package:imdb_app/data/services/reviews_service.dart';
 import 'package:imdb_app/features/home/utils/image_utils.dart';
+import 'package:intl/intl.dart';
 
 class MoviePage extends StatefulWidget {
   final int movieId;
@@ -233,7 +234,9 @@ class _MoviePageState extends State<MoviePage> {
                         children: [
                           Icon(Icons.calendar_month_outlined, size: 18),
                           Text(
-                            _movie!.releaseDate!,
+                            DateFormat(
+                              'dd/MM/yyyy',
+                            ).format(_movie!.releaseDate!),
                             style: TextStyle(fontSize: 16),
                           ),
                           const Text("•"),

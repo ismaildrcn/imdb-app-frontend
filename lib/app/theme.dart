@@ -37,10 +37,12 @@ class AppTheme {
     fontFamily: 'Montserrat',
     colorScheme: const ColorScheme.dark(
       primary: Color(0xFF12CDD9), // Orijinal primary renginin daha koyu tonu
-      surface: Color(0xFF121212), // Dark theme için standart surface rengi
-      onSurface: Color(0xFF1E1E1E), // Daha açık bir arkaplan
+      surface: Color(0xFF1F1D2B), // Dark theme için standart surface rengi
+      onSurface: Color(0xFF252836), // Daha açık bir arkaplan
       secondary: Color(0xFFBDBDBD), // Light gri, siyah yerine
       onSecondary: Color(0xFFE0E0E0), // Daha açık gri
+      tertiary: Color(0xFF22B07D),
+      error: Color(0xFFFB4141),
     ),
     iconButtonTheme: IconButtonThemeData(
       style: IconButton.styleFrom(
@@ -64,7 +66,7 @@ class AppTheme {
       ), // Dark theme için daha uygun koyu renk
     ),
     scaffoldBackgroundColor: Color(
-      0xFF121212,
+      0xFF1F1D2B,
     ), // Dark theme için standart arkaplan
   );
 }

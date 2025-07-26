@@ -8,7 +8,7 @@ import 'package:imdb_app/features/profile/auth/reset_password_page.dart';
 import 'package:imdb_app/features/profile/auth/sign_in_page.dart';
 import 'package:imdb_app/features/profile/auth/verify_email.dart';
 import 'package:imdb_app/features/home/credits_page.dart';
-import 'package:imdb_app/features/home/most_popular_page.dart';
+import 'package:imdb_app/features/home/movies_page.dart';
 import 'package:imdb_app/features/home/movie_page.dart';
 import 'package:imdb_app/features/profile/markdown_viewer.dart';
 import 'package:imdb_app/screens/browser.dart';
@@ -58,7 +58,12 @@ final appRoutes = GoRouter(
           path: AppRoutes.mostPopularMovies,
           pageBuilder: (context, state) {
             final List<MovieModel> allMovies = state.extra as List<MovieModel>;
-            return MaterialPage(child: MostPopularPage(allMovies: allMovies));
+            return MaterialPage(
+              child: MoviesPage(
+                allMovies: allMovies,
+                title: "Most Popuplar Movies",
+              ),
+            );
           },
         ),
         GoRoute(

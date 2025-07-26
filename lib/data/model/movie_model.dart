@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-
 class MovieModel {
   final int id;
   final bool adult;
@@ -17,7 +15,7 @@ class MovieModel {
   final String posterPath;
   final List<ProductionCompany>? productionCompanies;
   final List<ProductionCountry>? productionCountries;
-  final String? releaseDate;
+  final DateTime? releaseDate;
   final int? revenue;
   final int? runtime;
   final List<SpokenLanguage>? spokenLanguages;
@@ -58,10 +56,6 @@ class MovieModel {
   });
 
   factory MovieModel.fromJson(Map<String, dynamic> json) {
-    DateTime parseDatetime = DateTime.parse(json["release_date"]);
-    String releaseDateFormated = json["release_date"] != null
-        ? DateFormat('dd/MM/yyyy').format(parseDatetime)
-        : "";
     return MovieModel(
       id: json["id"],
       adult: json["adult"],
@@ -97,7 +91,7 @@ class MovieModel {
                 (x) => ProductionCountry.fromJson(x),
               ),
             ),
-      releaseDate: releaseDateFormated,
+      releaseDate: DateTime.parse(json["release_date"]),
       revenue: json["revenue"],
       runtime: json["runtime"],
       spokenLanguages: json["spoken_languages"] == null
