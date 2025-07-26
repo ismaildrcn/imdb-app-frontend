@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
@@ -6,6 +8,7 @@ import 'package:imdb_app/data/services/constant/api_constants.dart';
 import 'package:imdb_app/data/services/movie_service.dart';
 import 'package:imdb_app/features/home/utils/image_utils.dart';
 import 'package:imdb_app/features/home/widgets/movie_carousel.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -135,7 +138,7 @@ class HorizontalMoviesCardList extends StatelessWidget {
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 20),
           child: SizedBox(
-            height: 260,
+            height: 300,
             child: ListView.builder(
               itemCount: displayMovies.length,
               scrollDirection: Axis.horizontal,
@@ -169,40 +172,113 @@ class MovieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double? voteAverage;
+    voteAverage = movie.voteAverage! / 2;
     return GestureDetector(
       onTap: () {
         context.push("/movie/${movie.id}");
       },
-      child: Column(
-        children: [
-          Container(
-            width: 175,
-            height: 230,
-            margin: isApplyMargin ? const EdgeInsets.only(right: 20) : null,
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.onSecondary.withAlpha(25),
-              borderRadius: BorderRadius.circular(8),
-              image: DecorationImage(
-                image: ImageHelper.getImage(
-                  movie.posterPath,
-                  ApiConstants.posterSize.m,
+      child: Container(
+        margin: isApplyMargin ? const EdgeInsets.only(right: 20) : null,
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Container(
+                  width: 175,
+                  height: 230,
+                  decoration: BoxDecoration(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSecondary.withAlpha(25),
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(12),
+                    ),
+                    image: DecorationImage(
+                      image: ImageHelper.getImage(
+                        movie.posterPath,
+                        ApiConstants.posterSize.m,
+                      ),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
-                fit: BoxFit.cover,
+                Positioned(
+                  top: 8,
+                  left: 8,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 2,
+                          horizontal: 6,
+                        ),
+                        color: Colors.white.withAlpha(48),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(Icons.star_rate_rounded, color: Colors.amber),
+                            SizedBox(width: 4),
+                            Text(
+                              voteAverage.toStringAsFixed(1),
+                              style: TextStyle(
+                                color: Colors.amber,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              width: 175,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.onSurface,
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(12),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 12,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 6,
+                  children: [
+                    Text(
+                      movie.originalTitle!,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      DateFormat("yyyy").format(movie.releaseDate!),
+                      style: TextStyle(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSecondary.withAlpha(128),
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 10),
-          SizedBox(
-            width: 175,
-            child: Text(
-              movie.originalTitle!,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
