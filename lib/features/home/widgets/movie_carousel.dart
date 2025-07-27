@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
 import 'package:imdb_app/data/services/constant/api_constants.dart';
 import 'package:imdb_app/features/home/utils/image_utils.dart';
@@ -88,21 +89,24 @@ class _MovieCarouselState extends State<MovieCarousel> {
         .toList();
     return Column(
       children: [
-        Container(
-          padding: EdgeInsets.only(top: 20, bottom: 10),
-          child: CarouselSlider(
-            options: CarouselOptions(
-              onPageChanged: (index, reason) {
-                setState(() {
-                  _current = index;
-                });
-              },
-              aspectRatio: 2.0,
-              enlargeCenterPage: true,
-              scrollDirection: Axis.horizontal,
-              autoPlay: true,
+        GestureDetector(
+          onTap: () => context.push("/movie/${widget.movies[_current].id}"),
+          child: Container(
+            padding: EdgeInsets.only(top: 20, bottom: 10),
+            child: CarouselSlider(
+              options: CarouselOptions(
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    _current = index;
+                  });
+                },
+                aspectRatio: 2.0,
+                enlargeCenterPage: true,
+                scrollDirection: Axis.horizontal,
+                autoPlay: true,
+              ),
+              items: imageSliders,
             ),
-            items: imageSliders,
           ),
         ),
         Row(

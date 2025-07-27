@@ -31,8 +31,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late final MovieService _movieService;
-  List<MovieModel> _allMovies = [];
-  List<MovieModel> _displayMovies = [];
+  List<MovieModel> _topRatedMovies = [];
+  List<MovieModel> _nowPlayingMovies = [];
 
   @override
   void initState() {
@@ -42,11 +42,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> loadData() async {
-    final movies = await _movieService.fetchMovies();
+    final topRated = await _movieService.fetchMovies(type: MovieTypes.topRated);
+    final nowPlaying = await _movieService.fetchMovies(
+      type: MovieTypes.nowPlaying,
+    );
     if (mounted) {
       setState(() {
-        _allMovies = movies;
-        _displayMovies = movies.sublist(0, 10);
+        _topRatedMovies = topRated;
+        _nowPlayingMovies = nowPlaying;
       });
     }
   }
@@ -56,18 +59,25 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: topNavBar(context, null),
       body: SafeArea(
-        child: _allMovies.isEmpty
+        child: _topRatedMovies.isEmpty
             ? const Center(child: CircularProgressIndicator())
-            : ListView(
-                children: [
-                  MovieCarousel(movies: _allMovies.sublist(0, 3)),
-                  SizedBox(height: 12),
-                  HorizontalMoviesCardList(
-                    allMovies: _allMovies,
-                    displayMovies: _displayMovies,
-                    title: "Top 10 Movies for you",
-                  ),
-                ],
+            : SingleChildScrollView(
+                child: Column(
+                  spacing: 12,
+                  children: [
+                    MovieCarousel(movies: _topRatedMovies.sublist(0, 3)),
+                    HorizontalMoviesCardList(
+                      allMovies: _topRatedMovies,
+                      displayMovies: _topRatedMovies.sublist(0, 5),
+                      title: "Top 20 Movies for you",
+                    ),
+                    HorizontalMoviesCardList(
+                      allMovies: _nowPlayingMovies,
+                      displayMovies: _nowPlayingMovies.sublist(0, 5),
+                      title: "Now Playing",
+                    ),
+                  ],
+                ),
               ),
       ),
     );
