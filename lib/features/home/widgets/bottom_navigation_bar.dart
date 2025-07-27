@@ -12,6 +12,23 @@ class CustomBottomNavigationBar extends StatefulWidget {
 }
 
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
+  static const homeRoutes = [
+    AppRoutes.home,
+    AppRoutes.mostPopularMovies,
+    AppRoutes.credits,
+    AppRoutes.reviews,
+    "/movie",
+  ];
+  static const profileRoutes = [
+    AppRoutes.profile,
+    AppRoutes.login,
+    AppRoutes.createAccount,
+    AppRoutes.verifyEmail,
+    AppRoutes.forgotPassword,
+    AppRoutes.resetPassword,
+    AppRoutes.markdownViewer,
+  ];
+
   @override
   Widget build(BuildContext context) {
     final String location = widget.state.uri.toString();
@@ -27,7 +44,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             icon: Icons.home_outlined,
             activeIcon: Icons.home,
             label: "Home",
-            isActive: location == AppRoutes.home,
+            isActive: homeRoutes.any((element) => location.startsWith(element)),
             onTap: () => GoRouter.of(context).go(AppRoutes.home),
           ),
           navigationItem(
@@ -51,7 +68,9 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             icon: Icons.search,
             activeIcon: Icons.search_rounded,
             label: "Profile",
-            isActive: location == AppRoutes.profile,
+            isActive: profileRoutes.any(
+              (element) => location.startsWith(element),
+            ),
             onTap: () => GoRouter.of(context).go(AppRoutes.profile),
           ),
         ],

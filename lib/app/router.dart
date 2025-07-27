@@ -20,7 +20,7 @@ import 'package:imdb_app/features/profile/profile.dart';
 
 class AppRoutes {
   AppRoutes._();
-  static const String home = '/';
+  static const String home = '/home';
   static const String mostPopularMovies = "/most_popular_movies";
   static const String movie = "/movie/:id";
   static const String credits = "/credits";
@@ -37,8 +37,8 @@ class AppRoutes {
 }
 
 final appRoutes = GoRouter(
-  initialLocation:
-      '/', //Uygulama başlatıldığında varsayılan başlangıç konumunu temsil eder.
+  initialLocation: AppRoutes
+      .home, //Uygulama başlatıldığında varsayılan başlangıç konumunu temsil eder.
   routes: [
     ShellRoute(
       builder: (context, state, child) {
