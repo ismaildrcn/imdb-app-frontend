@@ -12,18 +12,6 @@ import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-  static List<String> top10movies = [
-    "The Godfather",
-    "The Shawshank Redemption",
-    "The Godfather Part II",
-    "Inception",
-    "Fight Club",
-    "The Dark Knight",
-    "12 Angry Men",
-    "The Lord of the Rings: The Fellowship of the Ring",
-    "The Matrix",
-    "Se7en",
-  ];
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -33,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   late final MovieService _movieService;
   List<MovieModel> _topRatedMovies = [];
   List<MovieModel> _nowPlayingMovies = [];
+  List<MovieModel> _upComingMovies = [];
 
   @override
   void initState() {
@@ -46,10 +35,12 @@ class _HomePageState extends State<HomePage> {
     final nowPlaying = await _movieService.fetchMovies(
       type: MovieTypes.nowPlaying,
     );
+    final upcoming = await _movieService.fetchMovies(type: MovieTypes.upcoming);
     if (mounted) {
       setState(() {
         _topRatedMovies = topRated;
         _nowPlayingMovies = nowPlaying;
+        _upComingMovies = upcoming;
       });
     }
   }
@@ -69,12 +60,17 @@ class _HomePageState extends State<HomePage> {
                     HorizontalMoviesCardList(
                       allMovies: _topRatedMovies,
                       displayMovies: _topRatedMovies.sublist(0, 5),
-                      title: "Top 20 Movies for you",
+                      title: "Most Popular",
                     ),
                     HorizontalMoviesCardList(
                       allMovies: _nowPlayingMovies,
                       displayMovies: _nowPlayingMovies.sublist(0, 5),
                       title: "Now Playing",
+                    ),
+                    HorizontalMoviesCardList(
+                      allMovies: _upComingMovies,
+                      displayMovies: _upComingMovies.sublist(0, 5),
+                      title: "Upcoming",
                     ),
                   ],
                 ),
@@ -113,7 +109,13 @@ class HorizontalMoviesCardList extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  context.push(AppRoutes.mostPopularMovies, extra: allMovies);
+                  context.push(
+                    AppRoutes.movies,
+                    extra: <String, dynamic>{
+                      "allMovies": allMovies,
+                      "title": title,
+                    },
+                  );
                 },
                 child: const Text("See More"),
               ),

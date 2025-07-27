@@ -21,7 +21,7 @@ import 'package:imdb_app/features/profile/profile.dart';
 class AppRoutes {
   AppRoutes._();
   static const String home = '/home';
-  static const String mostPopularMovies = "/most_popular_movies";
+  static const String movies = "/movies";
   static const String movie = "/movie/:id";
   static const String credits = "/credits";
   static const String browser = '/browser';
@@ -57,15 +57,16 @@ final appRoutes = GoRouter(
           },
         ),
         GoRoute(
-          name: "most-popular-movies",
-          path: AppRoutes.mostPopularMovies,
+          name: "movies",
+          path: AppRoutes.movies,
           pageBuilder: (context, state) {
-            final List<MovieModel> allMovies = state.extra as List<MovieModel>;
+            final Map<String, dynamic> extra =
+                state.extra as Map<String, dynamic>;
+            final List<MovieModel> allMovies =
+                extra['allMovies'] as List<MovieModel>;
+            final String title = extra['title'] as String;
             return MaterialPage(
-              child: MoviesPage(
-                allMovies: allMovies,
-                title: "Most Popuplar Movies",
-              ),
+              child: MoviesPage(allMovies: allMovies, title: title),
             );
           },
         ),

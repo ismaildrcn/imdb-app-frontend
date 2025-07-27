@@ -14,7 +14,7 @@ class CustomBottomNavigationBar extends StatefulWidget {
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   static const homeRoutes = [
     AppRoutes.home,
-    AppRoutes.mostPopularMovies,
+    AppRoutes.movies,
     AppRoutes.credits,
     AppRoutes.reviews,
     "/movie",
