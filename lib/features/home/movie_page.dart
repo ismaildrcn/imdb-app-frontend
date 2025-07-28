@@ -12,6 +12,7 @@ import 'package:imdb_app/data/services/reviews_service.dart';
 import 'package:imdb_app/data/services/video_service.dart';
 import 'package:imdb_app/features/home/utils/image_utils.dart';
 import 'package:intl/intl.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class MoviePage extends StatefulWidget {
   final int movieId;
@@ -27,6 +28,7 @@ class _MoviePageState extends State<MoviePage> {
   late final CreditsService _creditsService;
   late final ReviewsService _reviewsService;
   late final VideoService _videoService;
+  late final YoutubePlayerController _youtubePlayerController;
   MovieModel? _movie;
   Credits? _credits;
   ReviewsModel? _reviews;
@@ -57,6 +59,10 @@ class _MoviePageState extends State<MoviePage> {
     if (widget.hasVideo == true) {
       final videos = await _videoService.fetchVideos(widget.movieId);
       _videos = videos;
+      _youtubePlayerController = YoutubePlayerController(
+        initialVideoId: _videos!.results[0].key ?? '',
+        flags: YoutubePlayerFlags(autoPlay: false),
+      );
     }
     setState(() {
       _movie = movie;
@@ -307,8 +313,32 @@ class _MoviePageState extends State<MoviePage> {
                     ],
                   ),
                 ),
+                SizedBox(height: 20),
+
+                // Video
+                if (widget.hasVideo == true)
+                  Padding(
+                    padding: EdgeInsetsGeometry.symmetric(horizontal: 18),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        width: double.infinity,
+                        color: Colors.black, // opsiyonel: arka plan rengi
+                        child: YoutubePlayerBuilder(
+                          player: YoutubePlayer(
+                            controller: _youtubePlayerController,
+                          ),
+                          builder: (context, player) {
+                            return Column(children: [player]);
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                SizedBox(height: 20),
+
                 Padding(
-                  padding: const EdgeInsets.all(18),
+                  padding: const EdgeInsets.symmetric(horizontal: 18),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
