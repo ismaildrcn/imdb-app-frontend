@@ -2,18 +2,21 @@ import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
 import 'package:imdb_app/data/model/credits_model.dart';
 import 'package:imdb_app/data/model/review_model.dart';
+import 'package:imdb_app/data/model/video_model.dart';
 import 'package:imdb_app/data/services/credits_service.dart';
 import 'package:imdb_app/data/services/constant/api_constants.dart';
 import 'package:imdb_app/data/services/movie_service.dart';
 import 'package:flutter/material.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
 import 'package:imdb_app/data/services/reviews_service.dart';
+import 'package:imdb_app/data/services/video_service.dart';
 import 'package:imdb_app/features/home/utils/image_utils.dart';
 import 'package:intl/intl.dart';
 
 class MoviePage extends StatefulWidget {
   final int movieId;
-  const MoviePage({super.key, required this.movieId});
+  final bool? hasVideo;
+  const MoviePage({super.key, required this.movieId, this.hasVideo});
 
   @override
   State<MoviePage> createState() => _MoviePageState();
@@ -23,9 +26,11 @@ class _MoviePageState extends State<MoviePage> {
   late final MovieService _movieService;
   late final CreditsService _creditsService;
   late final ReviewsService _reviewsService;
+  late final VideoService _videoService;
   MovieModel? _movie;
   Credits? _credits;
   ReviewsModel? _reviews;
+  Videos? _videos;
   double? voteAverage;
   Future<void>? _loadDataFuture; // Nullable Future tanımla
 
@@ -35,6 +40,7 @@ class _MoviePageState extends State<MoviePage> {
     _movieService = MovieService();
     _creditsService = CreditsService();
     _reviewsService = ReviewsService();
+    _videoService = VideoService();
     _loadDataFuture = loadData();
   }
 
@@ -48,6 +54,10 @@ class _MoviePageState extends State<MoviePage> {
     final movie = await _movieService.fetchMovie(widget.movieId);
     final credits = await _creditsService.fetchCredits(widget.movieId);
     final reviews = await _reviewsService.fetchReviews(widget.movieId);
+    if (widget.hasVideo == true) {
+      final videos = await _videoService.fetchVideos(widget.movieId);
+      _videos = videos;
+    }
     setState(() {
       _movie = movie;
       _credits = credits;
@@ -59,10 +69,10 @@ class _MoviePageState extends State<MoviePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: _movie == null
-          ? const Center(child: CircularProgressIndicator())
-          : Column(
+    return _movie == null
+        ? const Center(child: CircularProgressIndicator())
+        : SingleChildScrollView(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -438,7 +448,7 @@ class _MoviePageState extends State<MoviePage> {
                 ),
               ],
             ),
-    );
+          );
   }
 
   Widget _reviewsContainer() {
@@ -466,7 +476,7 @@ class _MoviePageState extends State<MoviePage> {
         ),
         SizedBox(height: 18),
         SizedBox(
-          height: 150,
+          height: _reviews!.reviews.isEmpty ? 0 : 150,
           child: ListView.builder(
             itemCount: _reviews!.reviews.length >= 3
                 ? _reviews?.reviews.sublist(0, 3).length

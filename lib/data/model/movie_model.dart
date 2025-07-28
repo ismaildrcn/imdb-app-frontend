@@ -5,6 +5,7 @@ class MovieModel {
   final Collection? belongsToCollection;
   final int? budget;
   final List<Genres>? genres;
+  final List<int>? genreIds;
   final String? homepage;
   final String? imdbId;
   final List<String>? originCountry;
@@ -33,6 +34,7 @@ class MovieModel {
     required this.belongsToCollection,
     required this.budget,
     required this.genres,
+    required this.genreIds,
     required this.homepage,
     required this.imdbId,
     required this.originCountry,
@@ -67,6 +69,9 @@ class MovieModel {
       genres: json["genres"] == null
           ? []
           : List<Genres>.from(json["genres"]!.map((x) => Genres.fromJson(x))),
+      genreIds: json["genre_ids"] == null
+          ? []
+          : List<int>.from(json["genre_ids"]!.map((x) => x)),
       homepage: json["homepage"],
       imdbId: json["imdbId"],
       originCountry: json["origin_country"] == null

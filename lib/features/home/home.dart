@@ -71,6 +71,7 @@ class _HomePageState extends State<HomePage> {
                       allMovies: _upComingMovies,
                       displayMovies: _upComingMovies.sublist(0, 5),
                       title: "Upcoming",
+                      route: AppRoutes.upcoming,
                     ),
                   ],
                 ),
@@ -84,11 +85,13 @@ class HorizontalMoviesCardList extends StatelessWidget {
   final List<MovieModel> allMovies;
   final List<MovieModel> displayMovies;
   final String title;
+  final String? route;
   const HorizontalMoviesCardList({
     super.key,
     required this.title,
     required this.allMovies,
     required this.displayMovies,
+    this.route,
   });
 
   @override
@@ -110,11 +113,13 @@ class HorizontalMoviesCardList extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   context.push(
-                    AppRoutes.movies,
-                    extra: <String, dynamic>{
-                      "allMovies": allMovies,
-                      "title": title,
-                    },
+                    route ?? AppRoutes.movies,
+                    extra: route != null
+                        ? allMovies
+                        : <String, dynamic>{
+                            "allMovies": allMovies,
+                            "title": title,
+                          },
                   );
                 },
                 child: const Text("See More"),

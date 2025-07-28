@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:imdb_app/data/model/credits_model.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
 import 'package:imdb_app/features/home/review_page.dart';
+import 'package:imdb_app/features/home/upcoming_page.dart';
 import 'package:imdb_app/features/home/widgets/bottom_navigation_bar.dart';
 import 'package:imdb_app/features/profile/auth/create_account_page.dart';
 import 'package:imdb_app/features/profile/auth/forgot_password_page.dart';
@@ -34,6 +35,7 @@ class AppRoutes {
   static const String resetPassword = '/reset-password';
   static const String markdownViewer = '/markdown-viewer';
   static const String reviews = '/reviews/:id';
+  static const String upcoming = '/upcoming';
 }
 
 final appRoutes = GoRouter(
@@ -75,7 +77,10 @@ final appRoutes = GoRouter(
           path: AppRoutes.movie,
           pageBuilder: (context, state) {
             final movieId = state.pathParameters['id']!;
-            return MaterialPage(child: MoviePage(movieId: int.parse(movieId)));
+            final bool hasVideo = state.extra as bool? ?? false;
+            return MaterialPage(
+              child: MoviePage(movieId: int.parse(movieId), hasVideo: hasVideo),
+            );
           },
         ),
         GoRoute(
@@ -158,6 +163,14 @@ final appRoutes = GoRouter(
           pageBuilder: (context, state) {
             final movieId = state.pathParameters['id']!;
             return MaterialPage(child: ReviewPage(id: int.parse(movieId)));
+          },
+        ),
+        GoRoute(
+          name: "upcoming",
+          path: AppRoutes.upcoming,
+          pageBuilder: (context, state) {
+            final List<MovieModel> allMovies = state.extra as List<MovieModel>;
+            return MaterialPage(child: UpcomingPage(allMovies: allMovies));
           },
         ),
       ],
