@@ -17,6 +17,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
     AppRoutes.movies,
     AppRoutes.credits,
     AppRoutes.reviews,
+    AppRoutes.upcoming,
     "/movie",
   ];
   static const profileRoutes = [
