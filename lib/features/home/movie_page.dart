@@ -50,6 +50,7 @@ class _MoviePageState extends State<MoviePage> {
   void dispose() {
     super.dispose();
     _loadDataFuture?.ignore();
+    _youtubePlayerController.dispose();
   }
 
   Future<void> loadData() async {
