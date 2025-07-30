@@ -7,8 +7,8 @@ import 'package:imdb_app/data/services/genre_service.dart';
 import 'package:imdb_app/features/home/utils/image_utils.dart';
 
 class UpcomingPage extends StatefulWidget {
-  final List<MovieModel> allMovies;
-  const UpcomingPage({super.key, required this.allMovies});
+  final List<MovieModel> movies;
+  const UpcomingPage({super.key, required this.movies});
 
   @override
   State<UpcomingPage> createState() => _UpcomingPageState();
@@ -17,6 +17,7 @@ class UpcomingPage extends StatefulWidget {
 class _UpcomingPageState extends State<UpcomingPage> {
   late final GenreService _genreService;
   List<Genres> _genres = [];
+  List<MovieModel> showedMovies = [];
 
   int current = 0;
   List<Genres> allGenresObject = [
@@ -34,6 +35,7 @@ class _UpcomingPageState extends State<UpcomingPage> {
     final genres = await _genreService.fetchGenres();
 
     setState(() {
+      showedMovies = widget.movies;
       _genres = allGenresObject + genres;
     });
   }
@@ -48,60 +50,70 @@ class _UpcomingPageState extends State<UpcomingPage> {
           child: Column(
             spacing: 10,
             children: [
-              SizedBox(
-                width: double.infinity,
-                height: 40,
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _genres.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          current = index;
-                        });
-                      },
-                      child: Container(
-                        constraints: BoxConstraints(minWidth: 100),
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 20,
-                        ),
-                        decoration: BoxDecoration(
-                          color: current == index
-                              ? Theme.of(context).colorScheme.onSurface
-                              : null,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          _genres[index].name,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: current == index
-                                ? Theme.of(context).colorScheme.primary
-                                : null,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
+              _genreSelectionField(),
 
-              // Content Area
               Expanded(
                 child: ListView.builder(
-                  itemCount: widget.allMovies.length,
+                  itemCount: showedMovies.length,
                   itemBuilder: (context, index) {
-                    return _upcomingMovieContent(widget.allMovies[index]);
+                    return _upcomingMovieContent(showedMovies[index]);
                   },
                 ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  SizedBox _genreSelectionField() {
+    return SizedBox(
+      width: double.infinity,
+      height: 40,
+      child: ListView.builder(
+        physics: const BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        itemCount: _genres.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                current = index;
+                if (index == 0) {
+                  showedMovies = widget.movies;
+                } else {
+                  showedMovies = widget.movies
+                      .where(
+                        (element) =>
+                            element.genreIds!.first == _genres[index].id,
+                      )
+                      .toList();
+                }
+              });
+            },
+            child: Container(
+              constraints: BoxConstraints(minWidth: 100),
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              decoration: BoxDecoration(
+                color: current == index
+                    ? Theme.of(context).colorScheme.onSurface
+                    : null,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                _genres[index].name,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: current == index
+                      ? Theme.of(context).colorScheme.primary
+                      : null,
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

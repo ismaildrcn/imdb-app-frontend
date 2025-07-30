@@ -170,7 +170,7 @@ final appRoutes = GoRouter(
           path: AppRoutes.upcoming,
           pageBuilder: (context, state) {
             final List<MovieModel> allMovies = state.extra as List<MovieModel>;
-            return MaterialPage(child: UpcomingPage(allMovies: allMovies));
+            return MaterialPage(child: UpcomingPage(movies: allMovies));
           },
         ),
       ],
