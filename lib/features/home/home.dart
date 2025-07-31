@@ -57,21 +57,28 @@ class _HomePageState extends State<HomePage> {
                   spacing: 12,
                   children: [
                     MovieCarousel(movies: _topRatedMovies.sublist(0, 3)),
-                    HorizontalMoviesCardList(
-                      allMovies: _topRatedMovies,
-                      displayMovies: _topRatedMovies.sublist(0, 5),
-                      title: "Most Popular",
-                    ),
-                    HorizontalMoviesCardList(
-                      allMovies: _nowPlayingMovies,
-                      displayMovies: _nowPlayingMovies.sublist(0, 5),
-                      title: "Now Playing",
-                    ),
-                    HorizontalMoviesCardList(
-                      allMovies: _upComingMovies,
-                      displayMovies: _upComingMovies.sublist(0, 5),
-                      title: "Upcoming",
-                      route: AppRoutes.upcoming,
+                    Padding(
+                      padding: const EdgeInsets.all(18),
+                      child: Column(
+                        children: [
+                          HorizontalMoviesCardList(
+                            allMovies: _topRatedMovies,
+                            displayMovies: _topRatedMovies.sublist(0, 5),
+                            title: "Most Popular",
+                          ),
+                          HorizontalMoviesCardList(
+                            allMovies: _nowPlayingMovies,
+                            displayMovies: _nowPlayingMovies.sublist(0, 5),
+                            title: "Now Playing",
+                          ),
+                          HorizontalMoviesCardList(
+                            allMovies: _upComingMovies,
+                            displayMovies: _upComingMovies.sublist(0, 5),
+                            title: "Upcoming",
+                            route: AppRoutes.upcoming,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -98,179 +105,160 @@ class HorizontalMoviesCardList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  context.push(
-                    route ?? AppRoutes.movies,
-                    extra: route != null
-                        ? allMovies
-                        : <String, dynamic>{
-                            "allMovies": allMovies,
-                            "title": title,
-                          },
-                  );
-                },
-                child: const Text("See More"),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          child: SizedBox(
-            height: 300,
-            child: ListView.builder(
-              itemCount: displayMovies.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return MovieCard(
-                  movie: displayMovies[index],
-                  index: index,
-                  isApplyMargin: displayMovies.length - 1 != index
-                      ? true
-                      : false,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            TextButton(
+              onPressed: () {
+                context.push(
+                  route ?? AppRoutes.movies,
+                  extra: route != null
+                      ? allMovies
+                      : <String, dynamic>{
+                          "allMovies": allMovies,
+                          "title": title,
+                        },
                 );
               },
+              child: const Text("See More"),
             ),
-          ),
+          ],
         ),
+        MovieCard(displayMovies: displayMovies),
       ],
     );
   }
 }
 
 class MovieCard extends StatelessWidget {
-  final MovieModel movie;
-  final int index;
-  final bool isApplyMargin;
-  const MovieCard({
-    super.key,
-    required this.movie,
-    required this.index,
-    required this.isApplyMargin,
-  });
+  const MovieCard({super.key, required this.displayMovies});
+
+  final List<MovieModel> displayMovies;
 
   @override
   Widget build(BuildContext context) {
-    double? voteAverage;
-    voteAverage = movie.voteAverage! / 2;
-    return GestureDetector(
-      onTap: () {
-        context.push("/movie/${movie.id}");
-      },
-      child: Container(
-        margin: isApplyMargin ? const EdgeInsets.only(right: 20) : null,
-        child: Column(
-          children: [
-            Stack(
+    return SizedBox(
+      height: 300,
+      child: ListView.separated(
+        separatorBuilder: (context, index) => const SizedBox(width: 20),
+        itemCount: displayMovies.length,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          MovieModel movie = displayMovies[index];
+          double? voteAverage;
+          voteAverage = movie.voteAverage! / 2;
+          return GestureDetector(
+            onTap: () {
+              context.push("/movie/${movie.id}");
+            },
+            child: Column(
               children: [
+                Stack(
+                  children: [
+                    Container(
+                      width: 175,
+                      height: 230,
+                      decoration: BoxDecoration(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSecondary.withAlpha(25),
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(12),
+                        ),
+                        image: DecorationImage(
+                          image: ImageHelper.getImage(
+                            movie.posterPath,
+                            ApiConstants.posterSize.m,
+                          ),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 8,
+                      left: 8,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 2,
+                              horizontal: 6,
+                            ),
+                            color: Colors.white.withAlpha(48),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.star_rate_rounded,
+                                  color: Colors.amber,
+                                ),
+                                SizedBox(width: 4),
+                                Text(
+                                  voteAverage.toStringAsFixed(1),
+                                  style: TextStyle(
+                                    color: Colors.amber,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                 Container(
                   width: 175,
-                  height: 230,
                   decoration: BoxDecoration(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSecondary.withAlpha(25),
+                    color: Theme.of(context).colorScheme.onSurface,
                     borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(12),
-                    ),
-                    image: DecorationImage(
-                      image: ImageHelper.getImage(
-                        movie.posterPath,
-                        ApiConstants.posterSize.m,
-                      ),
-                      fit: BoxFit.cover,
+                      bottom: Radius.circular(12),
                     ),
                   ),
-                ),
-                Positioned(
-                  top: 8,
-                  left: 8,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 2,
-                          horizontal: 6,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 12,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 6,
+                      children: [
+                        Text(
+                          movie.originalTitle!,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
                         ),
-                        color: Colors.white.withAlpha(48),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(Icons.star_rate_rounded, color: Colors.amber),
-                            SizedBox(width: 4),
-                            Text(
-                              voteAverage.toStringAsFixed(1),
-                              style: TextStyle(
-                                color: Colors.amber,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                        Text(
+                          DateFormat("yyyy").format(movie.releaseDate!),
+                          style: TextStyle(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSecondary.withAlpha(128),
+                            fontSize: 14,
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                 ),
               ],
             ),
-            Container(
-              width: 175,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onSurface,
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(12),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 12,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 6,
-                  children: [
-                    Text(
-                      movie.originalTitle!,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      DateFormat("yyyy").format(movie.releaseDate!),
-                      style: TextStyle(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onSecondary.withAlpha(128),
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

@@ -13,7 +13,7 @@ class MovieModel {
   final String? originalTitle;
   final String? overview;
   final double? popularity;
-  final String posterPath;
+  final String? posterPath;
   final List<ProductionCompany>? productionCompanies;
   final List<ProductionCountry>? productionCountries;
   final DateTime? releaseDate;
@@ -96,7 +96,9 @@ class MovieModel {
                 (x) => ProductionCountry.fromJson(x),
               ),
             ),
-      releaseDate: DateTime.parse(json["release_date"]),
+      releaseDate: json["release_date"] == null || json["release_date"] == ""
+          ? null
+          : DateTime.tryParse(json["release_date"]),
       revenue: json["revenue"],
       runtime: json["runtime"],
       spokenLanguages: json["spoken_languages"] == null

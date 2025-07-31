@@ -14,7 +14,7 @@ import 'package:imdb_app/features/home/credits_page.dart';
 import 'package:imdb_app/features/home/movies_page.dart';
 import 'package:imdb_app/features/home/movie_page.dart';
 import 'package:imdb_app/features/profile/markdown_viewer.dart';
-import 'package:imdb_app/screens/browser.dart';
+import 'package:imdb_app/features/browser/browser.dart';
 import 'package:imdb_app/screens/discover.dart';
 import 'package:imdb_app/features/home/home.dart';
 import 'package:imdb_app/features/profile/profile.dart';

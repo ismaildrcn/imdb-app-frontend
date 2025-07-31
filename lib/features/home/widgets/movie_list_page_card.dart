@@ -5,9 +5,9 @@ import 'package:imdb_app/data/services/constant/api_constants.dart';
 import 'package:imdb_app/features/home/utils/image_utils.dart';
 import 'package:intl/intl.dart';
 
-class MovieListCard extends StatelessWidget {
+class MovieListPageCard extends StatelessWidget {
   final MovieModel movie;
-  const MovieListCard({super.key, required this.movie});
+  const MovieListPageCard({super.key, required this.movie});
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +117,9 @@ class MovieListCard extends StatelessWidget {
                         color: Colors.grey[500],
                       ),
                       Text(
-                        movie.genres![0].name.toString(),
+                        movie.genres!.isNotEmpty
+                            ? movie.genres![0].name.toString()
+                            : "Unknown",
                         style: TextStyle(color: Colors.grey[500]),
                       ),
                       SizedBox(width: 12),

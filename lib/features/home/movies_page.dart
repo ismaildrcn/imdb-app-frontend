@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
 import 'package:imdb_app/data/model/movie_model.dart';
 import 'package:imdb_app/data/services/movie_service.dart';
-import 'package:imdb_app/features/home/widgets/movie_list_card.dart';
+import 'package:imdb_app/features/home/widgets/movie_list_page_card.dart';
 
 class MoviesPage extends StatefulWidget {
   final String title;
@@ -75,7 +75,7 @@ class _MoviesPageState extends State<MoviesPage> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () => context.push("/movie/${movies[index].id}"),
-                      child: MovieListCard(movie: movies[index]),
+                      child: MovieListPageCard(movie: movies[index]),
                     );
                   },
                 ),
