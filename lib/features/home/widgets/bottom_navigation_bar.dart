@@ -66,8 +66,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           ),
           navigationItem(
             context,
-            icon: Icons.search,
-            activeIcon: Icons.search_rounded,
+            icon: Icons.person_outline,
+            activeIcon: Icons.person,
             label: "Profile",
             isActive: profileRoutes.any(
               (element) => location.startsWith(element),
