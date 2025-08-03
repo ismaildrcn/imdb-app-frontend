@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:imdb_app/app/router.dart';
 import 'package:imdb_app/data/model/credits_model.dart';
@@ -77,6 +79,8 @@ class _CreditsPageState extends State<CreditsPage> {
           onTap: () {
             showDialog(
               context: context,
+              barrierColor: Colors.transparent,
+              barrierDismissible: true,
               builder: (context) => PersonDetailDialog(personId: actor.id),
             );
           },
@@ -123,7 +127,7 @@ class PersonDetailDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final personService = PersonService();
     return Dialog(
-      backgroundColor: Theme.of(context).colorScheme.onSurface,
+      backgroundColor: Colors.transparent,
       child: FutureBuilder<PersonModel>(
         future: personService.fetchPerson(personId: personId),
         builder: (context, snapshot) {
@@ -142,108 +146,145 @@ class PersonDetailDialog extends StatelessWidget {
           }
 
           final person = snapshot.data!;
-          return Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  spacing: 24,
-                  children: [
-                    Container(
-                      width: 125,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: ImageHelper.getImage(
-                            person.profilePath!,
-                            ApiConstants.posterSize.original,
-                          ),
-                          fit: BoxFit.cover,
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+          return Stack(
+            children: [
+              Positioned.fill(
+                child: GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  behavior:
+                      HitTestBehavior.opaque, // Tüm alanı tıklanabilir yap
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                    child: Container(
+                      color: Colors.black.withAlpha(0), // Hafif koyu overlay
                     ),
-                    Expanded(
-                      child: Column(
-                        spacing: 10,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            person.name!,
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 3),
-                          Row(
-                            spacing: 8,
-                            children: [
-                              Icon(
-                                Icons.calendar_month_outlined,
-                                size: 18,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                              person.birthday != null
-                                  ? Text(
-                                      DateFormat(
-                                        'dd/MM/yyyy',
-                                      ).format(person.birthday!),
-                                    )
-                                  : Text("-"),
-                            ],
-                          ),
-                          Row(
-                            spacing: 8,
-                            children: [
-                              Icon(
-                                Icons.location_on_outlined,
-                                size: 18,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                              Expanded(
-                                child: Text(
-                                  person.placeOfBirth ?? "-",
-                                  softWrap: true,
+                  ),
+                ),
+              ),
+              Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: 400,
+                  ), // Maksimum genişlik
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          spacing: 24,
+                          children: [
+                            Container(
+                              width: 125,
+                              height: 150,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: ImageHelper.getImage(
+                                    person.profilePath!,
+                                    ApiConstants.posterSize.original,
+                                  ),
+                                  fit: BoxFit.cover,
                                 ),
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                            ],
-                          ),
-                          Row(
-                            spacing: 8,
-                            children: [
-                              Icon(
-                                Icons.star_rounded,
-                                size: 18,
-                                color: Theme.of(context).colorScheme.primary,
+                            ),
+                            Expanded(
+                              child: Column(
+                                spacing: 10,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    person.name!,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 3),
+                                  Row(
+                                    spacing: 8,
+                                    children: [
+                                      Icon(
+                                        Icons.calendar_month_outlined,
+                                        size: 18,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.primary,
+                                      ),
+                                      person.birthday != null
+                                          ? Text(
+                                              DateFormat(
+                                                'dd/MM/yyyy',
+                                              ).format(person.birthday!),
+                                            )
+                                          : Text("-"),
+                                    ],
+                                  ),
+                                  Row(
+                                    spacing: 8,
+                                    children: [
+                                      Icon(
+                                        Icons.location_on_outlined,
+                                        size: 18,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.primary,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          person.placeOfBirth ?? "-",
+                                          softWrap: true,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    spacing: 8,
+                                    children: [
+                                      Icon(
+                                        Icons.star_rounded,
+                                        size: 18,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.primary,
+                                      ),
+                                      Text(
+                                        "${person.popularity!.toStringAsFixed(1)}/10.0",
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                              Text(
-                                "${person.popularity!.toStringAsFixed(1)}/10.0",
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                            ),
+                          ],
+                        ),
 
-                SizedBox(height: 12),
-                Text(
-                  "Biography",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        SizedBox(height: 12),
+                        Text(
+                          "Biography",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          person.biography!,
+                          maxLines: 10,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                SizedBox(height: 8),
-                Text(
-                  person.biography!,
-                  maxLines: 10,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
+              ),
+            ],
           );
         },
       ),
