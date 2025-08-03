@@ -7,7 +7,7 @@ class VideoService {
   Future<Videos> fetchVideos(movieId) async {
     // try {
     // cast ve crew olmak üzere tüm datalar mevcut
-    final response = await _dio.get('/3/movie/$movieId/videos');
+    final response = await _dio.get('/remote/3/movie/$movieId/videos');
     return Videos.fromJson(response.data);
     // } catch (e) {
     //   rethrow;

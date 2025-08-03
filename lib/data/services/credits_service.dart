@@ -7,7 +7,7 @@ class CreditsService {
   Future<Credits> fetchCredits(movieId) async {
     // try {
     // cast ve crew olmak üzere tüm datalar mevcut
-    final response = await _dio.get('/3/movie/$movieId/credits');
+    final response = await _dio.get('/remote/3/movie/$movieId/credits');
     return Credits.fromJson(response.data);
     // } catch (e) {
     //   rethrow;

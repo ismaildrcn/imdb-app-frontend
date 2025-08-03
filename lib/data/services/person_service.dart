@@ -6,7 +6,7 @@ class PersonService {
 
   Future<PersonModel> fetchPerson({required int personId}) async {
     try {
-      final response = await _dio.get('/3/person/$personId');
+      final response = await _dio.get('/remote/3/person/$personId');
       return PersonModel.fromJson(response.data);
     } catch (e) {
       rethrow;

@@ -13,10 +13,7 @@ class MovieService {
 
   Future<List<MovieModel>> fetchMovies({required String type}) async {
     try {
-      final response = await _dio.get(
-        '/3/movie/$type',
-        queryParameters: {'language': 'en-US', 'page': 1},
-      );
+      final response = await _dio.get('/remote/3/movie/$type');
       return (response.data["results"] as List)
           .map((e) => MovieModel.fromJson(e))
           .toList();
@@ -29,14 +26,11 @@ class MovieService {
     int movieId, {
     String language = 'en-US',
   }) async {
-    // try {
-    final response = await _dio.get(
-      '/3/movie/$movieId',
-      queryParameters: {'language': language},
-    );
-    return MovieModel.fromJson(response.data);
-    // } catch (e) {
-    //   rethrow;
-    // }
+    try {
+      final response = await _dio.get('/remote/3/movie/$movieId');
+      return MovieModel.fromJson(response.data);
+    } catch (e) {
+      rethrow;
+    }
   }
 }
