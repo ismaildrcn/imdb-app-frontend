@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
-import 'package:imdb_app/data/model/movie_model.dart';
+import 'package:imdb_app/data/model/movie/movie_model.dart';
 import 'package:imdb_app/data/services/movie_service.dart';
 import 'package:imdb_app/features/home/widgets/movie_list_page_card.dart';
 

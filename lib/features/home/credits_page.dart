@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:imdb_app/app/router.dart';
-import 'package:imdb_app/data/model/credits_model.dart';
-import 'package:imdb_app/data/model/person_model.dart';
+import 'package:imdb_app/data/model/movie/credits_model.dart';
+import 'package:imdb_app/data/model/movie/person_model.dart';
 import 'package:imdb_app/data/services/constant/api_constants.dart';
 import 'package:imdb_app/data/services/person_service.dart';
 import 'package:imdb_app/features/home/utils/image_utils.dart';

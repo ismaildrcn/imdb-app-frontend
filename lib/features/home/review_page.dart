@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:imdb_app/app/router.dart';
-import 'package:imdb_app/data/model/review_model.dart';
+import 'package:imdb_app/data/model/movie/review_model.dart';
 import 'package:imdb_app/data/services/constant/api_constants.dart';
 import 'package:imdb_app/data/services/reviews_service.dart';
 import 'package:imdb_app/features/home/utils/image_utils.dart';

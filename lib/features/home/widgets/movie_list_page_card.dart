@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:imdb_app/data/model/movie_model.dart';
+import 'package:imdb_app/data/model/movie/movie_model.dart';
 import 'package:imdb_app/data/services/constant/api_constants.dart';
 import 'package:imdb_app/features/home/utils/image_utils.dart';
 import 'package:intl/intl.dart';

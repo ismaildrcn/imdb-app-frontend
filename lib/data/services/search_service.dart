@@ -1,5 +1,5 @@
 import 'package:imdb_app/data/datasources/remote.dart';
-import 'package:imdb_app/data/model/movie_model.dart';
+import 'package:imdb_app/data/model/movie/movie_model.dart';
 import 'package:imdb_app/data/services/movie_service.dart';
 
 class SearchService {

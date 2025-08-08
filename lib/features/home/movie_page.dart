@@ -1,13 +1,13 @@
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
-import 'package:imdb_app/data/model/credits_model.dart';
-import 'package:imdb_app/data/model/review_model.dart';
-import 'package:imdb_app/data/model/video_model.dart';
+import 'package:imdb_app/data/model/movie/credits_model.dart';
+import 'package:imdb_app/data/model/movie/review_model.dart';
+import 'package:imdb_app/data/model/movie/video_model.dart';
 import 'package:imdb_app/data/services/credits_service.dart';
 import 'package:imdb_app/data/services/constant/api_constants.dart';
 import 'package:imdb_app/data/services/movie_service.dart';
 import 'package:flutter/material.dart';
-import 'package:imdb_app/data/model/movie_model.dart';
+import 'package:imdb_app/data/model/movie/movie_model.dart';
 import 'package:imdb_app/data/services/reviews_service.dart';
 import 'package:imdb_app/data/services/video_service.dart';
 import 'package:imdb_app/features/home/utils/image_utils.dart';

@@ -1,5 +1,5 @@
 import 'package:imdb_app/data/datasources/local.dart';
-import 'package:imdb_app/data/model/movie_model.dart';
+import 'package:imdb_app/data/model/movie/movie_model.dart';
 
 class MostPopularMoviesRepository {
   final MostPopularMoviesLocalDataSource localDataSource;

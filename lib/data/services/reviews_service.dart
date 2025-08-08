@@ -1,5 +1,5 @@
 import 'package:imdb_app/data/datasources/remote.dart';
-import 'package:imdb_app/data/model/review_model.dart';
+import 'package:imdb_app/data/model/movie/review_model.dart';
 
 class ReviewsService {
   final _dio = ApiService.instance;

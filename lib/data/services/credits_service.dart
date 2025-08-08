@@ -1,5 +1,5 @@
 import 'package:imdb_app/data/datasources/remote.dart';
-import 'package:imdb_app/data/model/credits_model.dart';
+import 'package:imdb_app/data/model/movie/credits_model.dart';
 
 class CreditsService {
   final _dio = ApiService.instance;
