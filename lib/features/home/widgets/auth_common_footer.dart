@@ -13,7 +13,7 @@ class CommonFooterLinks extends StatelessWidget {
         TextButton(
           onPressed: () => context.push(
             AppRoutes.markdownViewer,
-            extra: 'assets/markdown/legal/conditions_of_use.md',
+            extra: ['assets/markdown/legal/conditions_of_use.md', 'Conditions of Use'],
           ),
           style: TextButton.styleFrom(
             foregroundColor: Theme.of(
@@ -25,7 +25,7 @@ class CommonFooterLinks extends StatelessWidget {
         TextButton(
           onPressed: () => context.push(
             AppRoutes.markdownViewer,
-            extra: 'assets/markdown/legal/privacy_notes.md',
+            extra: ['assets/markdown/legal/privacy_notes.md', 'Privacy Notice'],
           ),
           style: TextButton.styleFrom(
             foregroundColor: Theme.of(

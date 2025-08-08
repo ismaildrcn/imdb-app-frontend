@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: topNavBar(context, null),
+      // appBar: topNavBar(context, null),
       body: SafeArea(
         child: _topRatedMovies.isEmpty
             ? const Center(child: CircularProgressIndicator())
@@ -56,6 +56,7 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   spacing: 12,
                   children: [
+                    _topBar(context),
                     MovieCarousel(movies: _topRatedMovies.sublist(0, 3)),
                     Padding(
                       padding: const EdgeInsets.all(18),
@@ -83,6 +84,47 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
+      ),
+    );
+  }
+
+  Widget _topBar(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+      height: 78,
+      child: Row(
+        spacing: 16,
+        children: [
+          CircleAvatar(
+            radius: 40,
+            backgroundImage: AssetImage("assets/img/ismail-durcan.jpg"),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 4,
+            children: [
+              Text(
+                "Hello, İsmail",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                "Let’s stream your favorite movie",
+                style: TextStyle(color: Colors.grey),
+              ),
+            ],
+          ),
+          Spacer(),
+          Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.onSurface,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(Icons.favorite, color: Colors.red[800], size: 24),
+          ),
+        ],
       ),
     );
   }

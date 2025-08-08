@@ -151,9 +151,12 @@ final appRoutes = GoRouter(
           name: "markdown-viewer",
           path: AppRoutes.markdownViewer,
           pageBuilder: (context, state) {
-            final String markdownAssetPath = state.extra as String;
+            final List markdownContent = state.extra as List;
             return MaterialPage(
-              child: MarkdownViewer(markdownAssetPath: markdownAssetPath),
+              child: MarkdownViewer(
+                markdownAssetPath: markdownContent[0],
+                title: markdownContent[1],
+              ),
             );
           },
         ),

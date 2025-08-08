@@ -12,13 +12,13 @@ class CustomBottomNavigationBar extends StatefulWidget {
 }
 
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
-  static const homeRoutes = [
+  static final homeRoutes = [
     AppRoutes.home,
     AppRoutes.movies,
     AppRoutes.credits,
-    AppRoutes.reviews,
     AppRoutes.upcoming,
-    "/movie",
+    AppRoutes.movie.split("/:").first,
+    AppRoutes.reviews.split("/:").first,
   ];
   static const profileRoutes = [
     AppRoutes.profile,

@@ -217,7 +217,10 @@ class ProfilePage extends StatelessWidget {
                       icon: Icons.notifications,
                       onTap: () => context.push(
                         AppRoutes.markdownViewer,
-                        extra: "assets/markdown/legal/conditions_of_use.md",
+                        extra: [
+                          'assets/markdown/legal/conditions_of_use.md',
+                          'Conditions of Use',
+                        ],
                       ),
                     ),
                     Divider(
@@ -232,7 +235,10 @@ class ProfilePage extends StatelessWidget {
                       icon: Icons.privacy_tip,
                       onTap: () => context.push(
                         AppRoutes.markdownViewer,
-                        extra: "assets/markdown/legal/privacy_policy.md",
+                        extra: [
+                          'assets/markdown/legal/privacy_notes.md',
+                          'Privacy Notes',
+                        ],
                       ),
                     ),
                     Divider(
