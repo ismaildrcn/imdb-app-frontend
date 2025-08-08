@@ -109,7 +109,7 @@ final appRoutes = GoRouter(
           name: "profile",
           path: AppRoutes.profile,
           pageBuilder: (context, state) {
-            return const MaterialPage(child: ProfilePage());
+            return const MaterialPage(child: CreateAccountPage());
           },
         ),
         GoRoute(

@@ -1,7 +1,10 @@
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
+import 'package:imdb_app/data/model/user/user_model.dart';
+import 'package:imdb_app/data/services/user_service.dart';
 import 'package:imdb_app/features/home/widgets/auth_common_footer.dart';
 
 class CreateAccountPage extends StatefulWidget {
@@ -12,15 +15,20 @@ class CreateAccountPage extends StatefulWidget {
 }
 
 class _CreateAccountPageState extends State<CreateAccountPage> {
-  TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final UserService _userService = UserService();
+
   bool isValidEmail = false;
   bool isEmailTouched = false;
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
   bool isRememberMeChecked = false;
+
+  String? fullName;
+  String? email;
+  String? password;
 
   @override
   void initState() {
@@ -59,164 +67,179 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 "Sign up",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              TextFormField(
-                controller: usernameController,
-                decoration: InputDecoration(
-                  labelText: "Username",
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.primary,
+              Form(
+                key: _formKey,
+                child: Column(
+                  spacing: 16,
+                  children: [
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: "Full Name",
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderSide: BorderSide(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSecondary.withAlpha(75),
+                          ),
+                        ),
+                      ),
+                      onSaved: (newValue) {
+                        fullName = newValue!;
+                      },
                     ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide: BorderSide(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSecondary.withAlpha(75),
+                    TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      controller: emailController,
+                      decoration: InputDecoration(
+                        labelText: "Email",
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderSide: BorderSide(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSecondary.withAlpha(75),
+                          ),
+                        ),
+                        errorText: !isValidEmail && isEmailTouched
+                            ? "Invalid email"
+                            : null,
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                        ),
+                      ),
+                      onSaved: (newValue) {
+                        email = newValue!;
+                      },
                     ),
-                  ),
+                    TextFormField(
+                      obscureText: !isPasswordVisible,
+                      keyboardType: TextInputType.visiblePassword,
+                      controller: passwordController,
+                      decoration: InputDecoration(
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isPasswordVisible = !isPasswordVisible;
+                            });
+                          },
+                          child: Icon(
+                            isPasswordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        labelText: "Password",
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderSide: BorderSide(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSecondary.withAlpha(75),
+                          ),
+                        ),
+                      ),
+                      onSaved: (newValue) {
+                        password = newValue!;
+                      },
+                    ),
+                    TextFormField(
+                      obscureText: !isConfirmPasswordVisible,
+                      keyboardType: TextInputType.visiblePassword,
+                      decoration: InputDecoration(
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isConfirmPasswordVisible =
+                                  !isConfirmPasswordVisible;
+                            });
+                          },
+                          child: Icon(
+                            isConfirmPasswordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        labelText: "Confirm Password",
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderSide: BorderSide(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSecondary.withAlpha(75),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: isRememberMeChecked,
+                          checkColor: Theme.of(context).colorScheme.surface,
+                          activeColor: Theme.of(context).colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              isRememberMeChecked = value ?? false;
+                            });
+                          },
+                        ),
+                        const Text("Remember me"),
+                      ],
+                    ),
+                    ElevatedButton(
+                      onPressed: () => submitForm(context),
+                      style: TextButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Theme.of(context).colorScheme.surface,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        minimumSize: Size(double.infinity, 40),
+                      ),
+                      child: const Text("Create Account"),
+                    ),
+                  ],
                 ),
-              ),
-              TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                controller: emailController,
-                decoration: InputDecoration(
-                  labelText: "Email",
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide: BorderSide(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSecondary.withAlpha(75),
-                    ),
-                  ),
-                  errorText: !isValidEmail && isEmailTouched
-                      ? "Invalid email"
-                      : null,
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.error,
-                    ),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.error,
-                    ),
-                  ),
-                ),
-              ),
-              TextFormField(
-                obscureText: !isPasswordVisible,
-                keyboardType: TextInputType.visiblePassword,
-                controller: passwordController,
-                decoration: InputDecoration(
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isPasswordVisible = !isPasswordVisible;
-                      });
-                    },
-                    child: Icon(
-                      isPasswordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                  labelText: "Password",
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide: BorderSide(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSecondary.withAlpha(75),
-                    ),
-                  ),
-                ),
-              ),
-              TextFormField(
-                obscureText: !isConfirmPasswordVisible,
-                keyboardType: TextInputType.visiblePassword,
-                controller: confirmPasswordController,
-                decoration: InputDecoration(
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isConfirmPasswordVisible = !isConfirmPasswordVisible;
-                      });
-                    },
-                    child: Icon(
-                      isConfirmPasswordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                  labelText: "Confirm Password",
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide: BorderSide(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSecondary.withAlpha(75),
-                    ),
-                  ),
-                ),
-              ),
-              Row(
-                children: [
-                  Checkbox(
-                    value: isRememberMeChecked,
-                    checkColor: Theme.of(context).colorScheme.surface,
-                    activeColor: Theme.of(context).colorScheme.primary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        isRememberMeChecked = value ?? false;
-                      });
-                    },
-                  ),
-                  const Text("Remember me"),
-                ],
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  // Implement login functionality here
-                },
-                style: TextButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  foregroundColor: Theme.of(context).colorScheme.surface,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  minimumSize: Size(double.infinity, 40),
-                ),
-                child: const Text("Create Account"),
               ),
               Row(
                 spacing: 16,
@@ -306,5 +329,45 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         ),
       ),
     );
+  }
+
+  Future<AnimatedSnackBar?> submitForm(BuildContext context) async {
+    UserModel user;
+    if (_formKey.currentState!.validate()) {
+      // Save the form data
+      _formKey.currentState!.save();
+      user = UserModel(
+        fullName: fullName!,
+        email: email!,
+        password: password!,
+        role: 'user',
+        avatar: null,
+        phone: null,
+      );
+      debugPrint("Create Account button pressed");
+      await _userService.createUser(user).then((result) {
+        if (result == null || result.statusCode == 500) {
+          debugPrint("Error creating user");
+          return AnimatedSnackBar.material(
+            'Error creating user',
+            type: AnimatedSnackBarType.error,
+          ).show(context);
+        }
+
+        if (result.statusCode == 200) {
+          context.push(AppRoutes.login);
+          return AnimatedSnackBar.material(
+            result.data["message"],
+            type: AnimatedSnackBarType.info,
+          ).show(context);
+        } else if (result.statusCode == 400) {
+          return AnimatedSnackBar.material(
+            result.data["message"],
+            type: AnimatedSnackBarType.warning,
+          ).show(context);
+        }
+      });
+    }
+    return null;
   }
 }

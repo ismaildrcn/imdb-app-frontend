@@ -12,6 +12,10 @@ class ApiService {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
+      validateStatus: (status) {
+        return status != null &&
+            status < 500; // 500 ve üstü hataları exception yap
+      },
     ),
   );
 
