@@ -45,7 +45,12 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             icon: Icons.home_outlined,
             activeIcon: Icons.home,
             label: "Home",
-            isActive: homeRoutes.any((element) => location.startsWith(element)),
+            isActive: homeRoutes.any(
+              (element) =>
+                  location == element ||
+                  location.startsWith(homeRoutes[4]) ||
+                  location.startsWith(homeRoutes[5]),
+            ),
             onTap: () => GoRouter.of(context).go(AppRoutes.home),
           ),
           navigationItem(

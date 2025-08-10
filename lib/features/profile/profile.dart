@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
 import 'package:imdb_app/features/profile/utils/auth_provider.dart';
-import 'package:imdb_app/features/profile/utils/storage.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatelessWidget {
