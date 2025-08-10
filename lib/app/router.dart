@@ -15,13 +15,14 @@ import 'package:imdb_app/features/home/movies_page.dart';
 import 'package:imdb_app/features/home/movie_page.dart';
 import 'package:imdb_app/features/profile/markdown_viewer.dart';
 import 'package:imdb_app/features/browser/browser.dart';
+import 'package:imdb_app/features/profile/utils/auth_provider.dart';
 import 'package:imdb_app/screens/discover.dart';
 import 'package:imdb_app/features/home/home.dart';
 import 'package:imdb_app/features/profile/profile.dart';
 
 class AppRoutes {
   AppRoutes._();
-  static const String home = '/home';
+  static const String home = '/';
   static const String movies = "/movies";
   static const String movie = "/movie/:id";
   static const String credits = "/credits";
@@ -38,15 +39,48 @@ class AppRoutes {
   static const String upcoming = '/upcoming';
 }
 
-final appRoutes = GoRouter(
-  initialLocation: AppRoutes
-      .home, //Uygulama başlatıldığında varsayılan başlangıç konumunu temsil eder.
-  routes: [
+class AppRouter {
+  final AuthProvider authProvider;
+
+  AppRouter(this.authProvider);
+
+  GoRouter get router => GoRouter(
+    refreshListenable: authProvider,
+    redirect: _guardRoutes,
+    routes: _routes,
+  );
+
+  String? _guardRoutes(BuildContext context, GoRouterState state) {
+    final isLoggedIn = authProvider.isAuthenticated;
+    final isLoginPage = state.uri.path == AppRoutes.login;
+
+    if (!isLoggedIn && !isLoginPage) {
+      return AppRoutes.login;
+    }
+
+    if (isLoggedIn && isLoginPage) {
+      return AppRoutes.home;
+    }
+
+    return null;
+  }
+
+  List<RouteBase> get _routes => [
     ShellRoute(
       builder: (context, state, child) {
+        final hideBottomNavigation = [
+          AppRoutes.login,
+          AppRoutes.createAccount,
+          AppRoutes.verifyEmail,
+          AppRoutes.forgotPassword,
+          AppRoutes.resetPassword,
+        ];
+
         return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.surface,
-          bottomNavigationBar: CustomBottomNavigationBar(state: state),
+          bottomNavigationBar: hideBottomNavigation.contains(state.uri.path)
+              ? null
+              : CustomBottomNavigationBar(state: state),
           body: child,
         );
       },
@@ -109,7 +143,7 @@ final appRoutes = GoRouter(
           name: "profile",
           path: AppRoutes.profile,
           pageBuilder: (context, state) {
-            return const MaterialPage(child: CreateAccountPage());
+            return const MaterialPage(child: ProfilePage());
           },
         ),
         GoRoute(
@@ -178,8 +212,8 @@ final appRoutes = GoRouter(
         ),
       ],
     ),
-  ],
-);
+  ];
+}
 
 AppBar topNavBar(BuildContext context, String? title) {
   return AppBar(

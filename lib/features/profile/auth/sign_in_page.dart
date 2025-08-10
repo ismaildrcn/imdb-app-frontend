@@ -1,8 +1,13 @@
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
+import 'package:imdb_app/data/services/user_service.dart';
 import 'package:imdb_app/features/home/widgets/auth_common_footer.dart';
+import 'package:imdb_app/features/profile/utils/auth_provider.dart';
+import 'package:imdb_app/features/profile/utils/auth_response.dart';
+import 'package:provider/provider.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -14,10 +19,16 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final UserService _userService = UserService();
+
   bool isValidEmail = false;
   bool isEmailTouched = false;
   bool isPasswordVisible = false;
   bool isRememberMeChecked = false;
+
+  String? _email;
+  String? _password;
 
   @override
   void initState() {
@@ -56,117 +67,133 @@ class _SignInPageState extends State<SignInPage> {
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 20),
-              TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                controller: emailController,
-                decoration: InputDecoration(
-                  labelText: "Email",
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide: BorderSide(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSecondary.withAlpha(75),
-                    ),
-                  ),
-                  errorText: !isValidEmail && isEmailTouched
-                      ? "Invalid email"
-                      : null,
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.error,
-                    ),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.error,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 16),
-              TextFormField(
-                obscureText: !isPasswordVisible,
-                keyboardType: TextInputType.visiblePassword,
-                controller: passwordController,
-                decoration: InputDecoration(
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isPasswordVisible = !isPasswordVisible;
-                      });
-                    },
-                    child: Icon(
-                      isPasswordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                  labelText: "Password",
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    borderSide: BorderSide(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSecondary.withAlpha(75),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: isRememberMeChecked,
-                        checkColor: Theme.of(context).colorScheme.surface,
-                        activeColor: Theme.of(context).colorScheme.primary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      controller: emailController,
+                      decoration: InputDecoration(
+                        labelText: "Email",
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                         ),
-                        onChanged: (value) {
-                          setState(() {
-                            isRememberMeChecked = value ?? false;
-                          });
-                        },
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderSide: BorderSide(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSecondary.withAlpha(75),
+                          ),
+                        ),
+                        errorText: !isValidEmail && isEmailTouched
+                            ? "Invalid email"
+                            : null,
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                        ),
                       ),
-                      Text("Remember me"),
-                    ],
-                  ),
-                  TextButton(onPressed: () {}, child: Text("Forgot password?")),
-                ],
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  // Implement login functionality here
-                },
-                style: TextButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  foregroundColor: Theme.of(context).colorScheme.surface,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  minimumSize: Size(double.infinity, 40),
+                      onSaved: (newValue) {
+                        _email = newValue;
+                      },
+                    ),
+                    SizedBox(height: 16),
+                    TextFormField(
+                      obscureText: !isPasswordVisible,
+                      keyboardType: TextInputType.visiblePassword,
+                      controller: passwordController,
+                      decoration: InputDecoration(
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isPasswordVisible = !isPasswordVisible;
+                            });
+                          },
+                          child: Icon(
+                            isPasswordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        labelText: "Password",
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderSide: BorderSide(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSecondary.withAlpha(75),
+                          ),
+                        ),
+                      ),
+                      onSaved: (newValue) {
+                        _password = newValue;
+                      },
+                    ),
+                    SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: isRememberMeChecked,
+                              checkColor: Theme.of(context).colorScheme.surface,
+                              activeColor: Theme.of(
+                                context,
+                              ).colorScheme.primary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  isRememberMeChecked = value ?? false;
+                                });
+                              },
+                            ),
+                            Text("Remember me"),
+                          ],
+                        ),
+                        TextButton(
+                          onPressed: () {},
+                          child: Text("Forgot password?"),
+                        ),
+                      ],
+                    ),
+                    ElevatedButton(
+                      onPressed: () => submitForm(context),
+                      style: TextButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Theme.of(context).colorScheme.surface,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        minimumSize: Size(double.infinity, 40),
+                      ),
+                      child: Text("Login"),
+                    ),
+                  ],
                 ),
-                child: Text("Login"),
               ),
               SizedBox(height: 16),
               Row(
@@ -221,5 +248,35 @@ class _SignInPageState extends State<SignInPage> {
         ),
       ),
     );
+  }
+
+  Future<AnimatedSnackBar?> submitForm(BuildContext context) async {
+    if (_formKey.currentState?.validate() ?? false) {
+      _formKey.currentState?.save();
+      // Call the signInUser method from UserService
+      _userService.signInUser(_email!, _password!).then((response) {
+        if (response != null) {
+          if (response.statusCode == 200) {
+            // Handle successful login
+            Provider.of<AuthProvider>(
+              context,
+              listen: false,
+            ).login(AuthResponse.fromJson(response.data));
+            // context.push(AppRoutes.home);
+          }
+          return AnimatedSnackBar.material(
+            response.data["message"],
+            type: response.statusCode == 404
+                ? AnimatedSnackBarType.error
+                : response.statusCode == 401
+                ? AnimatedSnackBarType.warning
+                : AnimatedSnackBarType.success,
+          ).show(context);
+        } else {
+          // Handle login error
+        }
+      });
+    }
+    return null;
   }
 }
