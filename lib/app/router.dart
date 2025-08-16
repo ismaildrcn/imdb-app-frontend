@@ -5,6 +5,9 @@ import 'package:imdb_app/data/model/movie/movie_model.dart';
 import 'package:imdb_app/features/home/review_page.dart';
 import 'package:imdb_app/features/home/upcoming_page.dart';
 import 'package:imdb_app/features/home/widgets/bottom_navigation_bar.dart';
+import 'package:imdb_app/features/onboarding/onboarding_first.dart';
+import 'package:imdb_app/features/onboarding/onboarding_second.dart';
+import 'package:imdb_app/features/onboarding/onboarding_third.dart';
 import 'package:imdb_app/features/profile/auth/create_account_page.dart';
 import 'package:imdb_app/features/profile/auth/forgot_password_page.dart';
 import 'package:imdb_app/features/profile/auth/reset_password_page.dart';
@@ -37,6 +40,9 @@ class AppRoutes {
   static const String markdownViewer = '/markdown-viewer';
   static const String reviews = '/reviews/:id';
   static const String upcoming = '/upcoming';
+  static const String onboardingFirst = '/onboarding-first';
+  static const String onboardingSecond = '/onboarding-second';
+  static const String onboardingThird = '/onboarding-third';
 }
 
 class AppRouter {
@@ -52,13 +58,24 @@ class AppRouter {
 
   String? _guardRoutes(BuildContext context, GoRouterState state) {
     final isLoggedIn = authProvider.isAuthenticated;
-    final isLoginPage = state.uri.path == AppRoutes.login;
+    final currentPath = state.uri.path;
 
-    if (!isLoggedIn && !isLoginPage) {
-      return AppRoutes.login;
+    // Eğer kullanıcı giriş yapmamışsa ve onboarding sayfalarında değilse
+    if (!isLoggedIn) {
+      if (currentPath != AppRoutes.onboardingFirst &&
+          currentPath != AppRoutes.onboardingSecond &&
+          currentPath != AppRoutes.onboardingThird &&
+          currentPath != AppRoutes.login) {
+        return AppRoutes.onboardingFirst;
+      }
     }
 
-    if (isLoggedIn && isLoginPage) {
+    // Eğer kullanıcı giriş yapmışsa
+    if (isLoggedIn &&
+        (currentPath == AppRoutes.onboardingFirst ||
+            currentPath == AppRoutes.onboardingSecond ||
+            currentPath == AppRoutes.onboardingThird ||
+            currentPath == AppRoutes.login)) {
       return AppRoutes.home;
     }
 
@@ -69,6 +86,9 @@ class AppRouter {
     ShellRoute(
       builder: (context, state, child) {
         final hideBottomNavigation = [
+          AppRoutes.onboardingFirst,
+          AppRoutes.onboardingSecond,
+          AppRoutes.onboardingThird,
           AppRoutes.login,
           AppRoutes.createAccount,
           AppRoutes.verifyEmail,
@@ -208,6 +228,27 @@ class AppRouter {
           pageBuilder: (context, state) {
             final List<MovieModel> allMovies = state.extra as List<MovieModel>;
             return MaterialPage(child: UpcomingPage(movies: allMovies));
+          },
+        ),
+        GoRoute(
+          name: "onboarding-first",
+          path: AppRoutes.onboardingFirst,
+          pageBuilder: (context, state) {
+            return MaterialPage(child: OnboardingFirst());
+          },
+        ),
+        GoRoute(
+          name: "onboarding-second",
+          path: AppRoutes.onboardingSecond,
+          pageBuilder: (context, state) {
+            return MaterialPage(child: OnboardingSecond());
+          },
+        ),
+        GoRoute(
+          name: "onboarding-third",
+          path: AppRoutes.onboardingThird,
+          pageBuilder: (context, state) {
+            return MaterialPage(child: OnboardingThird());
           },
         ),
       ],

@@ -51,199 +51,202 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Image.asset("assets/img/imdb-logo.png", height: 55),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(18),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                "Sign in",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 20),
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      controller: emailController,
-                      decoration: InputDecoration(
-                        labelText: "Email",
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                          borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                          borderSide: BorderSide(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onSecondary.withAlpha(75),
-                          ),
-                        ),
-                        errorText: !isValidEmail && isEmailTouched
-                            ? "Invalid email"
-                            : null,
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                          borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.error,
-                          ),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                          borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.error,
-                          ),
-                        ),
-                      ),
-                      onSaved: (newValue) {
-                        _email = newValue;
-                      },
-                    ),
-                    SizedBox(height: 16),
-                    TextFormField(
-                      obscureText: !isPasswordVisible,
-                      keyboardType: TextInputType.visiblePassword,
-                      controller: passwordController,
-                      decoration: InputDecoration(
-                        suffixIcon: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isPasswordVisible = !isPasswordVisible;
-                            });
-                          },
-                          child: Icon(
-                            isPasswordVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                        ),
-                        labelText: "Password",
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                          borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                          borderSide: BorderSide(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onSecondary.withAlpha(75),
-                          ),
-                        ),
-                      ),
-                      onSaved: (newValue) {
-                        _password = newValue;
-                      },
-                    ),
-                    SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Checkbox(
-                              value: isRememberMeChecked,
-                              checkColor: Theme.of(context).colorScheme.surface,
-                              activeColor: Theme.of(
-                                context,
-                              ).colorScheme.primary,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              onChanged: (value) {
-                                setState(() {
-                                  isRememberMeChecked = value ?? false;
-                                });
-                              },
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(18),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  "Sign in",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 20),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        keyboardType: TextInputType.emailAddress,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        controller: emailController,
+                        decoration: InputDecoration(
+                          labelText: "Email",
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.primary,
                             ),
-                            Text("Remember me"),
-                          ],
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            borderSide: BorderSide(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSecondary.withAlpha(75),
+                            ),
+                          ),
+                          errorText: !isValidEmail && isEmailTouched
+                              ? "Invalid email"
+                              : null,
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                          ),
                         ),
-                        TextButton(
-                          onPressed: () {},
-                          child: Text("Forgot password?"),
-                        ),
-                      ],
-                    ),
-                    ElevatedButton(
-                      onPressed: () => submitForm(context),
-                      style: TextButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        foregroundColor: Theme.of(context).colorScheme.surface,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        minimumSize: Size(double.infinity, 40),
+                        onSaved: (newValue) {
+                          _email = newValue;
+                        },
                       ),
-                      child: Text("Login"),
+                      SizedBox(height: 16),
+                      TextFormField(
+                        obscureText: !isPasswordVisible,
+                        keyboardType: TextInputType.visiblePassword,
+                        controller: passwordController,
+                        decoration: InputDecoration(
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isPasswordVisible = !isPasswordVisible;
+                              });
+                            },
+                            child: Icon(
+                              isPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                          labelText: "Password",
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            borderSide: BorderSide(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSecondary.withAlpha(75),
+                            ),
+                          ),
+                        ),
+                        onSaved: (newValue) {
+                          _password = newValue;
+                        },
+                      ),
+                      SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Checkbox(
+                                value: isRememberMeChecked,
+                                checkColor: Theme.of(
+                                  context,
+                                ).colorScheme.surface,
+                                activeColor: Theme.of(
+                                  context,
+                                ).colorScheme.primary,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    isRememberMeChecked = value ?? false;
+                                  });
+                                },
+                              ),
+                              Text("Remember me"),
+                            ],
+                          ),
+                          TextButton(
+                            onPressed: () {},
+                            child: Text("Forgot password?"),
+                          ),
+                        ],
+                      ),
+                      ElevatedButton(
+                        onPressed: () => submitForm(context),
+                        style: TextButton.styleFrom(
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.primary,
+                          foregroundColor: Theme.of(
+                            context,
+                          ).colorScheme.surface,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          minimumSize: Size(double.infinity, 40),
+                        ),
+                        child: Text("Login"),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        thickness: 1,
+                        indent: 5,
+                        endIndent: 10,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Text(
+                        "New to IMDb?",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).colorScheme.onSecondary,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        thickness: 1,
+                        indent: 10,
+                        endIndent: 5,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
                   ],
                 ),
-              ),
-              SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: Divider(
-                      thickness: 1,
-                      indent: 5,
-                      endIndent: 10,
-                      color: Theme.of(context).colorScheme.primary,
+                SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    context.push(AppRoutes.createAccount);
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                    foregroundColor: Theme.of(context).colorScheme.surface,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
                     ),
+                    minimumSize: Size(double.infinity, 40),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Text(
-                      "New to IMDb?",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: Theme.of(context).colorScheme.onSecondary,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Divider(
-                      thickness: 1,
-                      indent: 10,
-                      endIndent: 5,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  context.push(AppRoutes.createAccount);
-                },
-                style: TextButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                  foregroundColor: Theme.of(context).colorScheme.surface,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  minimumSize: Size(double.infinity, 40),
+                  child: Text("Create Account"),
                 ),
-                child: Text("Create Account"),
-              ),
-              SizedBox(height: 16),
-              CommonFooterLinks(),
-            ],
+                SizedBox(height: 16),
+                CommonFooterLinks(),
+              ],
+            ),
           ),
         ),
       ),
