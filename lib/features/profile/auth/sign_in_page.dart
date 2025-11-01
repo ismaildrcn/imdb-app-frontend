@@ -3,6 +3,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
+import 'package:imdb_app/data/datasources/remote.dart';
 import 'package:imdb_app/data/services/user_service.dart';
 import 'package:imdb_app/features/home/widgets/auth_common_footer.dart';
 import 'package:imdb_app/features/profile/utils/auth_provider.dart';
@@ -265,6 +266,7 @@ class _SignInPageState extends State<SignInPage> {
               context,
               listen: false,
             ).login(AuthResponse.fromJson(response.data));
+            ApiService.addTokenInterceptor();
             // context.push(AppRoutes.home);
           }
           return AnimatedSnackBar.material(

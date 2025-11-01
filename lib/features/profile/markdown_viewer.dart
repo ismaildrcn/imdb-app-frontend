@@ -42,7 +42,7 @@ class _MarkdownViewerState extends State<MarkdownViewer> {
                 children: [
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    height: 50,
+                    height: 60,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

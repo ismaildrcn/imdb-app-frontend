@@ -13,7 +13,20 @@ class MovieService {
 
   Future<List<MovieModel>> fetchMovies({required String type}) async {
     try {
-      final response = await _dio.get('/remote/3/movie/$type');
+      final url = '/remote/movie/$type';
+      final response = await _dio.get(url);
+      return (response.data["results"] as List)
+          .map((e) => MovieModel.fromJson(e))
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<MovieModel>> fetchMoviesWithoutToken({required String type}) async {
+    try {
+      final url = '/remote/movie/$type/without-token';
+      final response = await _dio.get(url);
       return (response.data["results"] as List)
           .map((e) => MovieModel.fromJson(e))
           .toList();
@@ -27,7 +40,7 @@ class MovieService {
     String language = 'en-US',
   }) async {
     try {
-      final response = await _dio.get('/remote/3/movie/$movieId');
+      final response = await _dio.get('/remote/movie/$movieId');
       return MovieModel.fromJson(response.data);
     } catch (e) {
       rethrow;

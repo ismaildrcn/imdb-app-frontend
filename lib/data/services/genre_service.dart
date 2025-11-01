@@ -6,7 +6,7 @@ class GenreService {
 
   Future<List<Genres>> fetchGenres() async {
     // try {
-    final response = await _dio.get('/remote/3/genre/movie/list');
+    final response = await _dio.get('/remote/genre/movie/list');
     return (response.data['genres'] as List)
         .map((e) => Genres.fromJson(e))
         .toList();

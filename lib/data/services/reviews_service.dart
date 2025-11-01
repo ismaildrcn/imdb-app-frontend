@@ -7,7 +7,7 @@ class ReviewsService {
   Future<ReviewsModel> fetchReviews(movieId) async {
     // try {
     // cast ve crew olmak üzere tüm datalar mevcut
-    final response = await _dio.get('/remote/3/movie/$movieId/reviews');
+    final response = await _dio.get('/remote/movie/$movieId/reviews');
     return ReviewsModel.fromJson(response.data);
     // } catch (e) {
     //   rethrow;

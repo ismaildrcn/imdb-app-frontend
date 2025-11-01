@@ -36,7 +36,7 @@ class _OnboardingFirstState extends State<OnboardingFirst> {
   }
 
   void loadData() async {
-    final _movies = await movieService.fetchMovies(type: MovieTypes.nowPlaying);
+    final _movies = await movieService.fetchMoviesWithoutToken(type: MovieTypes.nowPlaying);
     if (!mounted) return;
     setState(() {
       movies = _movies;

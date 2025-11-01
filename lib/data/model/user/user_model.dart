@@ -3,12 +3,14 @@ import 'package:imdb_app/data/services/user_service.dart';
 class UserModel {
   final String fullName;
   final String email;
+  final String? phone;
+  final bool? isActive;
+  final bool? isVerified;
+  final String? avatar;
   final String? password;
   final String role;
-  final String? avatar;
-  final String? phone;
+  final String? createdAt;
   final String? token;
-  final String? expires;
 
   UserModel({
     required this.fullName,
@@ -17,8 +19,10 @@ class UserModel {
     required this.role,
     required this.avatar,
     required this.phone,
+    this.isActive,
+    this.isVerified,
+    this.createdAt,
     this.token,
-    this.expires,
   });
 
   static final UserService _userService = UserService();
@@ -31,8 +35,10 @@ class UserModel {
       role: json['role'],
       avatar: json['avatar'],
       phone: json['phone'],
+      isActive: json['is_active'],
+      isVerified: json['is_verified'],
+      createdAt: json['created_at'],
       token: json['token'],
-      expires: json['expires'],
     );
   }
 
@@ -48,13 +54,6 @@ class UserModel {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'full_name': fullName,
-      'email': email,
-      'password': password,
-      'role': role,
-      'avatar': avatar,
-      'phone': phone,
-    };
+    return {'full_name': fullName, 'email': email, 'password': password};
   }
 }

@@ -19,7 +19,7 @@ import 'package:imdb_app/features/home/movie_page.dart';
 import 'package:imdb_app/features/profile/markdown_viewer.dart';
 import 'package:imdb_app/features/browser/browser.dart';
 import 'package:imdb_app/features/profile/utils/auth_provider.dart';
-import 'package:imdb_app/screens/discover.dart';
+import 'package:imdb_app/features/wishlist/wishlist_page.dart';
 import 'package:imdb_app/features/home/home.dart';
 import 'package:imdb_app/features/profile/profile.dart';
 
@@ -43,6 +43,7 @@ class AppRoutes {
   static const String onboardingFirst = '/onboarding-first';
   static const String onboardingSecond = '/onboarding-second';
   static const String onboardingThird = '/onboarding-third';
+  static const String wishlist = '/wishlist';
 }
 
 class AppRouter {
@@ -65,6 +66,7 @@ class AppRouter {
       if (currentPath != AppRoutes.onboardingFirst &&
           currentPath != AppRoutes.onboardingSecond &&
           currentPath != AppRoutes.onboardingThird &&
+          currentPath != AppRoutes.createAccount &&
           currentPath != AppRoutes.login) {
         return AppRoutes.onboardingFirst;
       }
@@ -150,13 +152,6 @@ class AppRouter {
           path: AppRoutes.browser,
           pageBuilder: (context, state) {
             return const MaterialPage(child: BrowserPage());
-          },
-        ),
-        GoRoute(
-          name: "discover",
-          path: AppRoutes.discover,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: DiscoverPage());
           },
         ),
         GoRoute(
@@ -249,6 +244,13 @@ class AppRouter {
           path: AppRoutes.onboardingThird,
           pageBuilder: (context, state) {
             return MaterialPage(child: OnboardingThird());
+          },
+        ),
+        GoRoute(
+          name: "wishlist",
+          path: AppRoutes.wishlist,
+          pageBuilder: (context, state) {
+            return MaterialPage(child: WishlistPage());
           },
         ),
       ],

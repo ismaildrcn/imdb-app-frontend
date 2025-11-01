@@ -10,10 +10,10 @@ class SecureStorage {
     print("Token: ${response.token}");
     await storage.write(key: 'user_token', value: response.token);
     await storage.write(key: 'user_email', value: response.user.email);
-    await storage.write(
-      key: 'expires_at',
-      value: response.expiresAt.toString(),
-    );
+  }
+
+  static Future<String?> getToken() async {
+    return await storage.read(key: 'user_token');
   }
 
   static Future<UserModel?> getUser() async {
@@ -29,6 +29,9 @@ class SecureStorage {
       role: '',
       avatar: '',
       phone: '',
+      isActive: false,
+      isVerified: false,
+      createdAt: '',
       token: token,
     );
   }

@@ -65,9 +65,9 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             context,
             icon: Icons.play_arrow_outlined,
             activeIcon: Icons.play_arrow_rounded,
-            label: "Discover",
-            isActive: location == AppRoutes.discover,
-            onTap: () => GoRouter.of(context).go(AppRoutes.discover),
+            label: "Wishlist",
+            isActive: location == AppRoutes.wishlist,
+            onTap: () => GoRouter.of(context).go(AppRoutes.wishlist),
           ),
           navigationItem(
             context,

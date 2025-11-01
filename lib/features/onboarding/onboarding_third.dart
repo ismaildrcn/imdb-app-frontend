@@ -165,7 +165,7 @@ class _OnboardingThirdState extends State<OnboardingThird> {
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(12),
-                color: Color(0xFF252836),
+                color: Theme.of(context).colorScheme.onSurface,
               ),
               child: Column(
                 spacing: 4,
@@ -200,7 +200,7 @@ class _OnboardingThirdState extends State<OnboardingThird> {
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(12),
-                color: Color(0xFF252836),
+                color: Theme.of(context).colorScheme.onSurface,
               ),
               child: Column(
                 spacing: 4,

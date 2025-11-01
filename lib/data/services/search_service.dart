@@ -12,7 +12,7 @@ class SearchService {
     List<MovieModel> temp = [];
     try {
       final response = await _dio.get(
-        '/3/search/movie',
+        '/search/movie',
         queryParameters: {'query': searchText},
       );
       temp = (response.data["results"] as List<dynamic>)
