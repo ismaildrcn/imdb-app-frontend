@@ -38,11 +38,6 @@ class ApiService {
     final baseUrl = dotenv.env["BASE_URL"] ?? "http://localhost";
     final port = dotenv.env["PORT"] ?? "8000";
 
-    // Debug için log ekleyelim
-    print('DEBUG - BASE_URL: $baseUrl');
-    print('DEBUG - PORT: $port');
-
-    // Eğer baseUrl zaten http:// veya https:// ile başlıyorsa, olduğu gibi kullan
     String fullBaseUrl;
     if (baseUrl.startsWith('http://') || baseUrl.startsWith('https://')) {
       fullBaseUrl = baseUrl;
@@ -51,7 +46,6 @@ class ApiService {
     }
 
     final finalUrl = '$fullBaseUrl:$port/v1/api';
-    print('DEBUG - Final API URL: $finalUrl');
     return finalUrl;
   }
 

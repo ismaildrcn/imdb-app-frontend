@@ -23,7 +23,6 @@ class _OnboardingFirstState extends State<OnboardingFirst> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     loadData();
     _startAnimation();

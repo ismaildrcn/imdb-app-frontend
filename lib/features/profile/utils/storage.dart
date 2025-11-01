@@ -7,7 +7,6 @@ class SecureStorage {
   static final storage = FlutterSecureStorage();
 
   static Future<void> saveUser(AuthResponse response) async {
-    print("Token: ${response.token}");
     await storage.write(key: 'user_token', value: response.token);
     await storage.write(key: 'user_email', value: response.user.email);
   }

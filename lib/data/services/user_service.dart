@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:imdb_app/data/datasources/remote.dart';
 import 'package:imdb_app/data/model/user/user_model.dart';
 
@@ -10,7 +11,7 @@ class UserService {
       final response = await _dio.post('/auth/register', data: user.toJson());
       return response;
     } catch (e) {
-      print("Error creating user: $e");
+      debugPrint("Error creating user: $e");
       return null;
     }
   }
@@ -23,7 +24,7 @@ class UserService {
       );
       return response;
     } catch (e) {
-      print("Error signing in user: $e");
+      debugPrint("Error signing in user: $e");
       return null;
     }
   }
@@ -38,7 +39,7 @@ class UserService {
         return UserModel.fromJson(response.data);
       }
     } catch (e) {
-      print("Error fetching user by token: $e");
+      debugPrint("Error fetching user by token: $e");
     }
     return null;
   }
