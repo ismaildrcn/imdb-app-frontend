@@ -1,17 +1,22 @@
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
 import 'package:imdb_app/data/model/movie/credits_model.dart';
 import 'package:imdb_app/data/model/movie/review_model.dart';
 import 'package:imdb_app/data/model/movie/video_model.dart';
+import 'package:imdb_app/data/model/user/user_model.dart';
 import 'package:imdb_app/data/services/credits_service.dart';
 import 'package:imdb_app/data/services/constant/api_constants.dart';
 import 'package:imdb_app/data/services/movie_service.dart';
 import 'package:flutter/material.dart';
 import 'package:imdb_app/data/model/movie/movie_model.dart';
 import 'package:imdb_app/data/services/reviews_service.dart';
+import 'package:imdb_app/data/services/user_service.dart';
 import 'package:imdb_app/data/services/video_service.dart';
 import 'package:imdb_app/features/home/utils/image_utils.dart';
+import 'package:imdb_app/features/profile/utils/auth_provider.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class MoviePage extends StatefulWidget {
@@ -28,12 +33,15 @@ class _MoviePageState extends State<MoviePage> {
   late final CreditsService _creditsService;
   late final ReviewsService _reviewsService;
   late final VideoService _videoService;
+  late final UserService _userService;
+  UserModel? _currentUser;
   YoutubePlayerController? _youtubePlayerController;
   MovieModel? _movie;
   Credits? _credits;
   ReviewsModel? _reviews;
   Videos? _videos;
   double? voteAverage;
+  bool isInWishlist = false;
   Future<void>? _loadDataFuture; // Nullable Future tanımla
 
   @override
@@ -43,6 +51,9 @@ class _MoviePageState extends State<MoviePage> {
     _creditsService = CreditsService();
     _reviewsService = ReviewsService();
     _videoService = VideoService();
+    _userService = UserService();
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    _currentUser = authProvider.user;
     _loadDataFuture = loadData();
   }
 
@@ -54,7 +65,10 @@ class _MoviePageState extends State<MoviePage> {
   }
 
   Future<void> loadData() async {
-    final movie = await _movieService.fetchMovie(widget.movieId);
+    final movie = await _movieService.fetchMovie(
+      widget.movieId,
+      userId: _currentUser?.id,
+    );
     final credits = await _creditsService.fetchCredits(widget.movieId);
     final reviews = await _reviewsService.fetchReviews(widget.movieId);
     if (widget.hasVideo == true) {
@@ -69,7 +83,7 @@ class _MoviePageState extends State<MoviePage> {
       _movie = movie;
       _credits = credits;
       _reviews = reviews;
-
+      isInWishlist = movie.isInWishlist ?? false;
       voteAverage = _movie!.voteAverage! / 2;
     });
   }
@@ -205,7 +219,7 @@ class _MoviePageState extends State<MoviePage> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () => checkIsInWishlist(context),
                     child: Container(
                       padding: const EdgeInsets.all(7),
                       decoration: BoxDecoration(
@@ -214,7 +228,9 @@ class _MoviePageState extends State<MoviePage> {
                         ).colorScheme.surface.withAlpha(64),
                         borderRadius: BorderRadius.circular(25),
                       ),
-                      child: Icon(Icons.bookmark_border, size: 30),
+                      child: isInWishlist
+                          ? Icon(Icons.bookmark, size: 30, color: Colors.red)
+                          : Icon(Icons.bookmark_border, size: 30),
                     ),
                   ),
                 ],
@@ -575,5 +591,47 @@ class _MoviePageState extends State<MoviePage> {
         ],
       ),
     );
+  }
+
+  Future<void> checkIsInWishlist(context) async {
+    if (isInWishlist) {
+      final response = await _userService.removeFromWishlist(
+        _currentUser!.id!,
+        _movie!.id,
+      );
+      if (response?.statusCode == 200) {
+        AnimatedSnackBar.material(
+          "Removed from wishlist",
+          type: AnimatedSnackBarType.info,
+        ).show(context);
+        setState(() {
+          isInWishlist = false;
+        });
+      } else {
+        AnimatedSnackBar.material(
+          "Failed to remove from wishlist",
+          type: AnimatedSnackBarType.error,
+        ).show(context);
+      }
+    } else {
+      final response = await _userService.addToWishlist(
+        _currentUser!.id!,
+        _movie!.id,
+      );
+      if (response?.statusCode == 200) {
+        AnimatedSnackBar.material(
+          "Added to wishlist",
+          type: AnimatedSnackBarType.info,
+        ).show(context);
+        setState(() {
+          isInWishlist = true;
+        });
+      } else {
+        AnimatedSnackBar.material(
+          "Failed to add to wishlist",
+          type: AnimatedSnackBarType.error,
+        ).show(context);
+      }
+    }
   }
 }

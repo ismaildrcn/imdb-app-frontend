@@ -26,6 +26,7 @@ class MovieModel {
   final bool? video;
   final double? voteAverage;
   final int? voteCount;
+  final bool? isInWishlist;
 
   MovieModel({
     required this.id,
@@ -55,6 +56,7 @@ class MovieModel {
     required this.video,
     required this.voteAverage,
     required this.voteCount,
+    this.isInWishlist,
   });
 
   factory MovieModel.fromJson(Map<String, dynamic> json) {
@@ -112,6 +114,7 @@ class MovieModel {
       video: json["video"],
       voteAverage: json["vote_average"].toDouble(),
       voteCount: json["vote_count"],
+      isInWishlist: json["is_in_wishlist"],
     );
   }
 }

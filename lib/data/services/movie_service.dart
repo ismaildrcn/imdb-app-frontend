@@ -39,10 +39,14 @@ class MovieService {
 
   Future<MovieModel> fetchMovie(
     int movieId, {
+    int? userId,
     String language = 'en-US',
   }) async {
     try {
-      final response = await _dio.get('/remote/movie/$movieId');
+      final response = await _dio.get(
+        '/remote/movie/$movieId',
+        queryParameters: {if (userId != null) 'user_id': userId},
+      );
       return MovieModel.fromJson(response.data);
     } catch (e) {
       rethrow;

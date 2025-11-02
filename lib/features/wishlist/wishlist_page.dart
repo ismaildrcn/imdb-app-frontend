@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:imdb_app/app/router.dart';
 import 'package:imdb_app/data/model/user/user_model.dart';
+import 'package:imdb_app/data/services/constant/api_constants.dart';
 import 'package:imdb_app/data/services/user_service.dart';
-import 'package:imdb_app/features/profile/utils/storage.dart';
+import 'package:imdb_app/features/home/utils/image_utils.dart';
 import 'package:imdb_app/data/model/movie/movie_model.dart';
+import 'package:imdb_app/features/profile/utils/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class WishlistPage extends StatefulWidget {
   const WishlistPage({super.key});
@@ -16,15 +20,13 @@ class _WishlistPageState extends State<WishlistPage> {
   UserService userService = UserService();
   UserModel? currentUser;
   List<MovieModel> wishlistItems = [];
+  AuthProvider authProvider = AuthProvider();
   @override
   void initState() {
     super.initState();
-    SecureStorage.getUser().then((user) {
-      setState(() {
-        currentUser = user;
-        fetchWishlist();
-      });
-    });
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    currentUser = authProvider.user;
+    fetchWishlist();
   }
 
   Future<void> fetchWishlist() async {
@@ -51,7 +53,7 @@ class _WishlistPageState extends State<WishlistPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
-                    onTap: () => context.pop(),
+                    onTap: () => context.push(AppRoutes.home),
                     child: Container(
                       width: 32,
                       height: 32,
@@ -129,55 +131,71 @@ class _WishlistPageState extends State<WishlistPage> {
         color: Theme.of(context).colorScheme.onSurface,
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          spacing: 16,
-          children: [
-            Container(
-              width: 120,
-              height: 90,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/img/rectangle.png"),
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            Expanded(
-              child: Column(
-                spacing: 4,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Action"),
-                  Text(
-                    movie.title ?? "Movie Title",
-                    maxLines: 2,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+      child: GestureDetector(
+        onTap: () => context.push("/movie/${movie.id}"),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            spacing: 16,
+            children: [
+              Container(
+                width: 120,
+                height: 90,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: ImageHelper.getImage(
+                      movie.posterPath,
+                      ApiConstants.posterSize.m,
                     ),
+                    fit: BoxFit.cover,
                   ),
-                  Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Movie", style: TextStyle(color: Colors.white38)),
-                      const SizedBox(width: 6),
-                      Icon(Icons.star_rounded, color: Colors.yellow, size: 16),
-                      SizedBox(width: 4),
-                      Text("4.5", style: TextStyle(color: Colors.yellow)),
-                      Expanded(child: SizedBox()),
-                      Icon(Icons.favorite, color: Colors.red, size: 24),
-                    ],
-                  ),
-                ],
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
-            ),
-          ],
+              Expanded(
+                child: Column(
+                  spacing: 4,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      movie.genres![0].name,
+                      style: TextStyle(color: Colors.white38),
+                    ),
+                    Text(
+                      movie.title ?? "Title",
+                      maxLines: 2,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Spacer(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Movie", style: TextStyle(color: Colors.white38)),
+                        const SizedBox(width: 6),
+                        Icon(
+                          Icons.star_rounded,
+                          color: Colors.yellow,
+                          size: 16,
+                        ),
+                        SizedBox(width: 4),
+                        Text(
+                          (movie.voteAverage! / 2).toStringAsFixed(1),
+                          style: TextStyle(color: Colors.yellow),
+                        ),
+                        Expanded(child: SizedBox()),
+                        Icon(Icons.bookmark, color: Colors.red, size: 24),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
