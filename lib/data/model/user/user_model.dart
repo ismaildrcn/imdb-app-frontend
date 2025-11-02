@@ -1,6 +1,5 @@
-import 'package:imdb_app/data/services/user_service.dart';
-
 class UserModel {
+  final int? id;
   final String fullName;
   final String email;
   final String? phone;
@@ -13,6 +12,7 @@ class UserModel {
   final String? token;
 
   UserModel({
+    this.id,
     required this.fullName,
     required this.email,
     required this.password,
@@ -25,10 +25,9 @@ class UserModel {
     this.token,
   });
 
-  static final UserService _userService = UserService();
-
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
+      id: json['id'],
       fullName: json['full_name'],
       email: json['email'],
       password: json['password'],
@@ -42,18 +41,17 @@ class UserModel {
     );
   }
 
-  static Future<UserModel?> fromToken(String token) async {
-    // Token ile kullanıcı bilgilerini al
-
-    final user = await _userService.getUserByToken(token);
-    if (user != null) {
-      return user;
-    } else {
-      throw Exception('Failed to load user');
-    }
-  }
-
   Map<String, dynamic> toJson() {
-    return {'full_name': fullName, 'email': email, 'password': password};
+    return {
+      'id': id,
+      'full_name': fullName,
+      'email': email,
+      'role': role,
+      'avatar': avatar,
+      'phone': phone,
+      'is_active': isActive,
+      'is_verified': isVerified,
+      'created_at': createdAt,
+    };
   }
 }

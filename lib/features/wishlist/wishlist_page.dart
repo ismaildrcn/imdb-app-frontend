@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:imdb_app/data/model/user/user_model.dart';
+import 'package:imdb_app/data/services/user_service.dart';
+import 'package:imdb_app/features/profile/utils/storage.dart';
+import 'package:imdb_app/data/model/movie/movie_model.dart';
 
 class WishlistPage extends StatefulWidget {
   const WishlistPage({super.key});
@@ -9,16 +13,29 @@ class WishlistPage extends StatefulWidget {
 }
 
 class _WishlistPageState extends State<WishlistPage> {
-  final List<String> wishlistItems = [
-    "Inception",
-    "The Dark Knight",
-    "Interstellar",
-    "Pulp Fiction",
-    "The Shawshank Redemption",
-  ];
+  UserService userService = UserService();
+  UserModel? currentUser;
+  List<MovieModel> wishlistItems = [];
   @override
   void initState() {
     super.initState();
+    SecureStorage.getUser().then((user) {
+      setState(() {
+        currentUser = user;
+        fetchWishlist();
+      });
+    });
+  }
+
+  Future<void> fetchWishlist() async {
+    final response = await userService.getWishlist(currentUser!.id!);
+    if (response != null) {
+      setState(() {
+        wishlistItems = (response.data ?? [])
+            .map<MovieModel>((item) => MovieModel.fromJson(item))
+            .toList();
+      });
+    }
   }
 
   @override
@@ -57,6 +74,7 @@ class _WishlistPageState extends State<WishlistPage> {
                 ],
               ),
             ),
+
             wishlistItems.isNotEmpty
                 ? Expanded(
                     child: ListView.separated(
@@ -66,119 +84,99 @@ class _WishlistPageState extends State<WishlistPage> {
                       itemCount: wishlistItems.length,
                       itemBuilder: (context, index) {
                         final movie = wishlistItems[index];
-                        return Container(
-                          height: 107,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.onSurface,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Row(
-                              spacing: 16,
-                              children: [
-                                Container(
-                                  width: 120,
-                                  height: 85,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                        "assets/img/rectangle.png",
-                                      ),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    spacing: 4,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text("Action"),
-                                      Text(
-                                        movie,
-                                        maxLines: 2,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Movie",
-                                            style: TextStyle(
-                                              color: Colors.white38,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 6),
-                                          Icon(
-                                            Icons.star_rounded,
-                                            color: Colors.yellow,
-                                            size: 16,
-                                          ),
-                                          SizedBox(width: 4),
-                                          Text(
-                                            "4.5",
-                                            style: TextStyle(
-                                              color: Colors.yellow,
-                                            ),
-                                          ),
-                                          Expanded(child: SizedBox()),
-                                          Icon(
-                                            Icons.favorite,
-                                            color: Colors.red,
-                                            size: 24,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
+                        return wishlistCard(context, movie);
                       },
                     ),
                   )
-                : Expanded(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(maxWidth: 230),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              "assets/img/magic-box.png",
-                              width: 76,
-                              height: 76,
-                            ),
-                            SizedBox(height: 16),
-                            Text(
-                              "There is no movie yet!",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 16),
-                            Text(
-                              "Find your movie by Type title, categories, years, etc.",
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
+                : noMovieContainer(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Expanded noMovieContainer() {
+    return Expanded(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: 230),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset("assets/img/magic-box.png", width: 76, height: 76),
+              SizedBox(height: 16),
+              Text(
+                "There is no movie yet!",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 16),
+              Text(
+                "Find your movie by Type title, categories, years, etc.",
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container wishlistCard(BuildContext context, MovieModel movie) {
+    return Container(
+      height: 120,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.onSurface,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          spacing: 16,
+          children: [
+            Container(
+              width: 120,
+              height: 90,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/img/rectangle.png"),
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            Expanded(
+              child: Column(
+                spacing: 4,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Action"),
+                  Text(
+                    movie.title ?? "Movie Title",
+                    maxLines: 2,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
+                  Spacer(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Movie", style: TextStyle(color: Colors.white38)),
+                      const SizedBox(width: 6),
+                      Icon(Icons.star_rounded, color: Colors.yellow, size: 16),
+                      SizedBox(width: 4),
+                      Text("4.5", style: TextStyle(color: Colors.yellow)),
+                      Expanded(child: SizedBox()),
+                      Icon(Icons.favorite, color: Colors.red, size: 24),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

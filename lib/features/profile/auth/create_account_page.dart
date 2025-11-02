@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
 import 'package:imdb_app/data/model/user/user_model.dart';
-import 'package:imdb_app/data/services/user_service.dart';
+import 'package:imdb_app/data/services/auth_service.dart';
 import 'package:imdb_app/features/home/widgets/auth_common_footer.dart';
 
 class CreateAccountPage extends StatefulWidget {
@@ -18,7 +18,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final UserService _userService = UserService();
+  final AuthService _authService = AuthService();
 
   bool isValidEmail = false;
   bool isEmailTouched = false;
@@ -345,7 +345,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         phone: null,
       );
       debugPrint("Create Account button pressed");
-      await _userService.createUser(user).then((result) {
+      await _authService.createUser(user).then((result) {
         if (result == null || result.statusCode == 500) {
           debugPrint("Error creating user");
           return AnimatedSnackBar.material(

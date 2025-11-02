@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:imdb_app/data/datasources/remote.dart';
 import 'package:imdb_app/data/model/user/user_model.dart';
 import 'package:imdb_app/features/profile/utils/auth_response.dart';
 import 'package:imdb_app/features/profile/utils/storage.dart';
@@ -13,6 +14,10 @@ class AuthProvider with ChangeNotifier {
   Future<void> checkAuthStatus() async {
     _user = await SecureStorage.getUser();
     _isAuthenticated = _user != null;
+    // İlk açılışta auth kontrolünde user varsa token interceptor ekle
+    if (_isAuthenticated) {
+      ApiService.addTokenInterceptor();
+    }
     notifyListeners();
   }
 

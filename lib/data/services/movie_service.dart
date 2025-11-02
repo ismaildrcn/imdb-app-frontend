@@ -23,7 +23,9 @@ class MovieService {
     }
   }
 
-  Future<List<MovieModel>> fetchMoviesWithoutToken({required String type}) async {
+  Future<List<MovieModel>> fetchMoviesWithoutToken({
+    required String type,
+  }) async {
     try {
       final url = '/remote/movie/$type/without-token';
       final response = await _dio.get(url);

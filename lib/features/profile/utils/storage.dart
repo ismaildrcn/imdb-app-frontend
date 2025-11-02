@@ -1,38 +1,35 @@
+import 'dart:convert';
+
 import 'package:imdb_app/data/model/user/user_model.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:imdb_app/features/profile/utils/auth_response.dart';
 
 class SecureStorage {
+  static const _userKey = 'user';
+  static const _tokenKey = 'token';
+
   static final storage = FlutterSecureStorage();
 
   static Future<void> saveUser(AuthResponse response) async {
-    await storage.write(key: 'user_token', value: response.token);
-    await storage.write(key: 'user_email', value: response.user.email);
+    await storage.write(key: _tokenKey, value: response.token);
+    await storage.write(
+      key: _userKey,
+      value: jsonEncode(response.user.toJson()),
+    );
   }
 
   static Future<String?> getToken() async {
-    return await storage.read(key: 'user_token');
+    return await storage.read(key: _tokenKey);
   }
 
   static Future<UserModel?> getUser() async {
-    final token = await storage.read(key: 'user_token');
-    final email = await storage.read(key: 'user_email');
+    final token = await storage.read(key: _tokenKey);
+    final user = await storage.read(key: _userKey);
 
-    if (token == null || email == null) return null;
+    if (token == null || user == null) return null;
 
-    return UserModel(
-      fullName: '',
-      email: email,
-      password: '',
-      role: '',
-      avatar: '',
-      phone: '',
-      isActive: false,
-      isVerified: false,
-      createdAt: '',
-      token: token,
-    );
+    return UserModel.fromJson(jsonDecode(user));
   }
 
   static Future<void> clearAll() async {
