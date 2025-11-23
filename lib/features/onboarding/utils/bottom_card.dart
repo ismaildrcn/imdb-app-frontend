@@ -30,14 +30,14 @@ class OnboardingBottomCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(32),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withAlpha(25),
               blurRadius: 10,
               offset: Offset(0, 5),
             ),
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(32),
+          padding: const EdgeInsets.all(28),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,

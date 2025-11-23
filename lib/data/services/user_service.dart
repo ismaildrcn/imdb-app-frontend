@@ -1,45 +1,40 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:imdb_app/data/datasources/remote.dart';
-import 'package:imdb_app/data/model/user/user_model.dart';
 
 class UserService {
   final _dio = ApiService.instance;
 
-  Future<Response?> createUser(UserModel user) async {
+  Future<Response?> getWishlist(int userId) async {
     try {
-      final response = await _dio.post('/auth/register', data: user.toJson());
+      final response = await _dio.get('/user/$userId/wishlist');
       return response;
     } catch (e) {
-      print("Error creating user: $e");
+      debugPrint("Error fetching wishlist: $e");
       return null;
     }
   }
 
-  Future<Response?> signInUser(String email, String password) async {
+  Future<Response?> addToWishlist(int userId, int movieId) async {
     try {
       final response = await _dio.post(
-        '/auth/login',
-        data: {'email': email, 'password': password},
+        '/user/$userId/wishlist',
+        data: {'movie_id': movieId},
       );
       return response;
     } catch (e) {
-      print("Error signing in user: $e");
+      debugPrint("Error adding to wishlist: $e");
       return null;
     }
   }
 
-  Future<UserModel?> getUserByToken(String token) async {
+  Future<Response?> removeFromWishlist(int userId, int movieId) async {
     try {
-      final response = await _dio.get(
-        '/auth/me',
-        options: Options(headers: {'Authorization': 'Bearer $token'}),
-      );
-      if (response.statusCode == 200) {
-        return UserModel.fromJson(response.data);
-      }
+      final response = await _dio.delete('/user/$userId/wishlist/$movieId');
+      return response;
     } catch (e) {
-      print("Error fetching user by token: $e");
+      debugPrint("Error removing from wishlist: $e");
+      return null;
     }
-    return null;
   }
 }

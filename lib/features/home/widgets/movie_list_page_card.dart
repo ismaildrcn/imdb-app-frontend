@@ -94,7 +94,9 @@ class MovieListPageCard extends StatelessWidget {
                         color: Colors.grey[500],
                       ),
                       Text(
-                        DateFormat('MMM yyyy').format(movie.releaseDate!),
+                        movie.releaseDate != null
+                            ? DateFormat('MMM yyyy').format(movie.releaseDate!)
+                            : 'N/A',
                         style: TextStyle(color: Colors.grey[500]),
                       ),
                     ],

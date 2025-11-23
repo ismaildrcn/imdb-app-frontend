@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
 import 'package:imdb_app/data/datasources/remote.dart';
-import 'package:imdb_app/data/services/user_service.dart';
+import 'package:imdb_app/data/services/auth_service.dart';
 import 'package:imdb_app/features/home/widgets/auth_common_footer.dart';
 import 'package:imdb_app/features/profile/utils/auth_provider.dart';
 import 'package:imdb_app/features/profile/utils/auth_response.dart';
@@ -21,7 +21,7 @@ class _SignInPageState extends State<SignInPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final UserService _userService = UserService();
+  final AuthService _authService = AuthService();
 
   bool isValidEmail = false;
   bool isEmailTouched = false;
@@ -257,8 +257,8 @@ class _SignInPageState extends State<SignInPage> {
   Future<AnimatedSnackBar?> submitForm(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
       _formKey.currentState?.save();
-      // Call the signInUser method from UserService
-      _userService.signInUser(_email!, _password!).then((response) {
+      // Call the signInUser method from AuthService
+      _authService.signInUser(_email!, _password!).then((response) {
         if (response != null) {
           if (response.statusCode == 200) {
             // Handle successful login
