@@ -12,9 +12,12 @@ class SearchService {
     List<MovieModel> temp = [];
     try {
       final response = await _dio.get(
-        '/search/movie',
+        '/remote/search/movie',
         queryParameters: {'query': searchText},
       );
+      if (response.data["results"] == null) {
+        return [];
+      }
       temp = (response.data["results"] as List<dynamic>)
           .map((e) => MovieModel.fromJson(e as Map<String, dynamic>))
           .toList();
