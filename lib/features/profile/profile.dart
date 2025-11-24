@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
+import 'package:imdb_app/app/theme_manager.dart';
 import 'package:imdb_app/features/profile/utils/auth_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -70,217 +71,48 @@ class ProfilePage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                "İsmail DURCAN",
+                                "Welcome",
                                 style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
+                                  fontSize: 15,
+                                  color: Colors.white.withAlpha(180),
                                 ),
                               ),
                               Text(
-                                "ismailonlycoder@gmail.com",
+                                "İsmail DURCAN",
                                 style: TextStyle(
                                   fontSize: 16,
-                                  color: Colors.white.withAlpha(180),
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ],
                           ),
                           Spacer(),
-                          Icon(
-                            Icons.edit,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 24,
+                          GestureDetector(
+                            onTap: () {
+                              Provider.of<AuthProvider>(
+                                context,
+                                listen: false,
+                              ).logout();
+                            },
+                            child: Icon(
+                              Icons.logout,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 24,
+                            ),
                           ),
                         ],
                       ),
                     ),
 
                     // Account Area
-                    Container(
-                      padding: const EdgeInsets.all(23),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        borderRadius: BorderRadius.circular(16),
-                        border: BoxBorder.all(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.onSurface.withAlpha(128),
-                          width: 2,
-                          style: BorderStyle.solid,
-                          strokeAlign: 0.7,
-                        ),
-                      ),
-                      child: Column(
-                        spacing: 16,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Account",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 22,
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          subProfileContent(
-                            context,
-                            title: "Member",
-                            icon: Icons.person_pin_rounded,
-                            onTap: () {},
-                            iconColor: Theme.of(context).colorScheme.primary,
-                          ),
-                          Divider(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onSurface.withAlpha(180),
-                            thickness: 1.5,
-                          ),
-                          subProfileContent(
-                            context,
-                            title: "Change Password",
-                            icon: Icons.lock,
-                            onTap: () {},
-                          ),
-                        ],
-                      ),
-                    ),
+                    profileAccountContent(context),
 
                     // General Area
-                    Container(
-                      padding: const EdgeInsets.all(23),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        borderRadius: BorderRadius.circular(16),
-                        border: BoxBorder.all(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.onSurface.withAlpha(128),
-                          width: 2,
-                          style: BorderStyle.solid,
-                          strokeAlign: 0.7,
-                        ),
-                      ),
-                      child: Column(
-                        spacing: 16,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "General",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 22,
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          subProfileContent(
-                            context,
-                            title: "Notifications",
-                            icon: Icons.notifications,
-                            onTap: () {},
-                          ),
-                          Divider(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onSurface.withAlpha(180),
-                            thickness: 1.5,
-                          ),
-                          subProfileContent(
-                            context,
-                            title: "Language",
-                            icon: Icons.language,
-                            onTap: () {},
-                          ),
-                        ],
-                      ),
-                    ),
+                    profileGeneralContent(context),
 
                     // More Area
-                    Container(
-                      padding: const EdgeInsets.all(23),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        borderRadius: BorderRadius.circular(16),
-                        border: BoxBorder.all(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.onSurface.withAlpha(128),
-                          width: 2,
-                          style: BorderStyle.solid,
-                          strokeAlign: 0.7,
-                        ),
-                      ),
-                      child: Column(
-                        spacing: 16,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "More",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 22,
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          subProfileContent(
-                            context,
-                            title: "Conditions of Use",
-                            icon: Icons.notifications,
-                            onTap: () => context.push(
-                              AppRoutes.markdownViewer,
-                              extra: [
-                                'assets/markdown/legal/conditions_of_use.md',
-                                'Conditions of Use',
-                              ],
-                            ),
-                          ),
-                          Divider(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onSurface.withAlpha(180),
-                            thickness: 1.5,
-                          ),
-                          subProfileContent(
-                            context,
-                            title: "Privay Notes",
-                            icon: Icons.privacy_tip,
-                            onTap: () => context.push(
-                              AppRoutes.markdownViewer,
-                              extra: [
-                                'assets/markdown/legal/privacy_notes.md',
-                                'Privacy Notes',
-                              ],
-                            ),
-                          ),
-                          Divider(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onSurface.withAlpha(180),
-                            thickness: 1.5,
-                          ),
-                          subProfileContent(
-                            context,
-                            title: "Help  & Feedback",
-                            icon: Icons.help,
-                            onTap: () {},
-                          ),
-                          Divider(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onSurface.withAlpha(180),
-                            thickness: 1.5,
-                          ),
-                          subProfileContent(
-                            context,
-                            title: "About Us",
-                            icon: Icons.info,
-                            onTap: () {},
-                          ),
-                        ],
-                      ),
-                    ),
+                    profileMoreContent(context),
+
                     OutlinedButton(
                       onPressed: () {
                         Provider.of<AuthProvider>(
@@ -312,6 +144,192 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
+  Widget profileAccountContent(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(23),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: BoxBorder.all(
+          color: Theme.of(context).colorScheme.onSurface.withAlpha(128),
+          width: 2,
+          style: BorderStyle.solid,
+          strokeAlign: 0.7,
+        ),
+      ),
+      child: Column(
+        spacing: 16,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Account",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+          ),
+          SizedBox(height: 8),
+          subProfileContent(
+            context,
+            title: "User Profile",
+            icon: Icons.person_pin_rounded,
+            onTap: () {
+              debugPrint("User Profile Tapped");
+              context.push(AppRoutes.userEdit);
+            },
+            iconColor: Theme.of(context).colorScheme.primary,
+          ),
+          Divider(
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(180),
+            thickness: 1.5,
+          ),
+          subProfileContent(
+            context,
+            title: "Change Password",
+            icon: Icons.lock,
+            onTap: () {},
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget profileGeneralContent(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(23),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: BoxBorder.all(
+          color: Theme.of(context).colorScheme.onSurface.withAlpha(128),
+          width: 2,
+          style: BorderStyle.solid,
+          strokeAlign: 0.7,
+        ),
+      ),
+      child: Column(
+        spacing: 16,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "General",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+          ),
+          SizedBox(height: 8),
+          subProfileContent(
+            context,
+            title: "Change Theme",
+            icon: Icons.view_carousel_rounded,
+            onTap: () {
+              final themeManager = Provider.of<ThemeManager>(
+                context,
+                listen: false,
+              );
+              themeManager.toggleTheme(
+                themeManager.themeMode != ThemeMode.dark,
+              );
+            },
+          ),
+          Divider(
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(180),
+            thickness: 1.5,
+          ),
+          subProfileContent(
+            context,
+            title: "Notifications",
+            icon: Icons.notifications,
+            onTap: () {},
+          ),
+          Divider(
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(180),
+            thickness: 1.5,
+          ),
+          subProfileContent(
+            context,
+            title: "Language",
+            icon: Icons.language,
+            onTap: () {},
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget profileMoreContent(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(23),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: BoxBorder.all(
+          color: Theme.of(context).colorScheme.onSurface.withAlpha(128),
+          width: 2,
+          style: BorderStyle.solid,
+          strokeAlign: 0.7,
+        ),
+      ),
+      child: Column(
+        spacing: 16,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "More",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+          ),
+          SizedBox(height: 8),
+          subProfileContent(
+            context,
+            title: "Conditions of Use",
+            icon: Icons.notifications,
+            onTap: () => context.push(
+              AppRoutes.markdownViewer,
+              extra: [
+                'assets/markdown/legal/conditions_of_use.md',
+                'Conditions of Use',
+              ],
+            ),
+          ),
+          Divider(
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(180),
+            thickness: 1.5,
+          ),
+          subProfileContent(
+            context,
+            title: "Privay Notes",
+            icon: Icons.privacy_tip,
+            onTap: () => context.push(
+              AppRoutes.markdownViewer,
+              extra: [
+                'assets/markdown/legal/privacy_notes.md',
+                'Privacy Notes',
+              ],
+            ),
+          ),
+          Divider(
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(180),
+            thickness: 1.5,
+          ),
+          subProfileContent(
+            context,
+            title: "Help  & Feedback",
+            icon: Icons.help,
+            onTap: () {},
+          ),
+          Divider(
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(180),
+            thickness: 1.5,
+          ),
+          subProfileContent(
+            context,
+            title: "About Us",
+            icon: Icons.info,
+            onTap: () {},
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget subProfileContent(
     BuildContext context, {
     required String title,
@@ -319,20 +337,17 @@ class ProfilePage extends StatelessWidget {
     required VoidCallback onTap,
     Color? iconColor = Colors.grey,
   }) {
-    return Row(
-      spacing: 20,
-      children: [
-        Icon(icon, size: 28, color: iconColor),
-        Text(title, style: TextStyle(fontSize: 18)),
-        const Spacer(),
-        GestureDetector(
-          onTap: onTap,
-          child: Icon(
-            Icons.arrow_forward_ios,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        ),
-      ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Row(
+        spacing: 20,
+        children: [
+          Icon(icon, size: 28, color: iconColor),
+          Text(title, style: TextStyle(fontSize: 18)),
+          const Spacer(),
+          Icon(Icons.arrow_forward_ios, color: iconColor),
+        ],
+      ),
     );
   }
 }

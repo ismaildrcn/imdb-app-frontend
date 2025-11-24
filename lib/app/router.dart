@@ -18,6 +18,7 @@ import 'package:imdb_app/features/home/movies_page.dart';
 import 'package:imdb_app/features/home/movie_page.dart';
 import 'package:imdb_app/features/profile/markdown_viewer.dart';
 import 'package:imdb_app/features/browser/browser.dart';
+import 'package:imdb_app/features/profile/user.dart';
 import 'package:imdb_app/features/profile/utils/auth_provider.dart';
 import 'package:imdb_app/features/wishlist/wishlist_page.dart';
 import 'package:imdb_app/features/home/home.dart';
@@ -44,6 +45,7 @@ class AppRoutes {
   static const String onboardingSecond = '/onboarding-second';
   static const String onboardingThird = '/onboarding-third';
   static const String wishlist = '/wishlist';
+  static const String userEdit = '/user-edit';
 }
 
 class AppRouter {
@@ -251,6 +253,13 @@ class AppRouter {
           path: AppRoutes.wishlist,
           pageBuilder: (context, state) {
             return MaterialPage(child: WishlistPage());
+          },
+        ),
+        GoRoute(
+          name: "userEdit",
+          path: AppRoutes.userEdit,
+          pageBuilder: (context, state) {
+            return MaterialPage(child: UserEditPage());
           },
         ),
       ],

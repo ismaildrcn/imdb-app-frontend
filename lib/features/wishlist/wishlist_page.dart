@@ -128,7 +128,7 @@ class _WishlistPageState extends State<WishlistPage> {
       height: 120,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onSurface,
+        color: Theme.of(context).colorScheme.onSecondary.withAlpha(32),
         borderRadius: BorderRadius.circular(16),
       ),
       child: GestureDetector(
@@ -160,13 +160,14 @@ class _WishlistPageState extends State<WishlistPage> {
                   children: [
                     Text(
                       movie.genres![0].name,
-                      style: TextStyle(color: Colors.white38),
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.titleSmall!.color,
+                      ),
                     ),
                     Text(
                       movie.title ?? "Title",
                       maxLines: 2,
                       style: TextStyle(
-                        color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -175,7 +176,14 @@ class _WishlistPageState extends State<WishlistPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Movie", style: TextStyle(color: Colors.white38)),
+                        Text(
+                          "Movie",
+                          style: TextStyle(
+                            color: Theme.of(
+                              context,
+                            ).textTheme.titleSmall!.color,
+                          ),
+                        ),
                         const SizedBox(width: 6),
                         Icon(
                           Icons.star_rounded,

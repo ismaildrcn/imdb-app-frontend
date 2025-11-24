@@ -462,7 +462,7 @@ class _MoviePageState extends State<MoviePage> {
                       style: TextStyle(
                         color: Theme.of(
                           context,
-                        ).colorScheme.onSecondary.withAlpha(128),
+                        ).textTheme.titleSmall!.color!.withAlpha(128),
                       ),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,

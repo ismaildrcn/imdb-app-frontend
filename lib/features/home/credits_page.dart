@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:imdb_app/app/router.dart';
+import 'package:imdb_app/app/topbar.dart';
 import 'package:imdb_app/data/model/movie/credits_model.dart';
 import 'package:imdb_app/data/model/movie/person_model.dart';
 import 'package:imdb_app/data/services/constant/api_constants.dart';
@@ -23,42 +23,50 @@ class _CreditsPageState extends State<CreditsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: topNavBar(context, "Cast and Crew"),
-      body: Padding(
-        padding: EdgeInsetsGeometry.all(18),
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ToggleSwitch(
-                initialLabelIndex: stackIndex,
-                totalSwitches: 2,
-                minWidth: 100.0,
-                activeBgColor: [Theme.of(context).colorScheme.primary],
-                inactiveBgColor: Colors.grey[500],
-                labels: ['Cast', 'Crew'],
-                onToggle: (index) {
-                  setState(() {
-                    stackIndex = index!;
-                  });
-                },
-              ),
-              SizedBox(height: 18),
-              Expanded(
-                child: IndexedStack(
-                  index: stackIndex,
-                  children: [
-                    widget.credits.cast.isEmpty
-                        ? const Center(child: Text("No cast available"))
-                        : _createCreditsView(widget.credits.cast),
-                    widget.credits.crew.isEmpty
-                        ? const Center(child: Text("No crew available"))
-                        : _createCreditsView(widget.credits.crew),
-                  ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            TopBar(title: "Credits", callback: () => Navigator.pop(context)),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsetsGeometry.all(18),
+                child: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ToggleSwitch(
+                        initialLabelIndex: stackIndex,
+                        totalSwitches: 2,
+                        minWidth: 100.0,
+                        activeBgColor: [Theme.of(context).colorScheme.primary],
+                        inactiveBgColor: Colors.grey[500],
+                        labels: ['Cast', 'Crew'],
+                        onToggle: (index) {
+                          setState(() {
+                            stackIndex = index!;
+                          });
+                        },
+                      ),
+                      SizedBox(height: 18),
+                      Expanded(
+                        child: IndexedStack(
+                          index: stackIndex,
+                          children: [
+                            widget.credits.cast.isEmpty
+                                ? const Center(child: Text("No cast available"))
+                                : _createCreditsView(widget.credits.cast),
+                            widget.credits.crew.isEmpty
+                                ? const Center(child: Text("No crew available"))
+                                : _createCreditsView(widget.credits.crew),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -289,7 +289,7 @@ class MovieCard extends StatelessWidget {
                           style: TextStyle(
                             color: Theme.of(
                               context,
-                            ).colorScheme.onSecondary.withAlpha(128),
+                            ).textTheme.titleSmall!.color,
                             fontSize: 14,
                           ),
                         ),
