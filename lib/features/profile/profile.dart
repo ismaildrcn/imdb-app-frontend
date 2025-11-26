@@ -74,7 +74,9 @@ class ProfilePage extends StatelessWidget {
                                 "Welcome",
                                 style: TextStyle(
                                   fontSize: 15,
-                                  color: Colors.white.withAlpha(180),
+                                  color: Theme.of(
+                                    context,
+                                  ).textTheme.labelSmall!.color,
                                 ),
                               ),
                               Text(
@@ -164,7 +166,7 @@ class ProfilePage extends StatelessWidget {
         children: [
           const Text(
             "Account",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           SizedBox(height: 8),
           subProfileContent(
@@ -212,7 +214,7 @@ class ProfilePage extends StatelessWidget {
         children: [
           const Text(
             "General",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           SizedBox(height: 8),
           subProfileContent(
@@ -274,7 +276,7 @@ class ProfilePage extends StatelessWidget {
         children: [
           const Text(
             "More",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           SizedBox(height: 8),
           subProfileContent(
@@ -343,7 +345,7 @@ class ProfilePage extends StatelessWidget {
         spacing: 20,
         children: [
           Icon(icon, size: 28, color: iconColor),
-          Text(title, style: TextStyle(fontSize: 18)),
+          Text(title, style: TextStyle(fontSize: 16)),
           const Spacer(),
           Icon(Icons.arrow_forward_ios, color: iconColor),
         ],

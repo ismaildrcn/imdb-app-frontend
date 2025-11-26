@@ -31,6 +31,7 @@ class _WishlistPageState extends State<WishlistPage> {
 
   Future<void> fetchWishlist() async {
     final response = await userService.getWishlist(currentUser!.id!);
+    if (!mounted) return;
     if (response != null) {
       setState(() {
         wishlistItems = (response.data ?? [])
