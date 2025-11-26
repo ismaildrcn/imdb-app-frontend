@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
 import 'package:imdb_app/app/theme_manager.dart';
+import 'package:imdb_app/app/topbar.dart';
 import 'package:imdb_app/features/profile/utils/auth_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -15,15 +16,7 @@ class ProfilePage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(18),
-                height: 60,
-                child: Text(
-                  "Profile",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ),
+              TopBar(title: "Profile", showBackButton: false),
               Padding(
                 padding: const EdgeInsets.all(18),
                 child: Column(
@@ -344,7 +337,14 @@ class ProfilePage extends StatelessWidget {
       child: Row(
         spacing: 20,
         children: [
-          Icon(icon, size: 28, color: iconColor),
+          Container(
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: iconColor!.withAlpha(32),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(icon, size: 24, color: iconColor),
+          ),
           Text(title, style: TextStyle(fontSize: 16)),
           const Spacer(),
           Icon(Icons.arrow_forward_ios, color: iconColor),

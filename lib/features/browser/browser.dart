@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
+import 'package:imdb_app/app/topbar.dart';
 import 'package:imdb_app/app/utils/debounce.dart';
 import 'package:imdb_app/data/model/movie/movie_model.dart';
 import 'package:imdb_app/data/services/movie_service.dart';
@@ -64,6 +65,7 @@ class _BrowserPageState extends State<BrowserPage> {
 
   Future<void> loadData() async {
     final popular = await _movieService.fetchMovies(type: MovieTypes.popular);
+    if (!mounted) return;
     setState(() {
       popuplarMovies = popular;
     });
@@ -72,23 +74,29 @@ class _BrowserPageState extends State<BrowserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: topNavBar(context, "Browser"),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(18),
-          child: CustomScrollView(
-            slivers: [
-              _searchTextField(context),
-              SliverToBoxAdapter(child: SizedBox(height: 20)),
-              isLoading
-                  ? SliverToBoxAdapter(
-                      child: Center(child: CircularProgressIndicator()),
-                    )
-                  : _searchResultField(),
-              SliverToBoxAdapter(child: SizedBox(height: 20)),
-              _topRatedField(),
-            ],
-          ),
+        child: Column(
+          children: [
+            TopBar(title: "Browser", showBackButton: false),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(18),
+                child: CustomScrollView(
+                  slivers: [
+                    _searchTextField(context),
+                    SliverToBoxAdapter(child: SizedBox(height: 20)),
+                    isLoading
+                        ? SliverToBoxAdapter(
+                            child: Center(child: CircularProgressIndicator()),
+                          )
+                        : _searchResultField(),
+                    SliverToBoxAdapter(child: SizedBox(height: 20)),
+                    _topRatedField(),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

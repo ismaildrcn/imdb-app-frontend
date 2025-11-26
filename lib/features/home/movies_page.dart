@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
+import 'package:imdb_app/app/topbar.dart';
 import 'package:imdb_app/data/model/movie/movie_model.dart';
 import 'package:imdb_app/data/services/movie_service.dart';
 import 'package:imdb_app/features/home/widgets/movie_list_page_card.dart';
@@ -55,7 +56,6 @@ class _MoviesPageState extends State<MoviesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: topNavBar(context, widget.title),
       body: NotificationListener(
         onNotification: (notification) {
           // Listenin sonuna gelindiğinde yeni veri çek
@@ -68,16 +68,26 @@ class _MoviesPageState extends State<MoviesPage> {
         },
         child: isLoading
             ? const Center(child: CircularProgressIndicator())
-            : Padding(
-                padding: EdgeInsetsGeometry.all(18),
-                child: ListView.builder(
-                  itemCount: movies.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () => context.push("/movie/${movies[index].id}"),
-                      child: MovieListPageCard(movie: movies[index]),
-                    );
-                  },
+            : SafeArea(
+                child: Column(
+                  children: [
+                    TopBar(title: widget.title, callback: () => context.pop()),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsetsGeometry.all(18),
+                        child: ListView.builder(
+                          itemCount: movies.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () =>
+                                  context.push("/movie/${movies[index].id}"),
+                              child: MovieListPageCard(movie: movies[index]),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
       ),

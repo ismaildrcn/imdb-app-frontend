@@ -266,31 +266,3 @@ class AppRouter {
     ),
   ];
 }
-
-AppBar topNavBar(BuildContext context, String? title) {
-  return AppBar(
-    automaticallyImplyLeading: true, // Geri butonunu gerektiğinde gösterir
-    toolbarHeight: 60,
-    title: Text(title ?? ""),
-    titleTextStyle: TextStyle(
-      color: Colors.grey[900],
-      fontSize: 18,
-      fontWeight: FontWeight.bold,
-    ),
-    centerTitle: true,
-    leadingWidth: 70,
-    leading: Padding(
-      padding: const EdgeInsets.only(left: 20),
-      child: (Navigator.of(context).canPop())
-          ? BackButton(color: Colors.grey[900])
-          : Image.asset("assets/img/imdb-logo.png"),
-    ),
-    actions: [
-      Container(
-        margin: const EdgeInsets.only(right: 10),
-        child: Icon(Icons.notifications, size: 24, color: Colors.grey[900]),
-      ),
-    ],
-    backgroundColor: Theme.of(context).colorScheme.primary,
-  );
-}

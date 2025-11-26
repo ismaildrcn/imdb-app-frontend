@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
+import 'package:imdb_app/app/topbar.dart';
 import 'package:imdb_app/data/model/user/user_model.dart';
 import 'package:imdb_app/data/services/constant/api_constants.dart';
 import 'package:imdb_app/data/services/user_service.dart';
@@ -47,37 +48,7 @@ class _WishlistPageState extends State<WishlistPage> {
       body: SafeArea(
         child: Column(
           children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () => context.push(AppRoutes.home),
-                    child: Container(
-                      width: 32,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Icon(
-                        Icons.arrow_back_ios_new,
-                        color: Colors.white,
-                        size: 24,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    "Wishlist",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(width: 32),
-                ],
-              ),
-            ),
-
+            TopBar(title: "Wishlist", showBackButton: false),
             wishlistItems.isNotEmpty
                 ? Expanded(
                     child: ListView.separated(
