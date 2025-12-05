@@ -99,82 +99,110 @@ class _WishlistPageState extends State<WishlistPage> {
       height: 120,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onSecondary.withAlpha(32),
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.primary.withAlpha(30),
+          width: 1,
+        ),
       ),
-      child: GestureDetector(
-        onTap: () => context.push("/movie/${movie.id}"),
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            spacing: 16,
-            children: [
-              Container(
-                width: 120,
-                height: 90,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Stack(
+          children: [
+            Positioned(
+              right: -22,
+              top: -20,
+              child: Container(
+                width: 80,
+                height: 80,
                 decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: ImageHelper.getImage(
-                      movie.posterPath,
-                      ApiConstants.posterSize.m,
-                    ),
-                    fit: BoxFit.cover,
-                  ),
-                  borderRadius: BorderRadius.circular(8),
+                  shape: BoxShape.circle,
+                  color: Theme.of(context).colorScheme.primary.withAlpha(15),
+                ),
+                child: Icon(
+                  Icons.bookmark_border_rounded,
+                  color: Theme.of(context).colorScheme.primary.withAlpha(50),
+                  size: 40,
                 ),
               ),
-              Expanded(
-                child: Column(
-                  spacing: 4,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
+            ),
+            GestureDetector(
+              onTap: () => context.push("/movie/${movie.id}"),
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Row(
+                  spacing: 16,
                   children: [
-                    Text(
-                      movie.genres![0].name,
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.titleSmall!.color,
-                      ),
-                    ),
-                    Text(
-                      movie.title ?? "Title",
-                      maxLines: 2,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Spacer(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Movie",
-                          style: TextStyle(
-                            color: Theme.of(
-                              context,
-                            ).textTheme.titleSmall!.color,
+                    Container(
+                      width: 120,
+                      height: 90,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: ImageHelper.getImage(
+                            movie.posterPath,
+                            ApiConstants.posterSize.m,
                           ),
+                          fit: BoxFit.cover,
                         ),
-                        const SizedBox(width: 6),
-                        Icon(
-                          Icons.star_rounded,
-                          color: Colors.yellow,
-                          size: 16,
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          (movie.voteAverage! / 2).toStringAsFixed(1),
-                          style: TextStyle(color: Colors.yellow),
-                        ),
-                        Expanded(child: SizedBox()),
-                        Icon(Icons.bookmark, color: Colors.red, size: 24),
-                      ],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        spacing: 4,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            movie.genres![0].name,
+                            style: TextStyle(
+                              color: Theme.of(
+                                context,
+                              ).textTheme.titleSmall!.color,
+                            ),
+                          ),
+                          Text(
+                            movie.title ?? "Title",
+                            maxLines: 2,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Spacer(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Movie",
+                                style: TextStyle(
+                                  color: Theme.of(
+                                    context,
+                                  ).textTheme.titleSmall!.color,
+                                ),
+                              ),
+                              const SizedBox(width: 6),
+                              Icon(
+                                Icons.star_rounded,
+                                color: Colors.yellow,
+                                size: 16,
+                              ),
+                              SizedBox(width: 4),
+                              Text(
+                                (movie.voteAverage! / 2).toStringAsFixed(1),
+                                style: TextStyle(color: Colors.yellow),
+                              ),
+                              Expanded(child: SizedBox()),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
