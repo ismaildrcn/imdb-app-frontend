@@ -17,6 +17,7 @@ import 'package:imdb_app/features/home/utils/image_utils.dart';
 import 'package:imdb_app/features/profile/utils/auth_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class MoviePage extends StatefulWidget {
@@ -70,7 +71,6 @@ class _MoviePageState extends State<MoviePage> {
       userId: _currentUser?.id,
     );
     final credits = await _creditsService.fetchCredits(widget.movieId);
-    final reviews = await _reviewsService.fetchReviews(widget.movieId);
     if (widget.hasVideo == true) {
       final videos = await _videoService.fetchVideos(widget.movieId);
       _videos = videos;
@@ -82,7 +82,6 @@ class _MoviePageState extends State<MoviePage> {
     setState(() {
       _movie = movie;
       _credits = credits;
-      _reviews = reviews;
       isInWishlist = movie.isInWishlist ?? false;
       voteAverage = _movie!.voteAverage! / 2;
     });
@@ -94,11 +93,11 @@ class _MoviePageState extends State<MoviePage> {
         ? const Center(child: CircularProgressIndicator())
         : SingleChildScrollView(
             child: Column(
+              spacing: 20,
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _posterField(context),
-                SizedBox(height: 20),
 
                 // Video
                 if (widget.hasVideo == true)
@@ -120,26 +119,44 @@ class _MoviePageState extends State<MoviePage> {
                       ),
                     ),
                   ),
-                SizedBox(height: 20),
 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18),
                   child: Column(
+                    spacing: 20,
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _genresField(),
 
-                      const SizedBox(height: 20),
                       _overviewField(),
 
-                      const SizedBox(height: 20),
                       _castAndCrewField(context),
 
-                      const SizedBox(height: 20),
-                      _reviews!.reviews.isEmpty
-                          ? Container()
-                          : _reviewsContainer(),
+                      VisibilityDetector(
+                        key: Key("reviews_visibility_detector"),
+                        onVisibilityChanged: (info) {
+                          if (info.visibleFraction > 0 && _reviews == null) {
+                            _reviewsService.fetchReviews(widget.movieId).then((
+                              reviews,
+                            ) {
+                              setState(() {
+                                _reviews = reviews;
+                              });
+                            });
+                          }
+                        },
+                        child: _reviews == null
+                            ? SizedBox(
+                                height: 150,
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              )
+                            : (_reviews!.reviews.isEmpty
+                                  ? SizedBox()
+                                  : _reviewsContainer()),
+                      ),
                     ],
                   ),
                 ),
@@ -377,7 +394,7 @@ class _MoviePageState extends State<MoviePage> {
             margin: const EdgeInsets.only(right: 20),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.onSecondary.withAlpha(64),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(12),
             ),
             child: Center(
               child: Text(
