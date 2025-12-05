@@ -296,10 +296,21 @@ class _MoviePageState extends State<MoviePage> {
                         size: 24,
                       ),
                       SizedBox(width: 4),
-                      Text(
-                        "${_movie!.runtime!.toString()} Minutes",
-                        style: TextStyle(color: Colors.grey[500], fontSize: 18),
-                      ),
+                      _movie!.runtime == null
+                          ? Text(
+                              "N/A",
+                              style: TextStyle(
+                                color: Colors.grey[500],
+                                fontSize: 18,
+                              ),
+                            )
+                          : Text(
+                              "${_movie!.runtime!.toString()} Minutes",
+                              style: TextStyle(
+                                color: Colors.grey[500],
+                                fontSize: 18,
+                              ),
+                            ),
                       SizedBox(width: 10),
                       Container(
                         height: 15,

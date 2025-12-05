@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:imdb_app/app/router.dart';
 import 'package:imdb_app/app/topbar.dart';
 import 'package:imdb_app/app/utils/debounce.dart';
 import 'package:imdb_app/data/model/movie/movie_model.dart';
