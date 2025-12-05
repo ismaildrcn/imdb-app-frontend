@@ -14,6 +14,7 @@ import 'package:imdb_app/data/services/reviews_service.dart';
 import 'package:imdb_app/data/services/user_service.dart';
 import 'package:imdb_app/data/services/video_service.dart';
 import 'package:imdb_app/features/home/utils/image_utils.dart';
+import 'package:imdb_app/features/home/widgets/review_card.dart';
 import 'package:imdb_app/features/profile/utils/auth_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -529,95 +530,21 @@ class _MoviePageState extends State<MoviePage> {
             ),
           ],
         ),
-        SizedBox(height: 18),
+        SizedBox(height: 10),
         SizedBox(
-          height: 150,
-          child: ListView.builder(
+          height: 200,
+          child: ListView.separated(
+            separatorBuilder: (context, index) => SizedBox(width: 16),
             itemCount: _reviews!.reviews.length >= 3
-                ? _reviews?.reviews.sublist(0, 3).length
-                : _reviews?.reviews.length,
+                ? 3
+                : _reviews?.reviews.length ?? 0,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
-              return _reviewCard(
-                hasLastComment: index == 2,
-                review: _reviews!.reviews[index],
-              );
+              return ReviewCard(review: _reviews!.reviews[index], width: 280);
             },
           ),
         ),
       ],
-    );
-  }
-
-  Widget _reviewCard({bool hasLastComment = false, Review? review}) {
-    return Container(
-      width: 300,
-      constraints: BoxConstraints(minHeight: 100),
-      margin: hasLastComment ? null : EdgeInsets.only(right: 20),
-      padding: EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onSurface,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(
-              context,
-            ).colorScheme.secondary.withAlpha(32), // Gölge rengi ve opaklık
-            blurRadius: 5, // Gölge yumuşaklığı
-            spreadRadius: 1, // Gölge yayılması
-            offset: Offset(0, 0), // Gölge pozisyonu (x, y)
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              CircleAvatar(
-                backgroundImage: review!.authorDetails!.avatarPath != null
-                    ? ImageHelper.getImage(
-                        review.authorDetails!.avatarPath,
-                        ApiConstants.posterSize.m,
-                      )
-                    : null,
-                child: review.authorDetails!.avatarPath == null
-                    ? Icon(Icons.person_rounded)
-                    : null,
-              ),
-              SizedBox(width: 10),
-              Column(
-                children: [
-                  Text(
-                    review.authorDetails!.name == ""
-                        ? "Anonymous"
-                        : review.authorDetails!.name.toString(),
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "June 12, 2023",
-                    style: TextStyle(color: Colors.grey[500]),
-                  ),
-                ],
-              ),
-              Spacer(),
-              Row(
-                children: [
-                  Text(review.authorDetails!.rating.toString()),
-                  Icon(Icons.star_rate_rounded, color: Colors.amber),
-                ],
-              ),
-            ],
-          ),
-          SizedBox(height: 10),
-          Text(
-            review.content.toString(),
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontSize: 16),
-          ),
-        ],
-      ),
     );
   }
 
