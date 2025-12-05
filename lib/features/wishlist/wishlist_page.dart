@@ -100,10 +100,26 @@ class _WishlistPageState extends State<WishlistPage> {
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Theme.of(context).colorScheme.surface,
+            Theme.of(context).colorScheme.surface.withAlpha(240),
+          ],
+        ),
         border: Border.all(
           color: Theme.of(context).colorScheme.primary.withAlpha(30),
           width: 1,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Theme.of(context).colorScheme.shadow.withAlpha(20),
+            blurRadius: 20,
+            spreadRadius: 0,
+            offset: Offset(0, 8),
+          ),
+        ],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
