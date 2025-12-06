@@ -123,10 +123,13 @@ class _UserEditPageState extends State<UserEditPage> {
                     SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: () {
-                        userService.updateUserDetails(user!.id!, {
+                        userService.updateUserDetails({
+                          'id': user!.id!,
                           'full_name': _userFullNameController.text,
                           'email': _userEmailController.text,
-                          'phone': _userPhoneNumberController.text,
+                          'phone': _userPhoneNumberController.text == ''
+                              ? null
+                              : _userPhoneNumberController.text,
                           'gender': selectedGender.toString().split('.').last,
                           'birthdate': _birthDateController.text,
                         });

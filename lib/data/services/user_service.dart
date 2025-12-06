@@ -5,12 +5,12 @@ import 'package:imdb_app/data/datasources/remote.dart';
 class UserService {
   final _dio = ApiService.instance;
 
-  Future<Response?> updateUserDetails(
-    int userId,
-    Map<String, dynamic> details,
-  ) async {
+  Future<Response?> updateUserDetails(Map<String, dynamic> details) async {
     try {
-      final response = await _dio.patch('/users/$userId', data: details);
+      final response = await _dio.patch(
+        '/users/${details['id']}',
+        data: details,
+      );
       return response;
     } catch (e) {
       debugPrint("Error updating user details: $e");

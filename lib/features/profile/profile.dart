@@ -31,7 +31,7 @@ class ProfilePage extends StatelessWidget {
                         border: BoxBorder.all(
                           color: Theme.of(
                             context,
-                          ).colorScheme.onSurface.withAlpha(128),
+                          ).colorScheme.primary.withAlpha(50),
                           width: 2,
                           style: BorderStyle.solid,
                           strokeAlign: 0.7,
@@ -146,7 +146,7 @@ class ProfilePage extends StatelessWidget {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: BoxBorder.all(
-          color: Theme.of(context).colorScheme.onSurface.withAlpha(128),
+          color: Theme.of(context).colorScheme.primary.withAlpha(20),
           width: 2,
           style: BorderStyle.solid,
           strokeAlign: 0.7,
@@ -173,7 +173,7 @@ class ProfilePage extends StatelessWidget {
             iconColor: Theme.of(context).colorScheme.primary,
           ),
           Divider(
-            color: Theme.of(context).colorScheme.onSurface.withAlpha(180),
+            color: Theme.of(context).colorScheme.primary.withAlpha(20),
             thickness: 1.5,
           ),
           subProfileContent(
@@ -194,7 +194,7 @@ class ProfilePage extends StatelessWidget {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: BoxBorder.all(
-          color: Theme.of(context).colorScheme.onSurface.withAlpha(128),
+          color: Theme.of(context).colorScheme.primary.withAlpha(20),
           width: 2,
           style: BorderStyle.solid,
           strokeAlign: 0.7,
@@ -225,7 +225,7 @@ class ProfilePage extends StatelessWidget {
             },
           ),
           Divider(
-            color: Theme.of(context).colorScheme.onSurface.withAlpha(180),
+            color: Theme.of(context).colorScheme.primary.withAlpha(20),
             thickness: 1.5,
           ),
           subProfileContent(
@@ -235,7 +235,7 @@ class ProfilePage extends StatelessWidget {
             onTap: () {},
           ),
           Divider(
-            color: Theme.of(context).colorScheme.onSurface.withAlpha(180),
+            color: Theme.of(context).colorScheme.primary.withAlpha(20),
             thickness: 1.5,
           ),
           subProfileContent(
@@ -256,7 +256,7 @@ class ProfilePage extends StatelessWidget {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: BoxBorder.all(
-          color: Theme.of(context).colorScheme.onSurface.withAlpha(128),
+          color: Theme.of(context).colorScheme.primary.withAlpha(20),
           width: 2,
           style: BorderStyle.solid,
           strokeAlign: 0.7,
@@ -285,7 +285,7 @@ class ProfilePage extends StatelessWidget {
             ),
           ),
           Divider(
-            color: Theme.of(context).colorScheme.onSurface.withAlpha(180),
+            color: Theme.of(context).colorScheme.primary.withAlpha(20),
             thickness: 1.5,
           ),
           subProfileContent(
@@ -301,7 +301,7 @@ class ProfilePage extends StatelessWidget {
             ),
           ),
           Divider(
-            color: Theme.of(context).colorScheme.onSurface.withAlpha(180),
+            color: Theme.of(context).colorScheme.primary.withAlpha(20),
             thickness: 1.5,
           ),
           subProfileContent(
@@ -311,7 +311,7 @@ class ProfilePage extends StatelessWidget {
             onTap: () {},
           ),
           Divider(
-            color: Theme.of(context).colorScheme.onSurface.withAlpha(180),
+            color: Theme.of(context).colorScheme.primary.withAlpha(20),
             thickness: 1.5,
           ),
           subProfileContent(
