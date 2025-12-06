@@ -3,10 +3,11 @@ import 'package:go_router/go_router.dart';
 import 'package:imdb_app/app/router.dart';
 import 'package:imdb_app/app/topbar.dart';
 import 'package:imdb_app/data/model/user/user_model.dart';
+import 'package:imdb_app/data/services/user_service.dart';
 import 'package:imdb_app/features/profile/utils/auth_provider.dart';
 import 'package:provider/provider.dart';
 
-enum GenreEnum { male, female }
+enum GenderEnum { male, female }
 
 class UserEditPage extends StatefulWidget {
   const UserEditPage({super.key});
@@ -18,13 +19,14 @@ class UserEditPage extends StatefulWidget {
 class _UserEditPageState extends State<UserEditPage> {
   UserModel? user;
   AuthProvider authProvider = AuthProvider();
+  UserService userService = UserService();
 
   final TextEditingController _userFullNameController = TextEditingController();
   final TextEditingController _userEmailController = TextEditingController();
   final TextEditingController _userPhoneNumberController =
       TextEditingController();
   final TextEditingController _birthDateController = TextEditingController();
-  GenreEnum? selectedGender;
+  GenderEnum? selectedGender;
   @override
   void initState() {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
@@ -32,7 +34,8 @@ class _UserEditPageState extends State<UserEditPage> {
     _userFullNameController.text = user!.fullName;
     _userEmailController.text = user!.email;
     _userPhoneNumberController.text = user!.phone ?? '';
-    selectedGender = GenreEnum.male;
+    _birthDateController.text = user!.birthdate ?? '';
+    selectedGender = user!.gender!;
     super.initState();
   }
 
@@ -97,7 +100,6 @@ class _UserEditPageState extends State<UserEditPage> {
                       ),
                     ),
 
-                    SizedBox(height: 5),
                     Text(
                       "Contact",
                       style: TextStyle(
@@ -121,7 +123,13 @@ class _UserEditPageState extends State<UserEditPage> {
                     SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: () {
-                        // Save action
+                        userService.updateUserDetails(user!.id!, {
+                          'full_name': _userFullNameController.text,
+                          'email': _userEmailController.text,
+                          'phone': _userPhoneNumberController.text,
+                          'gender': selectedGender.toString().split('.').last,
+                          'birthdate': _birthDateController.text,
+                        });
                       },
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(double.infinity, 48),
@@ -238,12 +246,12 @@ class _UserEditPageState extends State<UserEditPage> {
     }
   }
 
-  Widget _genderCard(GenreEnum gender, IconData icon) {
-    bool isMale = selectedGender == GenreEnum.male;
+  Widget _genderCard(GenderEnum gender, IconData icon) {
+    bool isMale = selectedGender == GenderEnum.male;
     return GestureDetector(
       onTap: () {
         setState(() {
-          selectedGender = isMale ? GenreEnum.female : GenreEnum.male;
+          selectedGender = isMale ? GenderEnum.female : GenderEnum.male;
         });
       },
 
