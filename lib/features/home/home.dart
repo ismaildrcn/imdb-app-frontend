@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   List<MovieModel> _topRatedMovies = [];
   List<MovieModel> _nowPlayingMovies = [];
   List<MovieModel> _upComingMovies = [];
+  List<MovieModel> _trendingMovies = [];
 
   @override
   void initState() {
@@ -36,11 +37,15 @@ class _HomePageState extends State<HomePage> {
       type: MovieTypes.nowPlaying,
     );
     final upcoming = await _movieService.fetchMovies(type: MovieTypes.upcoming);
+    final trending = await _movieService.fetchTrendingMovies(
+      type: MovieTypes.popular,
+    );
     if (mounted) {
       setState(() {
         _topRatedMovies = topRated;
         _nowPlayingMovies = nowPlaying;
         _upComingMovies = upcoming;
+        _trendingMovies = trending;
       });
     }
   }
@@ -56,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                   spacing: 12,
                   children: [
                     _topBar(context),
-                    MovieCarousel(movies: _topRatedMovies.sublist(0, 3)),
+                    MovieCarousel(movies: _trendingMovies.sublist(0, 5)),
                     Padding(
                       padding: const EdgeInsets.all(18),
                       child: Column(

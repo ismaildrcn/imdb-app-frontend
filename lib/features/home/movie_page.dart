@@ -452,57 +452,67 @@ class _MoviePageState extends State<MoviePage> {
           ],
         ),
         const SizedBox(height: 10),
-        SizedBox(
-          width: double.infinity,
-          height: 130,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              return Container(
-                margin: const EdgeInsets.only(right: 20),
-                width: 100,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 80,
-                      height: 80,
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: ImageHelper.getImage(
-                            _credits!.cast[index].profilePath,
-                            ApiConstants.posterSize.m,
+        if (_credits!.cast.isEmpty)
+          Text(
+            "No cast information available.",
+            style: TextStyle(
+              color: Theme.of(
+                context,
+              ).textTheme.titleSmall!.color!.withAlpha(128),
+            ),
+          )
+        else
+          SizedBox(
+            width: double.infinity,
+            height: 130,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: const EdgeInsets.only(right: 20),
+                  width: 100,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 80,
+                        height: 80,
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: ImageHelper.getImage(
+                              _credits!.cast[index].profilePath,
+                              ApiConstants.posterSize.m,
+                            ),
+                            fit: BoxFit.cover,
                           ),
-                          fit: BoxFit.cover,
+                          borderRadius: BorderRadius.circular(40),
                         ),
-                        borderRadius: BorderRadius.circular(40),
                       ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      _credits!.cast[index].character,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                    Text(
-                      _credits!.cast[index].originalName,
-                      style: TextStyle(
-                        color: Theme.of(
-                          context,
-                        ).textTheme.titleSmall!.color!.withAlpha(128),
+                      const SizedBox(height: 5),
+                      Text(
+                        _credits!.cast[index].character,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                  ],
-                ),
-              );
-            },
-            itemCount: 5,
+                      Text(
+                        _credits!.cast[index].originalName,
+                        style: TextStyle(
+                          color: Theme.of(
+                            context,
+                          ).textTheme.titleSmall!.color!.withAlpha(128),
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                    ],
+                  ),
+                );
+              },
+              itemCount: 5,
+            ),
           ),
-        ),
       ],
     );
   }

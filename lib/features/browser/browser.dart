@@ -4,7 +4,6 @@ import 'package:imdb_app/app/topbar.dart';
 import 'package:imdb_app/app/utils/debounce.dart';
 import 'package:imdb_app/data/model/movie/movie_model.dart';
 import 'package:imdb_app/data/services/movie_service.dart';
-import 'package:imdb_app/data/services/search_service.dart';
 import 'package:imdb_app/features/home/home.dart';
 import 'package:imdb_app/features/home/widgets/movie_list_page_card.dart';
 
@@ -18,7 +17,7 @@ class BrowserPage extends StatefulWidget {
 class _BrowserPageState extends State<BrowserPage> {
   final TextEditingController _searchController = TextEditingController();
   late final MovieService _movieService;
-  late final SearchService _searchService;
+
   List<MovieModel> popuplarMovies = [];
   List<MovieModel> searchMoviesData = [];
   List<MovieModel> searchMovies = [];
@@ -30,7 +29,7 @@ class _BrowserPageState extends State<BrowserPage> {
     super.initState();
     _searchController.addListener(() => _debouncer.run(() => _getMovies()));
     _movieService = MovieService();
-    _searchService = SearchService();
+
     loadData();
   }
 
@@ -47,7 +46,7 @@ class _BrowserPageState extends State<BrowserPage> {
     });
     if (_searchController.text.isNotEmpty &&
         _searchController.text.length > 2) {
-      List<MovieModel> searchMovies = await _searchService.fetchMovies(
+      List<MovieModel> searchMovies = await _movieService.searchMovies(
         searchText: _searchController.text,
       );
       setState(() {
